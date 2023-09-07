@@ -24,6 +24,32 @@ Then, hit 'q', 'yes', and 'yes' to finish the installation. Restart the connecti
 Do something to prevent the future collapse of conda! Replace the original solver of conda with mamba
 ```bash
 # why this step also takes forever to finish????
+# Update: It takes 45min...
 conda install -n base conda-libmamba-solver
 conda config --set solver libmamba
 ```
+Starting today, organize the conda environment and separately install different packages in different environments.
+```bash
+conda create -n hybpiper
+# visit new env by:
+conda activate hybpiper
+# leave the env by:
+conda deactivate
+```
+
+Install hybpiper via conda:
+```bash
+conda install hybpiper
+# failed with missing libgcc-ng >=12, I am about to install it with original solver.
+# explore issue report online
+# finally solved by using:
+conda create -n hybpiper -c chrisjackson-pellicle -c bioconda -c conda-forge hybpiper
+```
+Test if it is installed correctly!
+```bash
+conda activate hybpiper
+hybpiper --help
+hybpiper check_dependencies
+```
+
+2. Prepare the input file for HybPiper
