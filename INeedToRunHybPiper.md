@@ -53,3 +53,33 @@ hybpiper check_dependencies
 ```
 
 2. Prepare the input file for HybPiper
+The HybPiper requires two input files: a target sequence FASTA (which is mega353.fasta from Angiosperm353) and a sequence capture reads file. The reads need to be trimmed and passed through quality control using Trimmomatic and fastp. I directly used data from Courtney so I can skip this step (need to check if errors appear in the future).
+
+According to the notes from Courtney, I assembled all trimmed reads using `hybpiper assemble` with parallel attempts.
+
+```bash
+#!/bin/bash
+#SBATCH -J hyb_asbl
+#SBATCH -p nocona
+#SBATCH -o log/hyb_asbl%x.out
+#SBATCH -e log/hyb_asbl%x.err
+#SBATCH -N 1
+#SBATCH -n 64
+#SBATCH -t 24:00:00
+#SBATCH --mem-per-cpu=3G
+
+hybpiper assemble -t_dna ../raw/mega353.fasta \
+        -r REPLACE.R*.trimmed.fasta \
+        --prefix REPLACE \
+        --bwa \
+        --cpu 64 \
+        --run_intronerate \
+        --start_from exonerate_contigs
+```
+I need to generate a list file containing all of the species names to replace the "REPLACE" in my code.
+```bash
+while read line; do sed 's/REPLACE/$line/g' 01-hyb_assemble_REPLACE.sh | sbatch; done < namelist.txt
+```
+
+It's 5:30pm now. I leave all the scripts on screen or submitted to slurm. It's time for wrapping up today.
+
