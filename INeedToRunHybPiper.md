@@ -14,4 +14,16 @@ After this, search for files that look like `.bash*` (for example: `.bashrc`). I
 
 Now, I get a fresh and clean "conda-free" environment for my HPCC account. It's about time to restart everything!
 
+OK! I can't wait to reinstall conda now! To be safe (Avoid issues I faced before) and fast, I reinstalled the lite version of conda - [Miniconda](https://docs.conda.io/projects/miniconda/en/latest/index.html). Choose the correct one (normally the first one of the Linux platform works), then download it.
+```bash
+wget TheAddressOfThePackage.sh
+sh TheFileNameOfTheThingYouJustDownloaded.sh
+```
+Then, hit 'q', 'yes', and 'yes' to finish the installation. Restart the connection to HPCC and type `conda --help` to check the availability of conda.
 
+Do something to prevent the future collapse of conda! Replace the original solver of conda with mamba
+```bash
+# why this step also takes forever to finish????
+conda install -n base conda-libmamba-solver
+conda config --set solver libmamba
+```
