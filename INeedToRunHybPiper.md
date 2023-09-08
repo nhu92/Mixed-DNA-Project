@@ -1,5 +1,7 @@
 # Wish I could rerun the HybPiper!
-This is a note-style markdown for documenting steps for a rerun of HybPiper on Mixed DNA samples
+This is a diary-style markdown for documenting steps for a rerun of HybPiper on Mixed DNA samples
+
+---
 
 1. Delete conda, re-install conda
 I had to delete conda in the HPCC of TTU since it became super slow for the past couple of years. Now I am graduated and temporarily free from worrying about reproducing my old analysis (I hope) (And I am working on documenting those pipelines, slowly. See [HomologousAnnotationPipeline](https://github.com/gudusanjiao/HomologousAnnotationPipeline)). As suggested on Anaconda website, there are two ways to uninstall conda from remote computer clusters - the full uninstall and the 'nearly' full uninstall. The full uninstall is automatically operated by conda but it requires a functional conda (which I don't have and that's why I want to reinstall right?). Thus, I did a manual uninstall, which is basically just deleting everything from conda directories and wiping out most of the traces from user files.
@@ -78,8 +80,18 @@ hybpiper assemble -t_dna ../raw/mega353.fasta \
 ```
 I need to generate a list file containing all of the species names to replace the "REPLACE" in my code.
 ```bash
-while read line; do sed 's/REPLACE/$line/g' 01-hyb_assemble_REPLACE.sh | sbatch; done < namelist.txt
+while read line; do sed s/REPLACE/$line/g 01-hyb_assemble_REPLACE.sh | sbatch; done < namelist.txt
 ```
 
 It's 5:30pm now. I leave all the scripts on screen or submitted to slurm. It's time for wrapping up today.
+
+I am back to work. It's a beautiful Friday. I gonna check if everything is ready for a HybPiper run.
+
+Here is the regex I used to generate the namelist.txt. However, some of the species name need to be corrected manually.
+
+```bash
+ls | grep -Eo "(^[^.]*)"  | sort | uniq > namelist.txt
+```
+
+Job submitted. I created 8 jobs and each of them requested 64 CPUs. Hope our HPCC staff won't be mad at me.
 
