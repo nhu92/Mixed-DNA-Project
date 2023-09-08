@@ -61,22 +61,21 @@ According to the notes from Courtney, I assembled all trimmed reads using `hybpi
 
 ```bash
 #!/bin/bash
-#SBATCH -J hyb_asbl
+#SBATCH -J hyb_asbl_REPLACE
 #SBATCH -p nocona
-#SBATCH -o log/hyb_asbl%x.out
-#SBATCH -e log/hyb_asbl%x.err
+#SBATCH -o log/%x.out
+#SBATCH -e log/%x.err
 #SBATCH -N 1
 #SBATCH -n 64
 #SBATCH -t 24:00:00
 #SBATCH --mem-per-cpu=3G
 
 hybpiper assemble -t_dna ../raw/mega353.fasta \
-        -r REPLACE.R*.trimmed.fasta \
+        -r ../raw/REPLACE.R1.trimmed.fastq ../raw/REPLACE.R2.trimmed.fastq \
         --prefix REPLACE \
         --bwa \
         --cpu 64 \
-        --run_intronerate \
-        --start_from exonerate_contigs
+        -o ../hyb_output
 ```
 I need to generate a list file containing all of the species names to replace the "REPLACE" in my code.
 ```bash
@@ -95,3 +94,32 @@ ls | grep -Eo "(^[^.]*)"  | sort | uniq > namelist.txt
 
 Job submitted. I created 8 jobs and each of them requested 64 CPUs. Hope our HPCC staff won't be mad at me.
 
+> In the meantime, I was preparing another run of HybPiper using known mixed samples.
+```bash
+# similar command lines but do not need to run the while loop
+#!/bin/bash
+#SBATCH -J hyb_asbl_known_mix
+#SBATCH -p nocona
+#SBATCH -o log/%x.out
+#SBATCH -e log/%x.err
+#SBATCH -N 1
+#SBATCH -n 64
+#SBATCH -t 24:00:00
+#SBATCH --mem-per-cpu=3G
+
+hybpiper assemble -t_dna ../raw/mega353.fasta \
+        -r ../raw/SSBseq002.trimmed.R1.fastq.gz ../raw/SSBseq002.trimmed.R2.fastq.gz \
+        --prefix knownmix \
+        --bwa \
+        --cpu 64 \
+        -o ../hyb_output
+```
+
+Back from lunch. I am now exploring intronate folder of the hybpiper output, mainly focusing on the .gff file generated from the gene prediction and alignment based on the supercontigs. The supercontigs are the contigs that assembled from SPAdes concatenated together with 10 "N"s in between (under `hyb_output/<PREFIX>/<GeneNum>/<PREFIX>/sequences/FNA/`). As discussed with Dr. Johnson, he infered that the exon boundaries of the targeted genes for most of angiosperms are pretty much conservative, which means we can extract the shared exons from these supercontigs and reconstruct a gene tree for each exon.
+
+The base gene tree will be only the 8 species we know. This tree will be the base for testing the known mix (artificially mix 8 species samples) data whether it could correctly grouping with their species.
+
+I am going to write some python scripts to fetch info from each .gff file within each species gene by gene. This next level work I think worth a separate chapter.
+
+3. How to extract exons/genes from our supercontigs?
+The input file will be under `hyb_output/<PREFIX>/<GeneNum>/<PREFIX>/intronerate/`. 
