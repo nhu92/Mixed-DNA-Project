@@ -4,6 +4,7 @@ This is a diary-style markdown for documenting steps for a rerun of HybPiper on 
 ---
 
 1. Delete conda, re-install conda
+
 I had to delete conda in the HPCC of TTU since it became super slow for the past couple of years. Now I am graduated and temporarily free from worrying about reproducing my old analysis (I hope) (And I am working on documenting those pipelines, slowly. See [HomologousAnnotationPipeline](https://github.com/gudusanjiao/HomologousAnnotationPipeline)). As suggested on Anaconda website, there are two ways to uninstall conda from remote computer clusters - the full uninstall and the 'nearly' full uninstall. The full uninstall is automatically operated by conda but it requires a functional conda (which I don't have and that's why I want to reinstall right?). Thus, I did a manual uninstall, which is basically just deleting everything from conda directories and wiping out most of the traces from user files.
 As suggested, here are command lines and additional steps to take into action.
 ```bash
@@ -55,6 +56,7 @@ hybpiper check_dependencies
 ```
 
 2. Prepare the input file for HybPiper
+
 The HybPiper requires two input files: a target sequence FASTA (which is mega353.fasta from Angiosperm353) and a sequence capture reads file. The reads need to be trimmed and passed through quality control using Trimmomatic and fastp. I directly used data from Courtney so I can skip this step (need to check if errors appear in the future).
 
 According to the notes from Courtney, I assembled all trimmed reads using `hybpiper assemble` with parallel attempts.
@@ -122,4 +124,5 @@ The base gene tree will be only the 8 species we know. This tree will be the bas
 I am going to write some python scripts to fetch info from each .gff file within each species gene by gene. This next level work I think worth a separate chapter.
 
 3. How to extract exons/genes from our supercontigs?
+
 The input file will be under `hyb_output/<PREFIX>/<GeneNum>/<PREFIX>/intronerate/`. 
