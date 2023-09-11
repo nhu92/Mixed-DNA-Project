@@ -125,4 +125,13 @@ I am going to write some python scripts to fetch info from each .gff file within
 
 3. How to extract exons/genes from our supercontigs?
 
-The input file will be under `hyb_output/<PREFIX>/<GeneNum>/<PREFIX>/intronerate/`. 
+The input file will be under `hyb_output/<PREFIX>/<GeneNum>/<PREFIX>/intronerate/`. I will try to extract the common regions from all genes in 8 species.
+
+(It is Monday again. My nose was bleeding and running at the same time this morning. Didn't feel so good right now)
+
+However, after discussion with Dr. Johnson last Friday, It is not suitable to use the extronerate output as the input guidance for extracting all the sequences because it only offers one result while a mixed DNA sequencing contains multiple potential DNA from different species. We need to go back to use an aligner (maybe mafft?) to align all of the assembled contigs.
+
+Before the alignment algorithm considered, we need to fix the contig name from the hybpiper. The hybpiper did not assign proper name to each contig it assembled. Most of them are named "Node #". We want to fix it based on the species/input data name and the gene target name plus an order. Here is the format I would like to have: >species_gene#_order.
+
+I gonna write a python script to substitute the sequence name. It will have 3 steps. First, copy all the contig sequences files into a working directory and rename it with species_gene.fasta; Second, create a substitution list, 1st column will be the old names, 2nd column will be the new names; Third, use SeqIO to change fasta files with new sequence names. (Thanks ChatGPT!)
+
