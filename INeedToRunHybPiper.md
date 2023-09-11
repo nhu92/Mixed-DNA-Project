@@ -147,7 +147,24 @@ The output will be in the `../output` folder with the naming pattern "gene#_spec
 
 I will use this tool to extract the fasta file and rename them very quick. Remember that we had generated a namelist file for the while loop.
 ```bash
-while read line; do python changeSeqNames.py ../hyb_output/$line/ ../output/ ; done < namelist.txt
+while read line; do python changeSeqNames.py ../hyb_output/$line/ ../output/assembled_contigs ; done < namelist.txt
 ```
 
 It's time for lunch but I am not hungary right now. I have a feeling that my runny nose is ready for a big comeback. Let me run the loop and take a nap.
+
+Come back from the rest. I feel better now. The AC of the fifth floor is really really strong btw.
+
+4. MAFFT alignment: Find the common region of all species in each gene.
+
+The basic idea for this part is to take the assembled contigs mapping to a target reference. This reference can be the subset of mega353.fasta (which is pretty shattered), the FNA output from HybPiper, or the supercontigs predicted by Exonerate. I will try all of them to see which one could be a better candidate using the 8 species data.
+
+Before we running mafft for alignment, several steps remains to be taken. We need to filter out genes that failed to be assembled in some of the species. We also need to extract our target reference file from the HybPiper (we can use hybpiper retrieve_sequences, so I will try this first).
+
+More Python scripts incoming! I love ChatGPT!
+
+> This is the prompt I used to generate the frame of the code: Give me a python code to: find all the 1st level folder names in the source directory; within each folder, check if the file with the pattern "folder name_contigs.fasta" exists; list folder names that have that file output into a txt file named "{source directory name}_assembled_genes.txt"; need to have an input source directory and an output directory using parse.
+
+Works perfect! I named it "find_and_list_assembled_genes.py"
+
+> This is the prompt I used to summarize the result from gene lists: Give me a python code for: read in a list of files that in a pattern "{species_name}_assembled_genes.txt", the species_name are input from a list through parse; find the shared gene names among all the list; require an input directory of the list files in parse; require an output as "shared_genes.txt" and an output directory in parse.
+
