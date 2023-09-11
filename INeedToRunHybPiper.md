@@ -137,3 +137,17 @@ I gonna write a python script to substitute the sequence name. It will have 3 st
 
 > I prompt this in ChatGPT3: Give me a python script to: generate a list file of folder names from a given directory; copy fasta files named like "foldername_contigs.fasta" to an input directory; substitute the sequence title of each fasta title in the input directory a pattern with "input directory name_folder name_an order number started from 1". You may use some package like SeqIO.
 
+After several rounds of modifying and prompting, the tool works perfectly now. It is available [here](https://github.com/gudusanjiao/Mixed-DNA-Project/blob/main/changeSeqNames.py). This tool can be used as shown below:
+```bash
+# an example to apply to astragalus folder where stores the HybPiper outputs from astragalus input reads.
+python changeSeqNames.py ../hyb_output/astragalus/ ../output/
+```
+
+The output will be in the `../output` folder with the naming pattern "gene#_species_contigs.fasta". In each FASTA file, the sequence name has been changed in a pattern of ">gene#_species_order#".
+
+I will use this tool to extract the fasta file and rename them very quick. Remember that we had generated a namelist file for the while loop.
+```bash
+while read line; do python changeSeqNames.py ../hyb_output/$line/ ../output/ ; done < namelist.txt
+```
+
+It's time for lunch but I am not hungary right now. I have a feeling that my runny nose is ready for a big comeback. Let me run the loop and take a nap.
