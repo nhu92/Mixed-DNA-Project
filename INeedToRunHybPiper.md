@@ -137,7 +137,7 @@ I gonna write a python script to substitute the sequence name. It will have 3 st
 
 > I prompt this in ChatGPT3: Give me a python script to: generate a list file of folder names from a given directory; copy fasta files named like "foldername_contigs.fasta" to an input directory; substitute the sequence title of each fasta title in the input directory a pattern with "input directory name_folder name_an order number started from 1". You may use some package like SeqIO.
 
-After several rounds of modifying and prompting, the tool works perfectly now. It is available [here](https://github.com/gudusanjiao/Mixed-DNA-Project/blob/main/changeSeqNames.py). This tool can be used as shown below:
+After several rounds of modifying and prompting, the tool works perfectly now. It is available as [change_seq_names.py](https://github.com/gudusanjiao/Mixed-DNA-Project/blob/main/change_seq_names.py). This tool can be used as shown below:
 ```bash
 # an example to apply to astragalus folder where stores the HybPiper outputs from astragalus input reads.
 python changeSeqNames.py ../hyb_output/astragalus/ ../output/
@@ -164,7 +164,28 @@ More Python scripts incoming! I love ChatGPT!
 
 > This is the prompt I used to generate the frame of the code: Give me a python code to: find all the 1st level folder names in the source directory; within each folder, check if the file with the pattern "folder name_contigs.fasta" exists; list folder names that have that file output into a txt file named "{source directory name}_assembled_genes.txt"; need to have an input source directory and an output directory using parse.
 
-Works perfect! I named it "find_and_list_assembled_genes.py"
+Works perfect! I named it [find_and_list_assembled_genes.py](https://github.com/gudusanjiao/Mixed-DNA-Project/blob/main/find_and_list_assembled_genes.py). Here is a sample run:
+
+```bash
+while read line; do python find_and_list_assembled_genes.py ../hyb_output/$line/ ../output/valid_genes/ ; done < namelist.txt 
+```
+
+Then, I "requested" a code that find the shared gene names across all of the gene lists generated from last step. The code named [gene_intersection_finder.py](https://github.com/gudusanjiao/Mixed-DNA-Project/blob/main/gene_intersection_finder.py)
 
 > This is the prompt I used to summarize the result from gene lists: Give me a python code for: read in a list of files that in a pattern "{species_name}_assembled_genes.txt", the species_name are input from a list through parse; find the shared gene names among all the list; require an input directory of the list files in parse; require an output as "shared_genes.txt" and an output directory in parse.
+
+This script takes 3 input: the directory with gene lists, the name list file, the output directory.
+
+```bash
+python gene_intersection_finder.py ../output/valid_genes/ namelist.txt ../output/
+```
+
+Now, we have the target genes that we would like to align. I think one more python code would run the alignment pretty well. For this alignment, as suggested by Dr. Johnson, we could use mafft --add to speed up the alignment since we do have a lot of sequences to run. 
+
+Retrieving fasta files from HybPiper using `hybpiper retrieve_sequences`:
+```bash
+ hybpiper retrieve_sequences -t_aa ../raw/mega353.fasta dna --sample_names ../script/namelist.txt
+```
+
+It's a little bit disappointing that I could not test the alignment part. However, I have all the files that ready for the alignment test, wish me a good luck tomorrow. (Today's D20 is 17, not bad.)
 
