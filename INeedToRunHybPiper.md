@@ -195,13 +195,38 @@ Today I want to explore the possibility of using python to run `mafft` for a seq
 
 The first step I would like to have is to pool all the candidate sequences together. The retrieved sequences are served as references. The python code is named [merge_ref_contig.py](https://github.com/gudusanjiao/Mixed-DNA-Project/blob/main/merge_ref_contig.py)
 
+```bash
+python merge_ref_contig.py fna_dir fasta_dir output_dir gene_list_file
+```
+
 > The initial prompt I used: Give me a python code that takes the input list of gene names, search FNA file name that start with the gene name in the first input directory, merge with the fasta file name that start with the same gene name, do it for each gene names in the input list. output as "genename_ref_contig_merged.fasta". all input and output directory are input from argparse.
 
-I successfully merged the reference FNA and the contigs that assembled by SPAde. I would like to try some sample trees using iqtree.
+I successfully merged the reference FNA and the contigs that assembled by SPAde. I would like to try some sample trees using `iqtree`.
 
-> I tried some target output from some genes, tested 3 genes trees does not exactly have the same topology as they should. The expected tree in Newick form should be: ((plantago, salvia), (((lotus1, lotus2), astragals), (descurainia, thelypodium)))
+> I tried some target output from some genes, tested 3 genes trees does not exactly have the same topology as they should. The expected tree in Newick form should be: ((plantago, salvia), ((((lotus1, lotus2), astragals), silene), (descurainia, thelypodium)))
 
 I also tried trees from some merged data. The alignment was messy (with 0 gap-free sequences), I need to find some methods trim/remove some of the contigs and at least leave one contig per species. There should be a tool to do this or I have to make some criteria to filter the results before running the mafft.
 
 I am using gene 7361 to try the filtering. Currently, I am trying to do pairwise alignments to filter out the contigs that has less than 400bp overlapping with at least 10% of the input contigs for gene 7361. This is a really harsh fliter, with 11/653 sequences passed. The mafft alignment discovered 56 non-gap loci which is not bad for a tree.
+
+The code for pairwise alignments is called [remove_nonoverlapped.py](https://github.com/gudusanjiao/Mixed-DNA-Project/blob/main/remove_nonoverlapped.py). I tried to make it run in multithreads but I am not sure if it is actually working properly. It takes a while for the job to be done.
+
+For testing the filtering, here are the bash commands and software I used:
+```bash
+python remove_overlapped.py ../output/merged_ref_contigs/7361_ref_contig_merged.fasta 7361_reduced.fasta 7361.nonoverlapped.fasta --min_overlap 350 --num_threads 128 --filter_intensity 0.1
+mafft --preservecase --maxiterate 1000 --localpair --adjustdirection --thread 128 7361_reduced.fasta > 7361_aligned.fasta
+~/software/trimal/trimal/source/trimal -in 7361_aligned.fasta -out 7361_trimmed.fasta -gt 0.5
+~/software/iqtree/iqtree-2.2.2.7-Linux/bin/iqtree2 -s 7361_trimmed.fasta -m MFP -bb 1000 -redo
+```
+
+Filtering results are like below, with 653 raw sequences (if too many sequences remained, there will be no alignment and tree construction):
+Min Overlapping         Min Overlapped Sequences Proportion     Removed Seq Counts      TreeRealTopo(Y/N)
+400                     10%                                     642                     Y(-1species)
+400                     20%                                     644                     Y(-1species)
+350                     10%                                     628                     N
+300                     10%                                     387                     -
+300                     20%                                     553                     -
+300                     30%                                     601                     N(messy)
+250                     20%                                     
+250                     30%                                     
 
