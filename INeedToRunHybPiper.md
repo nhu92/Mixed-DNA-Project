@@ -193,11 +193,15 @@ Tuesday! Cold one! (D20 = 4, let me wish some luck for today)
 
 Today I want to explore the possibility of using python to run `mafft` for a sequence alignment.
 
-The first step I would like to have is to pool all the candidate sequences together. The retrieved sequences are served as references.
+The first step I would like to have is to pool all the candidate sequences together. The retrieved sequences are served as references. The python code is named [merge_ref_contig.py](https://github.com/gudusanjiao/Mixed-DNA-Project/blob/main/merge_ref_contig.py)
 
 > The initial prompt I used: Give me a python code that takes the input list of gene names, search FNA file name that start with the gene name in the first input directory, merge with the fasta file name that start with the same gene name, do it for each gene names in the input list. output as "genename_ref_contig_merged.fasta". all input and output directory are input from argparse.
 
 I successfully merged the reference FNA and the contigs that assembled by SPAde. I would like to try some sample trees using iqtree.
 
 > I tried some target output from some genes, tested 3 genes trees does not exactly have the same topology as they should. The expected tree in Newick form should be: ((plantago, salvia), (((lotus1, lotus2), astragals), (descurainia, thelypodium)))
+
+I also tried trees from some merged data. The alignment was messy (with 0 gap-free sequences), I need to find some methods trim/remove some of the contigs and at least leave one contig per species. There should be a tool to do this or I have to make some criteria to filter the results before running the mafft.
+
+I am using gene 7361 to try the filtering. Currently, I am trying to do pairwise alignments to filter out the contigs that has less than 400bp overlapping with at least 10% of the input contigs for gene 7361. This is a really harsh fliter, with 11/653 sequences passed. The mafft alignment discovered 56 non-gap loci which is not bad for a tree.
 
