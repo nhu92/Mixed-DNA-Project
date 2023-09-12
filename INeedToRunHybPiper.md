@@ -140,7 +140,7 @@ I gonna write a python script to substitute the sequence name. It will have 3 st
 After several rounds of modifying and prompting, the tool works perfectly now. It is available as [change_seq_names.py](https://github.com/gudusanjiao/Mixed-DNA-Project/blob/main/change_seq_names.py). This tool can be used as shown below:
 ```bash
 # an example to apply to astragalus folder where stores the HybPiper outputs from astragalus input reads.
-python changeSeqNames.py ../hyb_output/astragalus/ ../output/
+python change_seq_names.py ../hyb_output/astragalus/ ../output/
 ```
 
 The output will be in the `../output` folder with the naming pattern "gene#_species_contigs.fasta". In each FASTA file, the sequence name has been changed in a pattern of ">gene#_species_order#".
@@ -180,7 +180,7 @@ This script takes 3 input: the directory with gene lists, the name list file, th
 python gene_intersection_finder.py ../output/valid_genes/ namelist.txt ../output/
 ```
 
-Now, we have the target genes that we would like to align. I think one more python code would run the alignment pretty well. For this alignment, as suggested by Dr. Johnson, we could use mafft --add to speed up the alignment since we do have a lot of sequences to run. 
+Now, we have the target genes that we would like to align. I think one more python code would run the alignment pretty well. For this alignment, as suggested by Dr. Johnson, we could use `mafft --add` to speed up the alignment since we do have a lot of sequences to run. 
 
 Retrieving fasta files from HybPiper using `hybpiper retrieve_sequences`:
 ```bash
@@ -188,4 +188,16 @@ Retrieving fasta files from HybPiper using `hybpiper retrieve_sequences`:
 ```
 
 It's a little bit disappointing that I could not test the alignment part. However, I have all the files that ready for the alignment test, wish me a good luck tomorrow. (Today's D20 is 17, not bad.)
+
+Tuesday! Cold one! (D20 = 4, let me wish some luck for today)
+
+Today I want to explore the possibility of using python to run `mafft` for a sequence alignment.
+
+The first step I would like to have is to pool all the candidate sequences together. The retrieved sequences are served as references.
+
+> The initial prompt I used: Give me a python code that takes the input list of gene names, search FNA file name that start with the gene name in the first input directory, merge with the fasta file name that start with the same gene name, do it for each gene names in the input list. output as "genename_ref_contig_merged.fasta". all input and output directory are input from argparse.
+
+I successfully merged the reference FNA and the contigs that assembled by SPAde. I would like to try some sample trees using iqtree.
+
+> I tried some target output from some genes, tested 3 genes trees does not exactly have the same topology as they should. The expected tree in Newick form should be: ((plantago, salvia), (((lotus1, lotus2), astragals), (descurainia, thelypodium)))
 
