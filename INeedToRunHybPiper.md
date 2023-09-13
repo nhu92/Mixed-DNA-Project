@@ -296,4 +296,12 @@ Wednesday morning after a long meeting with Dr. Johnson. Get some ideas to filte
 5. Ideas about how to compare the topology of two trees. a) Fetch the sequences names from the query tree. Make the expected one of those names. Test topology; b) Do the monophyly test; c) Calculate the variance of the pairwised phylogenetic distance.
 6. To get "reliable" results from the mixed-DNA reads, other than using HybPiper (which sort the reads to each gene then assemble to the target), we could try to do the assembly of all the reads (overlapping method) first, then assign the assembled sequences to each gene (hidden markov modeling), which may have better output for an unknown mixed samples. (But this won't be suitable for a qantitative test right?)
 
-Get a lot to do today! I will first try my approach on the known-mixed samples. Then identify around 5 genes that has a expected topology of their gene trees and extract those sequences and merged with mixed contigs and then output a tree. The rest of the time today I will try treeshrink & exonerate information about matched contigs.
+Get a lot to do today! I will first try my approach on the known-mixed samples. Then identify around 5 genes that has a expected topology of their gene trees and extract those sequences and merged with mixed contigs and then output a tree. The rest of the time today I will try treeshrink & exonerate information about matched contigs. (D20 = 20, YAY!)
+
+I ran the test run for 8 species data using 400 as the minimum overlapping. The output trees still have a lot of bad sequences unfiltered. I wonder if I need to modifiy some code to set up the minimum overlapping bases based on the minimum length and the average length of the input file. I have the log file from the test run so I could figure out a nice way to filter the data.
+
+There are some long branches can be trimmed. But that is not the only problem here. Some phylo groups have weird topologies. I would like to explore what is happening there.
+
+I also ran the pipeline for known mixed data. I would like to merge them to a 'reliable' set of sequences and see if any information could be extracted from the topology.
+
+Since mentioned the topology, I have a rough thought about how to compare the phylogeny input to the expected phylogeny. Basically, I would like to form a guide tree (a sure one). Then, based on the tip names from the input tree, let the branch grow. Also, remove all the affixes of the tips (only species left). Finally, find an approach to compare the topology of two trees with the same elements.
