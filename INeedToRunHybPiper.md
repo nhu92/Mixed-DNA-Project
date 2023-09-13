@@ -147,7 +147,7 @@ The output will be in the `../output` folder with the naming pattern "gene#_spec
 
 I will use this tool to extract the fasta file and rename them very quick. Remember that we had generated a namelist file for the while loop.
 ```bash
-while read line; do python changeSeqNames.py ../hyb_output/$line/ ../output/assembled_contigs ; done < namelist.txt
+while read line; do python change_seq_names.py ../hyb_output/$line/ ../output/assembled_contigs ; done < namelist.txt
 ```
 
 It's time for lunch but I am not hungary right now. I have a feeling that my runny nose is ready for a big comeback. Let me run the loop and take a nap.
@@ -234,6 +234,8 @@ Filtering results are like below, with 653 raw sequences (if too many sequences 
 
 I noticed that there is a composition test at the very beginning of the `iqtree` run. I think this is very important to filter our data since a lot of 'N's and gaps are generated through HybPiper and alignment. I would like to remove those sequences that failed to pass the chi-sq test (have a strong deviation from average base composition).
 
+The composition test is to count the composition of the 4 bases in a sequence and perform a chi-square test between the individual sequence composition and the average of all the input aligned sequences. The significant differed one (p<0.05) will be removed from the input. The `iqtree` one consider 'N' as the wild card for calculating p values. However, the script I have here will treat 'N' as gaps thus would be more rigorous than `iqtree`. The python code is named as [composition_test.py](https://github.com/gudusanjiao/Mixed-DNA-Project/blob/main/composition_test.py). There is an example of usage below.
+
 The testing code is updated into:
 ```bash
 python remove_overlapped.py ../output/merged_ref_contigs/7361_ref_contig_merged.fasta 7361_reduced.fasta 7361.nonoverlapped.fasta --min_overlap 350 --num_threads 128 --filter_intensity 0.1
@@ -243,7 +245,7 @@ python composition_test.py 7361_trimmed.fasta 7361_testPass.fasta
 ~/software/iqtree/iqtree-2.2.2.7-Linux/bin/iqtree2 -s 7361_testPass.fasta -m MFP -bb 1000 -redo
 ```
 ```powershell
-# the output from the test
+# the output from the composition test
 Sequence 7361_astragalus_1: Passed, p-value: 0.8928951711975892
 Sequence _R_7361_astragalus_2: Passed, p-value: 0.6250132791405318
 Sequence 7361_astragalus_3: Failed, p-value: 0.032271787690734445
