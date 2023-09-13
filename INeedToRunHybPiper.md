@@ -184,7 +184,7 @@ Now, we have the target genes that we would like to align. I think one more pyth
 
 Retrieving fasta files from HybPiper using `hybpiper retrieve_sequences`:
 ```bash
- hybpiper retrieve_sequences -t_aa ../raw/mega353.fasta dna --sample_names ../script/namelist.txt
+hybpiper retrieve_sequences -t_aa ../raw/mega353.fasta dna --sample_names ../script/namelist.txt
 ```
 
 It's a little bit disappointing that I could not test the alignment part. However, I have all the files that ready for the alignment test, wish me a good luck tomorrow. (Today's D20 is 17, not bad.)
@@ -213,20 +213,74 @@ The code for pairwise alignments is called [remove_nonoverlapped.py](https://git
 
 For testing the filtering, here are the bash commands and software I used:
 ```bash
-python remove_overlapped.py ../output/merged_ref_contigs/7361_ref_contig_merged.fasta 7361_reduced.fasta 7361.nonoverlapped.fasta --min_overlap 350 --num_threads 128 --filter_intensity 0.1
+python remove_overlapped.py ../output/merged_ref_contigs/7361_ref_contig_merged.fasta 7361_reduced.fasta 7361.nonoverlapped.fasta --min_overlap 400 --num_threads 128 --filter_intensity 0.1
 mafft --preservecase --maxiterate 1000 --localpair --adjustdirection --thread 128 7361_reduced.fasta > 7361_aligned.fasta
 ~/software/trimal/trimal/source/trimal -in 7361_aligned.fasta -out 7361_trimmed.fasta -gt 0.5
 ~/software/iqtree/iqtree-2.2.2.7-Linux/bin/iqtree2 -s 7361_trimmed.fasta -m MFP -bb 1000 -redo
 ```
 
 Filtering results are like below, with 653 raw sequences (if too many sequences remained, there will be no alignment and tree construction):
-Min Overlapping         Min Overlapped Sequences Proportion     Removed Seq Counts      TreeRealTopo(Y/N)
-400                     10%                                     642                     Y(-1species)
-400                     20%                                     644                     Y(-1species)
-350                     10%                                     628                     N
-300                     10%                                     387                     -
-300                     20%                                     553                     -
-300                     30%                                     601                     N(messy)
-250                     20%                                     
-250                     30%                                     
+| Min Overlapping | Min Overlapped Sequences Proportion | Removed Seq Counts | TreeExpTopo(Y/N)  |   |
+|-----------------|-------------------------------------|--------------------|-------------------|---|
+| 400             | 10%                                 | 642                | Y(-1species)      |   |
+| 400             | 20%                                 | 644                | Y(-1species)      |   |
+| 350             | 10%                                 | 628                | N                 |   |
+| 350             | 20%                                 | 635                | N(&-1species)     |   |
+| 300             | 10%                                 | 387                | -                 |   |
+| 300             | 20%                                 | 553                | -                 |   |
+| 300             | 30%                                 | 601                | N(messy)          |   |
+| 250             | 20%                                 |                    |                   |   |
+| 250             | 30%                                 |                    |                   |   |
 
+I noticed that there is a composition test at the very beginning of the `iqtree` run. I think this is very important to filter our data since a lot of 'N's and gaps are generated through HybPiper and alignment. I would like to remove those sequences that failed to pass the chi-sq test (have a strong deviation from average base composition).
+
+The testing code is updated into:
+```bash
+python remove_overlapped.py ../output/merged_ref_contigs/7361_ref_contig_merged.fasta 7361_reduced.fasta 7361.nonoverlapped.fasta --min_overlap 350 --num_threads 128 --filter_intensity 0.1
+mafft --preservecase --maxiterate 1000 --localpair --adjustdirection --thread 128 7361_reduced.fasta > 7361_aligned.fasta
+~/software/trimal/trimal/source/trimal -in 7361_aligned.fasta -out 7361_trimmed.fasta -gt 0.5
+python composition_test.py 7361_trimmed.fasta 7361_testPass.fasta
+~/software/iqtree/iqtree-2.2.2.7-Linux/bin/iqtree2 -s 7361_testPass.fasta -m MFP -bb 1000 -redo
+```
+```powershell
+# the output from the test
+Sequence 7361_astragalus_1: Passed, p-value: 0.8928951711975892
+Sequence _R_7361_astragalus_2: Passed, p-value: 0.6250132791405318
+Sequence 7361_astragalus_3: Failed, p-value: 0.032271787690734445
+Sequence _R_7361_astragalus_4: Failed, p-value: 8.807631565729831e-09
+Sequence 7361_astragalus_5: Failed, p-value: 0.0052726599343652075
+Sequence 7361_plantago_1: Failed, p-value: 9.545921467408154e-06
+Sequence 7361_plantago_2: Failed, p-value: 0.001631472660128785
+Sequence _R_7361_plantago_3: Failed, p-value: 1.0251301030931275e-09
+Sequence _R_7361_descurainia_1: Passed, p-value: 0.27583618458958103
+Sequence 7361_lotus.str_1: Passed, p-value: 0.7661602754092356
+Sequence _R_7361_lotus.str_2: Failed, p-value: 0.004850103401797057
+Sequence 7361_lotus.str_3: Failed, p-value: 0.0011918671284876204
+Sequence _R_7361_lotus.sal_1: Passed, p-value: 0.7890423551406938
+Sequence 7361_lotus.sal_2: Failed, p-value: 0.010204448451551952
+Sequence 7361_thelypodium_1: Passed, p-value: 0.06252181970377735
+Sequence 7361_thelypodium_2: Failed, p-value: 0.006089466908471762
+Sequence _R_7361_thelypodium_3: Passed, p-value: 0.29135159596677596
+Sequence _R_7361_thelypodium_4: Failed, p-value: 3.4131290440812136e-07
+Sequence 7361_salvia_1: Failed, p-value: 0.017341859225610646
+Sequence _R_7361_salvia_2: Passed, p-value: 0.24217166981498744
+Sequence 7361_salvia_3: Failed, p-value: 3.8960814550266134e-10
+Sequence 7361_salvia_5: Failed, p-value: 7.944164883052365e-05
+Sequence _R_7361_salvia_6: Failed, p-value: 0.0044219420625107335
+Sequence 7361_salvia_7: Failed, p-value: 0.00016060252759442475
+Sequence _R_7361_salvia_8: Failed, p-value: 1.0213913443131421e-22
+```
+This gene (7361) totally miss the I would like to run these tests for a larger set of genes. I would like to random choose 10 genes and check their output tree.
+
+```bash
+while read line
+do
+        python remove_overlapped.py ../output/merged_ref_contigs/${line}_ref_contig_merged.fasta ${line}_reduced.fasta ${line}.nonoverlapped.fasta --min_overlap 350 --num_threads 128 --filter_intensity 0.1
+        mafft --preservecase --maxiterate 1000 --localpair --adjustdirection --thread 128 ${line}_reduced.fasta > ${line}_aligned.fasta
+        ~/software/trimal/trimal/source/trimal -in ${line}_aligned.fasta -out ${line}_trimmed.fasta -gt 0.5
+        python composition_test.py ${line}_trimmed.fasta ${line}_testPass.fasta
+        ~/software/iqtree/iqtree-2.2.2.7-Linux/bin/iqtree2 -s ${line}_testPass.fasta -m MFP -bb 1000 -redo
+done < subsample_genelist.txt
+```
+
+I am evaluating the final tree topology. I found some pattern that is wordy to explain. I need to find someone to discuss about it.
