@@ -86,6 +86,8 @@ while read line; do sed s/REPLACE/$line/g 01-hyb_assemble_REPLACE.sh | sbatch; d
 
 It's 5:30pm now. I leave all the scripts on screen or submitted to slurm. It's time for wrapping up today.
 
+---
+
 I am back to work. It's a beautiful Friday. I gonna check if everything is ready for a HybPiper run.
 
 Here is the regex I used to generate the namelist.txt. However, some of the species name need to be corrected manually.
@@ -189,6 +191,8 @@ hybpiper retrieve_sequences -t_aa ../raw/mega353.fasta dna --sample_names ../scr
 
 It's a little bit disappointing that I could not test the alignment part. However, I have all the files that ready for the alignment test, wish me a good luck tomorrow. (Today's D20 is 17, not bad.)
 
+---
+
 Tuesday! Cold one! (D20 = 4, let me wish some luck for today)
 
 Today I want to explore the possibility of using python to run `mafft` for a sequence alignment.
@@ -287,14 +291,16 @@ done < subsample_genelist.txt
 
 I am evaluating the final tree topology. I found some pattern that is wordy to explain. I need to find someone to discuss about it.
 
+---
+
 Wednesday morning after a long meeting with Dr. Johnson. Get some ideas to filtering the merged contigs.
 
-1. Try treeshrink on each gene tree to remove bad branches (too long ones).
-2. Explore `exonerate` output from the `HybPiper` and fetch the contigs that have hits on the exon report.
-3. If can't find proper outuput, run `ryo` options of exonerate to form a useful & reliable contig list.
-4. After the composition test, rerun `mafft`, since the one cause the alignment issue may be gone.
-5. Ideas about how to compare the topology of two trees. a) Fetch the sequences names from the query tree. Make the expected one of those names. Test topology; b) Do the monophyly test; c) Calculate the variance of the pairwised phylogenetic distance.
-6. To get "reliable" results from the mixed-DNA reads, other than using HybPiper (which sort the reads to each gene then assemble to the target), we could try to do the assembly of all the reads (overlapping method) first, then assign the assembled sequences to each gene (hidden markov modeling), which may have better output for an unknown mixed samples. (But this won't be suitable for a qantitative test right?)
+- Try treeshrink on each gene tree to remove bad branches (too long ones).
+- Explore `exonerate` output from the `HybPiper` and fetch the contigs that have hits on the exon report.
+- If can't find proper outuput, run `ryo` options of exonerate to form a useful & reliable contig list.
+- After the composition test, rerun `mafft`, since the one cause the alignment issue may be gone.
+- Ideas about how to compare the topology of two trees. a) Fetch the sequences names from the query tree. Make the expected one of those names. Test topology; b) Do the monophyly test; c) Calculate the variance of the pairwised phylogenetic distance.
+- To get "reliable" results from the mixed-DNA reads, other than using HybPiper (which sort the reads to each gene then assemble to the target), we could try to do the assembly of all the reads (overlapping method) first, then assign the assembled sequences to each gene (hidden markov modeling), which may have better output for an unknown mixed samples. (But this won't be suitable for a qantitative test right?)
 
 Get a lot to do today! I will first try my approach on the known-mixed samples. Then identify around 5 genes that has a expected topology of their gene trees and extract those sequences and merged with mixed contigs and then output a tree. The rest of the time today I will try treeshrink & exonerate information about matched contigs. (D20 = 20, YAY!)
 
@@ -305,3 +311,17 @@ There are some long branches can be trimmed. But that is not the only problem he
 I also ran the pipeline for known mixed data. I would like to merge them to a 'reliable' set of sequences and see if any information could be extracted from the topology.
 
 Since mentioned the topology, I have a rough thought about how to compare the phylogeny input to the expected phylogeny. Basically, I would like to form a guide tree (a sure one). Then, based on the tip names from the input tree, let the branch grow. Also, remove all the affixes of the tips (only species left). Finally, find an approach to compare the topology of two trees with the same elements.
+
+---
+Thursday morning (D20 = 18). I reviewed trees generated from the last test. It turned out be have 4 problems. The most common one is the outliers having long branches. This is relatively easy to handle since we could be more stringent in filtering or trim the final tree using some packages. The second issue is about the unexpected topology. This was happening mostly about the relative phylo position of Silene. This is chanllenging to explain but easy to deal with just select the gene with the expected topology. The third issue is the low supporting values. Most of the low supports appeared with the extra long branches thus I hope this will be solved by thinning down the input sequences. The last issue might be the most problematic one. There are some mixed structure in the gene tree. Especially happened between two Lotus species. In some cases, it can affect two Brassicaceae species, too. This might randomly affect the resolution of our approach to identify species.
+
+I decide to modify the filtering code to take the input file size as consideration. I am not quite worried about the false negatives right now since we do have a lot of candidate genes. My current workflow would be: 
+- Filter data considering the input size of the sequences; Mafft alignment 
+- Trimal at -gt 0.5
+- Composition test to remove sequences
+- Take the remain sequence names, fetch from the filtered FASTA, redo the mafft
+- Redo trimal
+- Redo compsition test to examine
+- Iqtree
+- Treeshrink to remove outliers.
+
