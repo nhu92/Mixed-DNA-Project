@@ -316,7 +316,8 @@ Since mentioned the topology, I have a rough thought about how to compare the ph
 Thursday morning (D20 = 18). I reviewed trees generated from the last test. It turned out be have 4 problems. The most common one is the outliers having long branches. This is relatively easy to handle since we could be more stringent in filtering or trim the final tree using some packages. The second issue is about the unexpected topology. This was happening mostly about the relative phylo position of Silene. This is chanllenging to explain but easy to deal with just select the gene with the expected topology. The third issue is the low supporting values. Most of the low supports appeared with the extra long branches thus I hope this will be solved by thinning down the input sequences. The last issue might be the most problematic one. There are some mixed structure in the gene tree. Especially happened between two Lotus species. In some cases, it can affect two Brassicaceae species, too. This might randomly affect the resolution of our approach to identify species.
 
 I decide to modify the filtering code to take the input file size as consideration. I am not quite worried about the false negatives right now since we do have a lot of candidate genes. My current workflow would be: 
-- Filter data considering the input size of the sequences; Mafft alignment 
+- Filter data considering the input size of the sequences
+- Mafft alignment 
 - Trimal at -gt 0.5
 - Composition test to remove sequences
 - Take the remain sequence names, fetch from the filtered FASTA, redo the mafft
@@ -324,4 +325,10 @@ I decide to modify the filtering code to take the input file size as considerati
 - Redo compsition test to examine
 - Iqtree
 - Treeshrink to remove outliers.
+
+I tried `treeshrink` in both alpha = 0.05 and alpha = 0.1 threshold. The gene tree of 5168 has a long branch '_R_thelypodium_9' but it was not trimmed. I will rely on the data filtering side more at this moment.
+
+```bash
+run_treeshrink.py -t 5168_testPass.fasta.treefile -q "0.05 0.10" > 5168.log
+```
 
