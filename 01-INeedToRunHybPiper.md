@@ -332,3 +332,20 @@ I tried `treeshrink` in both alpha = 0.05 and alpha = 0.1 threshold. The gene tr
 run_treeshrink.py -t 5168_testPass.fasta.treefile -q "0.05 0.10" > 5168.log
 ```
 
+---
+
+I wrote a code to output the statistics from a FASTA file. Those statistics are simple and basic, which include average, median, longest, and the shortest sequence length in a FASTA file. The reason I did this is to see whether our previous set 400 bp overlapping filter is valid or not. I kinda found the relationship between the average sequence length and the quality of final tree on a fixed 400bp filter. It is obvious that the longer sequence length will be give a worse result. Instead, I modified the code to filter the minimum overlapping based on the average squence length in a FASTA file. I expected to receove better results this time.
+
+I will test the new way, as well as incorporate the workflow I had above. Here is the command line:
+```bash
+while read line
+do
+        python remove_overlapped.py ../output/merged_ref_contigs/${line}_ref_contig_merged.fasta ${line}_reduced.fasta ${line}.nonoverlapped.fasta --num_threads 128 --filter_intensity 0.1
+        mafft --preservecase --maxiterate 1000 --localpair --adjustdirection --thread 128 ${line}_reduced.fasta > ${line}_aligned.fasta
+        ~/software/trimal/trimal/source/trimal -in ${line}_aligned.fasta -out ${line}_trimmed.fasta -gt 0.5
+        python composition_test.py ${line}_trimmed.fasta ${line}_testPass.fasta
+        grep ">" ${line}_testPass.fasta | sed s/\//g > ${line}_filtered_genelist.txt
+        
+        ~/software/iqtree/iqtree-2.2.2.7-Linux/bin/iqtree2 -s ${line}_testPass.fasta -m MFP -bb 1000 -redo
+done < subsample_genelist.txt
+```
