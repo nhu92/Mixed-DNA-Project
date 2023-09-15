@@ -265,3 +265,10 @@ do
         ~/software/iqtree/iqtree-2.2.2.7-Linux/bin/iqtree2 -s ${line}_2ndtestPass.fasta -m MFP -bb 1000 -redo
 done < subsample_genelist.txt
 ```
+
+The HPCC gave me low priority on this job submission. I've waited for more than 1 hour and my job is still pending. Is there any way to override it?
+
+I shifted to Quanah cluster with 36 CPUs. It let me run in 5 min! Thank you Quanah!
+
+I am currently check the gene 6859. The final tree is much much better than before. 3 speceis are filtered out but the overall branch length, supports, and topology are OK. Compared to the previous result, the huge long-branch clade is gone, wit all the node supporting values > 93. The two topology messes was not solved. The Lotus clade was trimmed and the Brassicaceae clade is still paraphyletic. As I expected, filtering strategy does not correct the topology of gene trees a lot. 
+
