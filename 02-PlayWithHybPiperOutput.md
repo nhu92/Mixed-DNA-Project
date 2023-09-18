@@ -270,5 +270,10 @@ The HPCC gave me low priority on this job submission. I've waited for more than 
 
 I shifted to Quanah cluster with 36 CPUs. It let me run in 5 min! Thank you Quanah!
 
-I am currently check the gene 6859. The final tree is much much better than before. 3 speceis are filtered out but the overall branch length, supports, and topology are OK. Compared to the previous result, the huge long-branch clade is gone, wit all the node supporting values > 93. The two topology messes was not solved. The Lotus clade was trimmed and the Brassicaceae clade is still paraphyletic. As I expected, filtering strategy does not correct the topology of gene trees a lot. 
+I am currently check the gene 6859. The final tree is much much better than before. 3 speceis are filtered out but the overall branch length, supports, and topology are OK. Compared to the previous result, the huge long-branch clade is gone, with all the node supporting values > 93. The two topology messes was not solved. The Lotus clade was trimmed and the Brassicaceae clade is still paraphyletic. As I expected, filtering strategy does not correct the topology of gene trees a lot. 
+
+---
+Monday! This is the 7th day I am working on this project. I checked all the output from the workflow to generate a very rigorous tree. It is a little bit weird that some of the tree didn't make it through so we were missing some data. I will try to explore if those are caused by too large input FASTA later (I already manually removed the FASTA larger than 1M last Friday). Currently, I am working on the code the compare topologies between two input tree. I hope that I could use this script to screen all the output and find some genes that is good enough to work with known mixed data.
+
+The progress of the code for topology comparisons is now I can identify the unrooted topology and determine whether they are identical or not. However, I am struggling in expand our expected tree to incorporate the multiple entries (more than 1 sequences per species) of the input tree. There was another approach which is the collapsing way. I will try more on expanding strategy and if not working I will go back to test collapsing nodes.
 
