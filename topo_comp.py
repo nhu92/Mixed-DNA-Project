@@ -34,9 +34,9 @@ def expand_leaves(tree1, tree2):
     leaf_names2 = sorted([leaf.name for leaf in tree2.iter_leaves()])
 
     # Create a list of leaves to add to tree2
-    list1 = [item for item in leaf_names2 if leaf_names1.count(item) > 1]
-    # Traverse list1 and tree2 to add leaves next to matching tips
-    for leaf_name in list1:
+    leave_list_to_add = [item for item in leaf_names2 if leaf_names1.count(item) > 1]
+    # Traverse leave_list_to_add and tree2 to add leaves next to matching tips
+    for leaf_name in leave_list_to_add:
         add_leaf_next_to_matching_tip(tree2, leaf_name)
 
 def are_same_topology(tree1, tree2):
