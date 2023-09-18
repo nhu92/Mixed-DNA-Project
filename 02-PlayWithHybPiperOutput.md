@@ -277,3 +277,9 @@ Monday! This is the 7th day I am working on this project. I checked all the outp
 
 The progress of the code for topology comparisons is now I can identify the unrooted topology and determine whether they are identical or not. However, I am struggling in expand our expected tree to incorporate the multiple entries (more than 1 sequences per species) of the input tree. There was another approach which is the collapsing way. I will try more on expanding strategy and if not working I will go back to test collapsing nodes.
 
+It seems working! I have the code here: (topo_comp.py)[].
+```bash
+while read line; do python topo_comp.py ../output/phylo_results/all_trees/${line}_2ndtestPass.fasta.treefile true_topo.tre; done < ../output/shared_genes.txt
+```
+
+Through screening, the only gene named 5974 has the exactly same topology as the expectation. I will make a tree with the combination of contigs in this tree and the contigs in known mixed samples for this gene. I think we are closed to get what we want today! I can go back to check the filtering criterion (it is still to stingent) to allow more gene trees to be screened in. Also, I can try using the exonerate output to fetch the mapped segment of each gene target to get a better input contigs.
