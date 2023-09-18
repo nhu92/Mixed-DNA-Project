@@ -283,3 +283,5 @@ while read line; do python topo_comp.py ../output/phylo_results/all_trees/${line
 ```
 
 Through screening, the only gene named 5974 has the exactly same topology as the expectation. I will make a tree with the combination of contigs in this tree and the contigs in known mixed samples for this gene. I think we are closed to get what we want today! I can go back to check the filtering criterion (it is still to stingent) to allow more gene trees to be screened in. Also, I can try using the exonerate output to fetch the mapped segment of each gene target to get a better input contigs.
+
+The mixed 5974 tree looks generally fine. Most of the known mixed contigs were grouped to form a strong supported group and differ from any other groups. The topology is shifted a little and there are 1 mixed (Lotus) and an unanchored contig (known_mix_2). This is the end of testing the whole pipeline. Now, I will try exonerate information and simplify the pipeline. Hope these would increase the number of candidate gene trees. I will start a new MarkDown.
