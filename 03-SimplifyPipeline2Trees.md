@@ -44,19 +44,21 @@ There are two new side scripts modified from original codes. These scripts are u
 # This is for testing one gene tree and verifying the pipeline.
 # Constants. Please edit them to match the data structure of your own directory. Dont include the last "/" in the path.
 hyb_parent_dir=../hyb_output
-hyb_species_list=namelist.txt
+hyb_species_list=namelist.txt # Equals to the directory list of the HybPiper parent directory
 output_dir=../output
 testing_gene=5974
 expected_tree=true_topo.tre
 threads=12
 iqtree_dir=~/software/iqtree/iqtree-2.2.2.7-Linux/bin
+min_overlap_pct=0.8 # For remove_overlapped.py -i
+min_overlap_prop=0.1 # For remove_overlapped.py -p
 
 
 # Collect exon hits from HybPiper folder based on the information from exonerate_stats.tsv
 while read line ;do python exon_hits_collect.py ${hyb_parent_dir}/${line}/ ${output_dir}/exon_hits/ ; done < ${hyb_species_list}
 
 # Create a list contains shared hits among all input species
-while read line ; do python find_and_list_assembled_genes_exons.py ${hyb_parent_dir}/$line/ ${output_dir}/valid_exons/ ;done < ${hyb_species_list}
+while read line ; do python find_and_list_exons.py ${hyb_parent_dir}/$line/ ${output_dir}/valid_exons/ ;done < ${hyb_species_list}
 python gene_intersection_finder.py ${output_dir}/valid_exons/ ${hyb_species_list} ${output_dir}/shared_exons.txt
 
 # Merge all exon hits of the same gene from multiple input
@@ -64,7 +66,7 @@ python merge_exons.py ${output_dir}/exon_hits/ ${output_dir}/merged_exons/ ${out
 
 # Remove nonoverlapped sequences before alignment to reduce the alignment time
 mkdir ${output_dir}/${testing_gene}_test_run
-python remove_overlapped.py ${output_dir}/merged_exons/${testing_gene}_exons_merged.fasta ${output_dir}/${testing_gene}_test_run/${testing_gene}_reduced.fasta ${output_dir}/${testing_gene}_test_run/${testing_gene}_nonoverlapped.fasta -i 0.85 -t ${threads} -p 0.1
+python remove_overlapped.py ${output_dir}/merged_exons/${testing_gene}_exons_merged.fasta ${output_dir}/${testing_gene}_test_run/${testing_gene}_reduced.fasta ${output_dir}/${testing_gene}_test_run/${testing_gene}_nonoverlapped.fasta -i ${min_overlap_prop} -t ${threads} -p ${min_overlap_prop}
 
 # MAFFT alignment and trim over-gapped
 mafft --preservecase --maxiterate 1000 --localpair --adjustdirection --thread ${threads} ${output_dir}/${testing_gene}_test_run/${testing_gene}_reduced.fasta > ${output_dir}/${testing_gene}_test_run/${testing_gene}_aligned.fasta
@@ -78,6 +80,65 @@ mafft --preservecase --maxiterate 1000 --localpair --adjustdirection --thread ${
 
 # Tree construction and comparison
 ${iqtree_dir}/iqtree2 -s ${output_dir}/${testing_gene}_test_run/${testing_gene}_realigned.fasta -m MFP -bb 1000 -redo
-python topo_comp.py ${output_dir}/${testing_gene}_test_run/${testing_gene}_realigned.fasta.treefile ${expected_tree}
+python topo_comp_show.py ${output_dir}/${testing_gene}_test_run/${testing_gene}_realigned.fasta.treefile ${expected_tree}
 
 ```
+There is a version for batch jobs. Check the input file size before running the job.
+```bash
+# A pipeline of reconstructing phylogeny trees using exon information from HybPiper output
+# Nan Hu, 09/19/2023
+
+# -----
+# This is for the full pipeline on all genes.
+# Constants. Please edit them to match the data structure of your own directory. Dont include the last "/" in the path.
+hyb_parent_dir=../hyb_output
+hyb_species_list=namelist.txt # Equals to the directory list of the HybPiper parent directory
+output_dir=../output_exons
+expected_tree=true_topo.tre
+threads=128
+iqtree_dir=~/software/iqtree/iqtree-2.2.2.7-Linux/bin
+min_overlap_pct=0.8 # For remove_overlapped.py -i
+min_overlap_prop=0.1 # For remove_overlapped.py -p
+
+
+# Collect exon hits from HybPiper folder based on the information from exonerate_stats.tsv
+while read line ;do python exon_hits_collect.py ${hyb_parent_dir}/${line}/ ${output_dir}/exon_hits/ ; done < ${hyb_species_list}
+
+# Create a list contains shared hits among all input species
+while read line ; do python find_and_list_exons.py ${hyb_parent_dir}/$line/ ${output_dir}/valid_exons/ ;done < ${hyb_species_list}
+python gene_intersection_finder.py ${output_dir}/valid_exons/ ${hyb_species_list} ${output_dir}/shared_exons.txt
+
+# Merge all exon hits of the same gene from multiple input
+python merge_exons.py ${output_dir}/exon_hits/ ${output_dir}/merged_exons/ ${output_dir}/shared_exons.txt
+
+# A batch run for all genes:
+mkdir ${output_dir}/phylo_results
+while read gene_name
+do
+	# Remove nonoverlapped sequences before alignment to reduce the alignment time
+	python remove_overlapped.py ${output_dir}/merged_exons/${gene_name}_exons_merged.fasta ${output_dir}/phylo_results/${gene_name}_reduced.fasta ${output_dir}/phylo_results/${gene_name}_nonoverlapped.fasta -i ${min_overlap_prop} -t ${threads} -p ${min_overlap_prop}
+	
+	# MAFFT alignment and trim over-gapped
+	mafft --preservecase --maxiterate 1000 --localpair --adjustdirection --thread ${threads} ${output_dir}/phylo_results/${gene_name}_reduced.fasta > ${output_dir}/phylo_results/${gene_name}_aligned.fasta
+	trimal -in ${output_dir}/phylo_results/${gene_name}_aligned.fasta -out ${output_dir}/phylo_results/${gene_name}_trimmed.fasta -gt 0.5
+	
+	# A more stringent composition test to remove sequences having different base compositions from others
+	python composition_test.py ${output_dir}/phylo_results/${gene_name}_trimmed.fasta ${output_dir}/phylo_results/${gene_name}_testPass.fasta
+	
+	# Realign the rest of sequences
+	mafft --preservecase --maxiterate 1000 --localpair --adjustdirection --thread ${threads} ${output_dir}/phylo_results/${gene_name}_testPass.fasta > ${output_dir}/phylo_results/${gene_name}_realigned.fasta
+	
+	# Tree construction and comparison
+	${iqtree_dir}/iqtree2 -s ${output_dir}/phylo_results/${gene_name}_realigned.fasta -m MFP -bb 1000 -redo
+done < ${output_dir}/shared_exons.txt
+
+# Testing topology
+mkdir ${output_dir}/all_trees
+
+cp ${output_dir}/phylo_results/*.treefile ${output_dir}/all_trees
+
+while read gene_name; do python topo_comp.py ${output_dir}/all_trees/${gene_name}_realigned.fasta.treefile ${expected_tree}; done < ${output_dir}/shared_exons.txt
+```
+
+Let's see which method would be better for create a reference tree (and select good genes) for species identification.
+

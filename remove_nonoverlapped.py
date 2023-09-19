@@ -52,7 +52,7 @@ def main():
                         help='Portion of input sequences for a query sequence need to overlap')
     args = parser.parse_args()
     remove_non_overlapping(args.input_file, args.output_file, args.removed_file,
-                           args.num_threads, args.min_overlapped_portion, 
+                           args.num_threads, args.min_overlapped_portion,
                            args.min_overlapped_length_proportion_to_mean)
 
 if __name__ == "__main__":

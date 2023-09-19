@@ -42,7 +42,7 @@ def trim_fasta(input_fasta, output_fasta, sequence_info, folder_name, source_dir
                     trimmed_sequence = sequence[start:end]
                     new_id = f"{folder_name}_{source_dir_name}_{order_number}"
                     output_file.write(f'>{new_id}\n') # testing
-                    output_file.write(f'{trimmed_sequence}\n')
+                    output_file.write(f'{trimmed_sequence}\n\n')
                     order_number += 1
 
 # Function to copy and modify FASTA files
@@ -83,4 +83,4 @@ if __name__ == "__main__":
         if sequence_info != "":
             copy_and_modify_fasta(folder, input_directory, source_directory, sequence_info)
 
-    print("FASTA files copied, modified, and trimmed successfully.")
+    print(f"Source: {source_directory}. FASTA files copied, modified, and trimmed successfully.")

@@ -50,6 +50,8 @@ def are_same_topology(tree1, tree2):
 
     # Expand leaves in tree2
     expand_leaves(tree1, tree2)
+    print(tree1)
+    print(tree2)
     # Sort the leaf node names and compare
     tree1_sorted = tree1.get_topology_id(attr="name")
     tree2_sorted = tree2.get_topology_id(attr="name")
