@@ -39,9 +39,9 @@ def trim_fasta(input_fasta, output_fasta, sequence_info, folder_name, source_dir
 
             for name, start, end in sequence_info:
                 if name == sequence_name:
-                    trimmed_sequence = sequence[start - 1:end]
+                    trimmed_sequence = sequence[start:end]
                     new_id = f"{folder_name}_{source_dir_name}_{order_number}"
-                    output_file.write(f'>{new_id}\n')
+                    output_file.write(f'>{new_id}\n') # testing
                     output_file.write(f'{trimmed_sequence}\n')
                     order_number += 1
 

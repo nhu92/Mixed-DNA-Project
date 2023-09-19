@@ -24,6 +24,13 @@ python exon_hits_collect.py ../hyb_output/knownmix/ ../output/exon_hits/
 ```
 
 There are some blank sequences in the FASTA. What happened? (Deal with it tomorrow, really affect the automatic process).
+> Update: 09/19/2023 Fixed. The issue was caused by the range of selection. The export of exonerate gives a range can start from 0 but in our script we select [start - 1: end] where when we hit a range like (0, 599) it will extract nothing. A simple fix is taken (and you should know how to :))
 
 The filtered one looks nice. I neede to generate a mixed tree out of it and see the resolution.
+
+---
+
+I want to separate different exons as different genes, then extract the segment that mapped to the exons.
+
+I would like to edit the remove_nonoverlapped.py to allow a parameter about the size selection intensity. Also, I want to rename the proportion of overlapped parameter.
 
