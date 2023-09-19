@@ -66,7 +66,7 @@ python merge_exons.py ${output_dir}/exon_hits/ ${output_dir}/merged_exons/ ${out
 
 # Remove nonoverlapped sequences before alignment to reduce the alignment time
 mkdir ${output_dir}/${testing_gene}_test_run
-python remove_overlapped.py ${output_dir}/merged_exons/${testing_gene}_exons_merged.fasta ${output_dir}/${testing_gene}_test_run/${testing_gene}_reduced.fasta ${output_dir}/${testing_gene}_test_run/${testing_gene}_nonoverlapped.fasta -i ${min_overlap_prop} -t ${threads} -p ${min_overlap_prop}
+python remove_overlapped.py ${output_dir}/merged_exons/${testing_gene}_exons_merged.fasta ${output_dir}/${testing_gene}_test_run/${testing_gene}_reduced.fasta ${output_dir}/${testing_gene}_test_run/${testing_gene}_nonoverlapped.fasta -i ${min_overlap_pct} -t ${threads} -p ${min_overlap_prop}
 
 # MAFFT alignment and trim over-gapped
 mafft --preservecase --maxiterate 1000 --localpair --adjustdirection --thread ${threads} ${output_dir}/${testing_gene}_test_run/${testing_gene}_reduced.fasta > ${output_dir}/${testing_gene}_test_run/${testing_gene}_aligned.fasta
@@ -116,7 +116,7 @@ mkdir ${output_dir}/phylo_results
 while read gene_name
 do
 	# Remove nonoverlapped sequences before alignment to reduce the alignment time
-	python remove_overlapped.py ${output_dir}/merged_exons/${gene_name}_exons_merged.fasta ${output_dir}/phylo_results/${gene_name}_reduced.fasta ${output_dir}/phylo_results/${gene_name}_nonoverlapped.fasta -i ${min_overlap_prop} -t ${threads} -p ${min_overlap_prop}
+	python remove_overlapped.py ${output_dir}/merged_exons/${gene_name}_exons_merged.fasta ${output_dir}/phylo_results/${gene_name}_reduced.fasta ${output_dir}/phylo_results/${gene_name}_nonoverlapped.fasta -i ${min_overlap_pct} -t ${threads} -p ${min_overlap_prop}
 	
 	# MAFFT alignment and trim over-gapped
 	mafft --preservecase --maxiterate 1000 --localpair --adjustdirection --thread ${threads} ${output_dir}/phylo_results/${gene_name}_reduced.fasta > ${output_dir}/phylo_results/${gene_name}_aligned.fasta
