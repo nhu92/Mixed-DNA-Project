@@ -38,18 +38,17 @@ def find_shared_genes(input_dir, species_file, output_dir):
         print(f"{species_name}: {total_gene_count[species_name]} genes assembled, {not_shared_count} is/are unshared and removed")
 
     # Write the shared genes to the output file
-    output_path = os.path.join(output_dir, "shared_genes.txt")
-    with open(output_path, "w") as output_file:
+    with open(output_dir, "w") as output_file:
         for gene in shared_genes:
             output_file.write(f"{gene}\n")
     shared_count = len(shared_genes)
-    print(f"{shared_count} gene names were successfully output into {output_path}")
+    print(f"{shared_count} gene names were successfully output into {output_dir}")
 
 def main():
     parser = argparse.ArgumentParser(description="Find shared genes among species assembled gene files")
     parser.add_argument("input_dir", help="Input directory containing species assembled gene files")
     parser.add_argument("species_file", help="Text file containing species names (one per line)")
-    parser.add_argument("output_dir", help="Output directory for shared genes file")
+    parser.add_argument("output_dir", help="Output directory & the output file name for shared genes file")
 
     args = parser.parse_args()
 

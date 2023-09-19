@@ -14,7 +14,7 @@ def process_tsv(tsv_file):
     # Check if the source file exists
     if not os.path.exists(tsv_file):
         print(f"Skipping {tsv_file}: Source file does not exist.")
-        exit()
+        return ""
 
     df = pd.read_csv(tsv_file, sep='\t')
 
@@ -80,6 +80,7 @@ if __name__ == "__main__":
     for folder in folders:
         tsv_file = os.path.join(source_directory, folder, os.path.basename(source_directory.rstrip('/')), "exonerate_stats.tsv")
         sequence_info = process_tsv(tsv_file)
-        copy_and_modify_fasta(folder, input_directory, source_directory, sequence_info)
+        if sequence_info != "":
+            copy_and_modify_fasta(folder, input_directory, source_directory, sequence_info)
 
     print("FASTA files copied, modified, and trimmed successfully.")
