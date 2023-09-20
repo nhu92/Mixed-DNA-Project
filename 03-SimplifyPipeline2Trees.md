@@ -142,3 +142,9 @@ while read gene_name; do python topo_comp.py ${output_dir}/all_trees/${gene_name
 
 Let's see which method would be better for create a reference tree (and select good genes) for species identification.
 
+An evening update. From the topology check, there are 12 gene trees showed the expected topology. Here is the list of them:
+(4932, 5264, 5280, 5404, 5449, 5454, 5853, 5919, 5977, 6119, 6496, 6955). I will chekc their topology manually to make sure the tree is formed correct. Also, I will reroot all trees based on the true phylogeny.
+
+Next step is to merge the known_mix exons to the selected trees then realign them all to check the tree structure.
+
+The merged trees mostly have a nice result. At least each family was successfully identified. Two lotus speceis still face the issue of either mixed up or missing one data (flase negatives, filtered out).
