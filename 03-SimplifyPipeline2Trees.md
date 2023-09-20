@@ -148,3 +148,7 @@ An evening update. From the topology check, there are 12 gene trees showed the e
 Next step is to merge the known_mix exons to the selected trees then realign them all to check the tree structure.
 
 The merged trees mostly have a nice result. At least each family was successfully identified. Two lotus speceis still face the issue of either mixed up or missing one data (flase negatives, filtered out).
+
+---
+
+Wednesday mornring (D20 = 10). This is near the end of this module. The remaining work here is to unify all the codes, command lines, and software together to form a single script without multiple command lines to run. I have a model of how to use python to run shell scripts but I am not sure about the parallel and how the SLURM will multi-task it. Any way, since the current pipeline works, I would like to leave this thought behind a little while. The next step is to 1) run the pipeline for unknown mix; 2) select related species on Kew Garden database to see the power of this method. These will be recorded in the next chapter.
