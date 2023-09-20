@@ -32,13 +32,21 @@ The idea is to select one monocot (maybe Poaceae species?), one COM Fabids (Malp
 
 I will choose the latest one from each family and only use the PAFTOL source data. Also, I will keep an eye on the number of genes recovered. The material I would like to keep in consistent with silica-dried.
 
+```
 Poaceae: Gigantochloa atter ERR7621555
 COM Fabids, Irvingiaceae: Irvingia gabonensis ERR4180054
 N fixer Fabids, Urticaceae: Boehmeria ramiflora ERR7622000
 Myrtaceae: Corymbia ficifolia ERR5034279
 Malvaceae: Hildegardia barteri ERR7622285 (Herbarium)
 Asteraceae: Bethencourtia palmensis ERR9230212
+```
 
-
-
+Don't forget to trim the reads!
+```bash
+while read line
+do
+fastp -i ../raw/${line}_R1.fastq.gz -I ../raw/${line}_R2.fastq.gz -o ../raw/${line}_trimmed_R1.fastq.gz -O ../raw/${line}_trimmed_R2.fastq.gz -j ../output/${line}.json -h ../output/${line}.html
+done < namelist.txt
+```
+Submitted all the jobs. Wait and probably submit the module 2 tonight.
 
