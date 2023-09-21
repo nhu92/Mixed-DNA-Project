@@ -19,7 +19,7 @@ def find_shared_genes(input_dir, species_file, output_dir):
     # Iterate through files and extract genes
     for file_name in files:
         if file_name.endswith("_assembled_genes.txt"):
-            species_name = file_name.split("_")[0]
+            species_name = file_name.replace("_assembled_genes.txt", "")
             file_path = os.path.join(input_dir, file_name)
 
             with open(file_path, "r") as file:

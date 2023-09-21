@@ -50,3 +50,23 @@ done < namelist.txt
 ```
 Submitted all the jobs. Wait and probably submit the module 2 tonight.
 
+---
+
+The whole exon pipeline is running for the 6 species. I created the expected topology for the comparison. 
+
+(Gigantochloa_atter, (((Irvingia_gabonensis, Boehmeria_ramiflora), (Corymbia_ficifolia, Hildegardia_barteri)), Bethencourtia_palmensis));
+
+Now, I am going to deal with the unknown mix data. The unknown mix seems to have low numbers of assembled contigs. I will try to lower the criteria in HybPiper assemble process.
+
+Asteraceae: Bethencourtia palmensis ERR9230212 is not working (for unknown reason, I will shift to Monarrhenus pinifolius). Here is the updated Species list and the expected tree:
+```
+Poaceae: Gigantochloa atter ERR7621555
+COM Fabids, Irvingiaceae: Irvingia gabonensis ERR4180054
+N fixer Fabids, Urticaceae: Boehmeria ramiflora ERR7622000
+Myrtaceae: Corymbia ficifolia ERR5034279
+Malvaceae: Hildegardia barteri ERR7622285 (Herbarium)
+Asteraceae: Monarrhenus pinifolius ERR7621651
+
+(Gigantochloa_atter, (((Irvingia_gabonensis, Boehmeria_ramiflora), (Corymbia_ficifolia, Hildegardia_barteri)), Monarrhenus pinifolius));
+```
+
