@@ -70,3 +70,5 @@ Asteraceae: Monarrhenus pinifolius ERR7621651
 (Gigantochloa_atter, (((Irvingia_gabonensis, Boehmeria_ramiflora), (Corymbia_ficifolia, Hildegardia_barteri)), Monarrhenus pinifolius));
 ```
 
+The results seem to be overfiltered. I modified the criterion of filtering process. -i 0.8 -> 0.2, -p 0.1 -> 0.4. If this is still too stringent I will also change the critical value of the composition test from 0.05 to 0.05 to rescue some exons from merged data.
+
