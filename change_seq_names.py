@@ -48,6 +48,10 @@ if __name__ == "__main__":
     # Generate a list of folder names in the 1st level of the source directory
     folders = generate_folder_list(source_directory)
 
+    # Generate an output directroy
+    if not os.path.exists(input_directory):
+        os.makedirs(input_directory)
+        
     # Iterate over folders, copy and modify FASTA files
     for folder in folders:
         copy_and_modify_fasta(folder, input_directory, source_directory)

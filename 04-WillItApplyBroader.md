@@ -72,3 +72,13 @@ Asteraceae: Monarrhenus pinifolius ERR7621651
 
 The results seem to be overfiltered. I modified the criterion of filtering process. -i 0.8 -> 0.2, -p 0.1 -> 0.4. If this is still too stringent I will also change the critical value of the composition test from 0.05 to 0.05 to rescue some exons from merged data.
 
+---
+
+Back to work on Friday. D20 =18 so ... let's make sone real progress to wrap up this week! I have 3 things to try on today:
+1. Review the results from the pipeline.
+2. Redo hybpiper for unknown mix, then merge it with 8 speices and 6 species selected tree.
+3. Find a way to cut the outlier long branches from the tree. Test for the criteria.
+
+Got a bad result from the exon pipeline of 6 species. None of the gene trees share the same topology as expected. I wonder what's going on there. I am running a full contig pipeline now.
+
+I started the rework of hybpiper unknown mix with an additional parameter `--cov_cutoff 4`.
