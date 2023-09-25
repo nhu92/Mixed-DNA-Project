@@ -18,7 +18,7 @@ def composition_test(sequence, expected_frequencies):
     observed = np.array([observed_frequencies.get(base, 0) * len(sequence) for base in expected_frequencies])
     expected = np.array([expected_frequencies[base] * len(sequence) for base in expected_frequencies])
     chi2, p = chisquare(observed, expected)
-    return p > 0.05, p
+    return p > 0.01, p
 
 def main(input_file, output_file):
     with open(input_file, 'r') as file:
