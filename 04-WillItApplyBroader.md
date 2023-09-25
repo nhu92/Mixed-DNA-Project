@@ -93,3 +93,5 @@ In the meantime, I run the module 3 to unknown mix data with additional paramete
 
 The pooled mix is named SSB001 data. Running HybPiper on it (with `--cov_cutoff 4`).
 
+The pooled soil also has low performance. In 12 gene trees, around 10 of them do not have any unknown exons. The only two have them wiped the known species out because of the abundance. They didn't fall into any known species. I wonder if the very long contigs in the assembly affects the filtering and alignments. I will try to remove the long contigs in the filtering processes.
+
