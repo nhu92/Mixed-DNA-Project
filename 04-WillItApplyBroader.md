@@ -89,3 +89,7 @@ The module 2 is extremely affected by large input files (merged exons/contigs). 
 
 I will offer a better pipeline to get this problem solved in line automatically.
 
+In the meantime, I run the module 3 to unknown mix data with additional parameter and p value. However, selected gene trees still lack of unknown exons, or unknown exons won't group with any known species. I am worried about that the fasta file filtering process may generate some bias. However this works fine with known mix samples. What happened to them? I will run the pool soil to see if they have the same issue or it is just the problem with the unknown mix.
+
+The pooled mix is named SSB001 data. Running HybPiper on it (with `--cov_cutoff 4`).
+
