@@ -95,3 +95,14 @@ The pooled mix is named SSB001 data. Running HybPiper on it (with `--cov_cutoff 
 
 The pooled soil also has low performance. In 12 gene trees, around 10 of them do not have any unknown exons. The only two have them wiped the known species out because of the abundance. They didn't fall into any known species. I wonder if the very long contigs in the assembly affects the filtering and alignments. I will try to remove the long contigs in the filtering processes.
 
+---
+
+I will run normal HybPiper for pooled soil sample (5th). Then, I hope to test a new filtering criterion to discard the long contigs in exon/contig findings. It might affect the current filtering approaches by losing too many true short hits. I will test the mafft alignment by removing different number of sequences for 3 random genes.
+
+I noticed that the reads file of the unknown mix is pretty small. Averagely, there will be 25MBx2 data for each species we know. I doubt that would create some issues in identifying unknown species. Thus, I think I won't try more on these data.
+
+OK. Additional stuff I noticed is that the exonerate output of data1 (the pooled soil) has been very limited. There are some issues with the SPAde or the Exonerate. It is not the downstream analytical problem currently. I will work on dealing with the HybPiper, or even modifying SPAdes for more recovered contigs.
+
+I am trying to automatically generate an expected tree. I will use the species tree method from iqtree to the astral. 
+
+Also, need to mention here is, I would like to compare the output of contig from known mix and pooled soil. I hope there are some contigs make sense to me compared to a randon sequences in the soil sample. I will work a little be late for today.
