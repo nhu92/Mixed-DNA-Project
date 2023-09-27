@@ -114,3 +114,15 @@ Get SPAde or metaSPAde to run for the pooled soil to see what is really in the s
 Pool 8 species with 6 species to rebuilt a phylogeny, then test the grouping for the knownmix.
 
 Prepare some slides describing our results.
+
+I update the bash scripts for hybpiper 14 species. Basically, it is to prevent submitting a bunch of jobs and then lower the priority of future jobs. Also, I checked the SPAdes and BBmap manual for merging overlapped reads and then assemble. I will check the data structure then recover the segments from the pooled soil samples.
+
+I will use `BBmerge.sh` to generate the overlapped reads.
+```bash
+bbmerge-auto.sh in=reads.fq out=merged.fq outu=unmerged.fq ihist=ihist.txt ecct extend2=20 iterations=5
+```
+
+And then, take the merged and leftovers to the `SPAdes.py`.
+```bash
+spades.py --merged merged.fq -s unmerged.fq -t 32 -o SSB01.denovo.fa
+```
