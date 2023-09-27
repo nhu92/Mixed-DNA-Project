@@ -106,3 +106,11 @@ OK. Additional stuff I noticed is that the exonerate output of data1 (the pooled
 I am trying to automatically generate an expected tree. I will use the species tree method from iqtree to the astral. 
 
 Also, need to mention here is, I would like to compare the output of contig from known mix and pooled soil. I hope there are some contigs make sense to me compared to a randon sequences in the soil sample. I will work a little be late for today.
+
+---
+
+Get SPAde or metaSPAde to run for the pooled soil to see what is really in the sample (other than our targets).
+
+Pool 8 species with 6 species to rebuilt a phylogeny, then test the grouping for the knownmix.
+
+Prepare some slides describing our results.
