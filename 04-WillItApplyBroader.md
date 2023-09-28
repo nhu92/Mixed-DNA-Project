@@ -126,3 +126,7 @@ And then, take the merged and leftovers to the `SPAdes.py`.
 ```bash
 spades.py --merged merged.fq -s unmerged.fq -t 32 -o SSB01.denovo.fa
 ```
+
+---
+
+SPAdes output contains too many long contigs. There is one with 23745bp. I checked those longest ones with BLASTN web-based search. It turned out to be a lot of bacteria DNA pieces. I also randomly checked smaller segments assembled. Most of them are protokayotes and only very few eukayotes species.
