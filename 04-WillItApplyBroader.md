@@ -105,7 +105,7 @@ OK. Additional stuff I noticed is that the exonerate output of data1 (the pooled
 
 I am trying to automatically generate an expected tree. I will use the species tree method from iqtree to the astral. 
 
-Also, need to mention here is, I would like to compare the output of contig from known mix and pooled soil. I hope there are some contigs make sense to me compared to a randon sequences in the soil sample. I will work a little be late for today.
+Also, need to mention here is, I would like to compare the output of contig from known mix and pooled soil. I hope there are some contigs make sense to me compared to a random sequences in the soil sample. I will work a little be late for today.
 
 ---
 
@@ -129,4 +129,47 @@ spades.py --merged merged.fq -s unmerged.fq -t 32 -o SSB01.denovo.fa
 
 ---
 
-SPAdes output contains too many long contigs. There is one with 23745bp. I checked those longest ones with BLASTN web-based search. It turned out to be a lot of bacteria DNA pieces. I also randomly checked smaller segments assembled. Most of them are protokayotes and only very few eukayotes species.
+SPAdes output contains too many long contigs. There is one with 23745bp. I checked those longest ones with BLASTN web-based search. It turned out to be a lot of bacteria DNA pieces. I also randomly checked smaller segments assembled. Most of them are prokaryotes and only very few eukaryotes species.
+
+I merged the 8 species data and additional 5 species (Irvingia excluded) to call for a species tree. The pipeline is written here:
+
+```bash
+#!/bin/bash
+#SBATCH -J contig_pipeline
+#SBATCH -p nocona
+#SBATCH -o log/%x.out
+#SBATCH -e log/%x.err
+#SBATCH -N 1
+#SBATCH -n 64
+#SBATCH -t 24:00:00
+#SBATCH --mem-per-cpu=3G
+
+# A pipeline of reconstructing phylogeny trees using exon information from HybPiper output
+# Nan Hu, 09/22/2023
+
+# -----
+# Constants. Please edit them to match the data structure of your own directory. Dont include the last "/" in the path.
+iqtree_dir=~/software/iqtree/iqtree-2.2.2.7-Linux/bin
+
+# A batch run for all genes:
+while read gene
+do
+        # MAFFT alignment and trim over-gapped
+        mafft --preservecase --maxiterate 1000 --localpair --thread 64 ${gene}.FNA> ${gene}.aligned.fasta
+        trimal -in ${gene}.aligned.fasta -out ${gene}.trimmed.fasta -gt 0.5
+
+        # Tree construction and comparison
+        ${iqtree_dir}/iqtree2 -s ${gene}.trimmed.fasta -m MFP -bb 1000 -redo
+        nw_ed ${gene}.trimmed.fasta.treefile 'i & b<50' o > ${gene}.collapsed.tre
+done < ../shared_genes.txt
+
+cat *.collapsed.tre > merged.collapsed.tre
+astral -i merged.collapsed.tre -o ../6species_species.tre
+```
+
+It needs to be run under `as_ref_FNA` folder under the output folder of contig full pipeline.
+
+Then, I ran the gene tree selection pipeline to extract the gene tree which matches the species tree using exon information. Filtering criteria is 0.7, 0.1.
+
+I will run the tree test for unknown and known mix to check the topology.
+
