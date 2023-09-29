@@ -173,3 +173,6 @@ Then, I ran the gene tree selection pipeline to extract the gene tree which matc
 
 I will run the tree test for unknown and known mix to check the topology.
 
+---
+
+Got introduced of Sourmash and Cracker (am I correct?) from the FDA. There are hugh amount of [tutorial](https://sourmash.readthedocs.io/en/latest/) to read. Interestingly, the algorithm about make a rough hash for the query DNA sequences and then quickly comparing each other actually meets up my naive thoughts about how to boost up the species identification process. I was thinking about transfer a DNA sequence into a eigenvalue or eigenvector and then using matrix calculation methods to solve the issue. However, I know very little about linear algebra as well as hash algorithm thus all these fancy thoughts were just a far future plan. I am glad that there is already a toolkit to de-dimension the DNA data.
