@@ -24,12 +24,14 @@ Write a Python script to do the following work:
 ```
 1. read in a input directory, a gene name, an output dir from argparse. define the basename of the input directory as dataname.
 
-2. extract exon ranges from an exonerate_stats.tsv (under input directory/gene name/data name/) from the  7th column. The data pattern [(a,b),(c,d),(e,f)] with ranges in each parenthesis. Discard rows include and below the row that the first cell is "Hits with subsumed hits removed".
+2. extract exon ranges from an exonerate_stats.tsv (under input directory/gene name/data name/, has a header) from the  7th column. The data in this cell looks like [(a,b),(c,d),(e,f)], and there will be multiple extracted exons ranges (a,b), (c,d), and (e,f). Discard rows include and below the row that the first cell is "Hits with subsumed hits removed". print how many exon ranges found for this row.
 
-3. Give the name to each exon range by order with the format "dataname_gene name_exon_number". Check overlaps of these exon ranges, if two exon range have overlap over given percentage (an input), then they are named with the same name. Give the name to each exon range by order with the format "dataname_gene name_exon_number".  replace each exon range with the name and output a new tsv. 
+3. Give the name to each exon range by order with the format "dataname_gene name_exon_number". print exon range names found for each row. there will be multiple exon names in the same row refer to the original rows in tsv file.
 
-4. extract the contig range from column 14 that belongs to the exons of the same row. pattern is  [(a,b),(c,d),(e,f)] too. Considering the flag on column 10. For example, if the exon range is [(1,15),(17,21)], then the first exon is (1,15) the second is (17,21). and if the contig range is [(665, 621), (612, 600)], and if the flag is "1" then the first contig range belongs to the (1,15) exon and the second belongs to (17,21) exon. if flag is "-1" then reverse the order of the contig range assignment.
-5. using the Bio package to extract the contig from input_dir/gene_name/gene_name_contigs.fasta based on the contig range. The sequence name of which sequence should be selected is in column 4. collect all the contigs belongs to each exon range. Please name the extracted sequences by the exon info: >dataname_exon_genename_number_number, the second number is the increasing order of contigs selected into that exon.
-# Output all sequences from the same exon range into a file: genename_exon_number.fasta
+4. Check overlaps of these exon ranges, if two exon range have overlap over given percentage (an input), then they will be named with the same name. print the modified exon range names for each row.
+
+5. Using Bio package to extract contigs from input directory/gene name/gene_name_contigs.fasta based on ranges in column 14. The sequence name in the fasta refers to 4th column. The extracted sequence is named by >dataname_exon_name_number. The exon name refers to the new generated column from previous steps. If the 10th column is "1" then the exon names will be assigned to the extracted contigs in the same order. If the 10th column is "-1" then the exon names will be assigned to the extracted contigs reversely.
+
+# Output all sequences from the same exon into a file: genename_exon_name.fasta
 # All input and output are handled by argparse.
 ```
