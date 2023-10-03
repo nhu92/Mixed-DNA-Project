@@ -1,9 +1,10 @@
 import argparse
 import os
 import pandas as pd
+from intervaltree import Interval, IntervalTree
 from Bio import SeqIO
 
-def extract_contigs(row, fasta_sequences, output_dir, data_name):
+def extract_contigs(row, fasta_sequences, output_dir):
     ranges = eval(row.iloc[13])
     sequence_id = row.iloc[3]
     sequence = next((seq for seq in fasta_sequences if seq.id == sequence_id), None)
@@ -24,7 +25,7 @@ def extract_contigs(row, fasta_sequences, output_dir, data_name):
             SeqIO.write(contig, output_handle, "fasta")
 
 
-def clean_fasta(row, fasta_sequences, output_dir, data_name):
+def clean_fasta(row, fasta_sequences, output_dir):
     ranges = eval(row.iloc[13])
     sequence_id = row.iloc[3]
     sequence = next((seq for seq in fasta_sequences if seq.id == sequence_id), None)
@@ -42,7 +43,7 @@ def clean_fasta(row, fasta_sequences, output_dir, data_name):
 def check_overlap(exon_ranges, start, end, overlap_percentage):
     for (exon_start, exon_end), exon_name in exon_ranges:
         overlap = min(end, exon_end) - max(start, exon_start)
-        if overlap > 0 and overlap / (max(end, exon_end) - min(start, exon_start)) >= overlap_percent                                                                                             age:
+        if overlap > 0 and overlap / (max(end, exon_end) - min(start, exon_start)) >= overlap_percentage                                                                                             age:
             return exon_name
     return None
 
@@ -58,8 +59,8 @@ def main():
     file_path = os.path.join(args.input_dir, args.gene_name, data_name, 'exonerate_stats.tsv')
 
     # Make the output directiory
-    if not os.path.exists(input_directory):
-        os.makedirs(input_directory)
+    if not os.path.exists(arg.output_dir):
+        os.makedirs(arg.output_dir)
     df = pd.read_csv(file_path, sep='\t')
     # Find the index of the row where the first cell is "Hits with subsumed hits removed"
     end_index = df[df.iloc[:, 0] == 'Hits with subsumed hits removed'].index[0]
@@ -97,12 +98,12 @@ def main():
     for index, row in df.iterrows():
         if row.iloc[9] == "-1":
             row['exon_names'] = row['exon_names'][::-1]
-        clean_fasta(row, fasta_sequences, args.output_dir, data_name)
+        clean_fasta(row, fasta_sequences, args.output_dir)
 
 
     for index, row in df.iterrows():
         if row.iloc[9] == "-1":
             row['exon_names'] = row['exon_names'][::-1]
-        extract_contigs(row, fasta_sequences, args.output_dir, data_name)
+        extract_contigs(row, fasta_sequences, args.output_dir)
 if __name__ == '__main__':
     main()
