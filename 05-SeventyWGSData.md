@@ -35,3 +35,6 @@ Write a Python script to do the following work:
 # Output all sequences from the same exon into a file: genename_exon_name.fasta
 # All input and output are handled by argparse.
 ```
+
+It is really hard to generate the code for this work. The python script named split_exon_extract.py is now working fine. The only concern here is the exon overlapping algorithm will prefer longer exons and will rely on the first exon it hits. However, it won't be a big deal so far. I will continue using `mafft --addfragment` to quickly align exons to 70 species with aligned genes.
+
