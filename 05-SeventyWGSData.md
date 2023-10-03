@@ -20,3 +20,16 @@ Here is a basic thought about this code:
 # output the exon with the exon orders, this output will be the input file for mafft --add
 ```
 
+Write a Python script to do the following work:
+```
+1. read in a input directory, a gene name, an output dir from argparse. define the basename of the input directory as dataname.
+
+2. extract exon ranges from an exonerate_stats.tsv (under input directory/gene name/data name/) from the  7th column. The data pattern [(a,b),(c,d),(e,f)] with ranges in each parenthesis. Discard rows include and below the row that the first cell is "Hits with subsumed hits removed".
+
+3. Give the name to each exon range by order with the format "dataname_gene name_exon_number". Check overlaps of these exon ranges, if two exon range have overlap over given percentage (an input), then they are named with the same name. Give the name to each exon range by order with the format "dataname_gene name_exon_number".  replace each exon range with the name and output a new tsv. 
+
+4. extract the contig range from column 14 that belongs to the exons of the same row. pattern is  [(a,b),(c,d),(e,f)] too. Considering the flag on column 10. For example, if the exon range is [(1,15),(17,21)], then the first exon is (1,15) the second is (17,21). and if the contig range is [(665, 621), (612, 600)], and if the flag is "1" then the first contig range belongs to the (1,15) exon and the second belongs to (17,21) exon. if flag is "-1" then reverse the order of the contig range assignment.
+5. using the Bio package to extract the contig from input_dir/gene_name/gene_name_contigs.fasta based on the contig range. The sequence name of which sequence should be selected is in column 4. collect all the contigs belongs to each exon range. Please name the extracted sequences by the exon info: >dataname_exon_genename_number_number, the second number is the increasing order of contigs selected into that exon.
+# Output all sequences from the same exon range into a file: genename_exon_number.fasta
+# All input and output are handled by argparse.
+```
