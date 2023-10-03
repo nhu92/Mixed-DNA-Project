@@ -43,7 +43,7 @@ def clean_fasta(row, fasta_sequences, output_dir):
 def check_overlap(exon_ranges, start, end, overlap_percentage):
     for (exon_start, exon_end), exon_name in exon_ranges:
         overlap = min(end, exon_end) - max(start, exon_start)
-        if overlap > 0 and overlap / (max(end, exon_end) - min(start, exon_start)) >= overlap_percentage                                                                                             age:
+        if overlap > 0 and (overlap / (max(end, exon_end) - min(start, exon_start)) >= overlap_percentage):
             return exon_name
     return None
 
@@ -58,9 +58,9 @@ def main():
     data_name = os.path.basename(args.input_dir)
     file_path = os.path.join(args.input_dir, args.gene_name, data_name, 'exonerate_stats.tsv')
 
-    # Make the output directiory
-    if not os.path.exists(arg.output_dir):
-        os.makedirs(arg.output_dir)
+    # Make the output directory
+    if not os.path.exists(args.output_dir):
+        os.makedirs(args.output_dir)
     df = pd.read_csv(file_path, sep='\t')
     # Find the index of the row where the first cell is "Hits with subsumed hits removed"
     end_index = df[df.iloc[:, 0] == 'Hits with subsumed hits removed'].index[0]
