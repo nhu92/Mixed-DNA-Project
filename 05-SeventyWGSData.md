@@ -42,3 +42,8 @@ It is really hard to generate the code for this work. The python script named sp
 
 The program is estimated to run for 36 hours. However, we could use the already generated data to estimate the potential taxonomy relationships of our known mix data. The plan is to take the all the tips named with sample tags and calculate the pairwise distances from the tree. Then, pool the samples from the same node (should be the same assembly from SPAde) of all the exons for each gene to generate an table of average and standard error. Based on the pairwise distances, if one node is not significantly distant from any other node (the outlier), then we will drop this node (or just the exon of this node?).
 
+Working on using some ANOVA to decide either drop an exon or collapse multiple exons from the same species.
+
+Dr. Johnson introduced a way to shorten the executing time. We could concatenate the exons from the same contig and assume they are from the same species (a little bit risky here but can be solved by later processes). Then, we only need to run the tree for each gene not for each exons. Also, we could run MFP of `iqtree` to find a best evolutionary model for each gene. By doing this, we could save time on running MFP for each exons and will also be consistent when we calculate the genetic distances.
+
+Another thing we discussed is about to assign the correct topology from the tree. In ete3 package, there is a method to claim a node as "Rosids" or "Asterids" etc. Thus, we could test whether our target unknown sequence's relative position.
