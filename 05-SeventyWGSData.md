@@ -38,3 +38,7 @@ Write a Python script to do the following work:
 
 It is really hard to generate the code for this work. The python script named split_exon_extract.py is now working fine. The only concern here is the exon overlapping algorithm will prefer longer exons and will rely on the first exon it hits. However, it won't be a big deal so far. I will continue using `mafft --addfragment` to quickly align exons to 70 species with aligned genes.
 
+---
+
+The program is estimated to run for 36 hours. However, we could use the already generated data to estimate the potential taxonomy relationships of our known mix data. The plan is to take the all the tips named with sample tags and calculate the pairwise distances from the tree. Then, pool the samples from the same node (should be the same assembly from SPAde) of all the exons for each gene to generate an table of average and standard error. Based on the pairwise distances, if one node is not significantly distant from any other node (the outlier), then we will drop this node (or just the exon of this node?).
+
