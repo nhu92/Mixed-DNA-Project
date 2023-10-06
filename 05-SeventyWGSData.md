@@ -70,5 +70,5 @@ while read line ; do astral -i ${line}_trimmed.tre -o ${line}_astral.tre ; done 
 
 # Node distance calc
 while read line ; do python ../../../script/distance_calc.py -t $line -n NODE -o $line.csv ; done < tree_list.txt
-mv ../*.csv ./
+mv ../*.csv ./0
 ```
