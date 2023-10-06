@@ -60,3 +60,15 @@ Today's task:
 3. Pool the exon results from each node, calculate the mean and sd, format them into the input form. Run heatmap.
 4. Collect the outliers from each node, summarizing the species as the candidates for the supportive candidates.
 
+I really need 128 CPUs to run the exon splitting job. I hope it will reduce the runtime into 24 hours. The previous job didn't finish so I could only use around 900 trees to test the result. However, it is not bad at all since it will still have around 150 genes.
+
+Some codes to clean up the tree and form a astral ref as input tree.
+```bash
+while read line ; do sed -i 's/_R_//g' ${line}_merged.tre; done < ../done_list.txt
+while read line ; do python clean_reroot.py --tree ${line}_merged.tre --start_str knownmix --output ${line}_trimmed.tre ; done < ../done_list.txt
+while read line ; do astral -i ${line}_trimmed.tre -o ${line}_astral.tre ; done < ../done_list.txt
+
+# Node distance calc
+while read line ; do python ../../../script/distance_calc.py -t $line -n NODE -o $line.csv ; done < tree_list.txt
+mv ../*.csv ./
+```
