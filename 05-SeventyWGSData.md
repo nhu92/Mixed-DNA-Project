@@ -50,4 +50,13 @@ Another thing we discussed is about to assign the correct topology from the tree
 
 ---
 
-I have a general thought about this work now. I will extract the distance from each exon of each gene. Then, merge the distance information from the same Node (contigs assembled by SPAde) by mean and standard deviation. Also, I will use the exon tree from each gene to generate an Astral species tree. Then, the two input file (astral tree & distance statistics) is going to be used in a python script that plotting two information (tree on the left side and a heatmap for the statistics). Addtionally, the exon will be filtered based on the ANOVA. I will also 
+I have a general thought about this work now. I will extract the distance from each exon of each gene. Then, merge the distance information from the same Node (contigs assembled by SPAde) by mean and standard deviation. Also, I will use the exon tree from each gene to generate an Astral species tree. Then, the two input file (astral tree & distance statistics) is going to be used in a python script that plotting two information (tree on the left side and a heatmap for the statistics). Additionally, the exon will be filtered based on the ANOVA. I will also summarize the highest hit(s) (top 10?) among all genes to give an estimation of which species it could be in the mixed sample.
+
+---
+
+Today's task:
+1. Refine heatmap code. The color gradient need to be changed. 
+2. Remove outliers from all exons, based on the ANOVA statistics, should be very loose.
+3. Pool the exon results from each node, calculate the mean and sd, format them into the input form. Run heatmap.
+4. Collect the outliers from each node, summarizing the species as the candidates for the supportive candidates.
+
