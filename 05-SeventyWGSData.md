@@ -91,3 +91,6 @@ The astral tree thought is not valid. The suggested way to generate the tree and
 # Output all sequences from the same exon into a file: genename_exon_name.fasta
 # All input and output are handled by argparse.
 ```
+
+The mafft --addfragment could not correctly align the concatenated exons properly as the separate exons. I had to switch back to original exon way. However, I removed files that is too large for mafft and iqtree to save some time on the queue.
+
