@@ -70,5 +70,24 @@ while read line ; do astral -i ${line}_trimmed.tre -o ${line}_astral.tre ; done 
 
 # Node distance calc
 while read line ; do python ../../../script/distance_calc.py -t $line -n NODE -o $line.csv ; done < tree_list.txt
-mv ../*.csv ./0
+mv ../*.csv ./
+```
+
+---
+
+The astral tree thought is not valid. The suggested way to generate the tree and the distance is directly concatenating all of the exons. With this way, we do not need to sort the exon and generate exon based table for distance statistics. This approach will be much less computational intense since we only have ~300 genes need to run. The plan today is to generate a concatenated exon with 10 gaps in between. 
+
+1. Generate a code to extract exon and concatenate them together with 10 "-".
+2. Try mafft --add to check the alignment for multiple non-overlapping sequences.
+3. Run iqtree -m MFP for each gene of 70 species to figure out the best model - in order to skip model selection step for each gene tree ith known mix.
+
+```
+1. read in a input directory, a gene name, an output dir from argparse. define the basename of the input directory as dataname.
+
+2. extract exon ranges from an exonerate_stats.tsv (under input directory/gene name/data name/, has a header) from the  7th column. The data in this cell looks like [(a,b),(c,d),(e,f)], and there will be multiple extracted exons ranges (a,b), (c,d), and (e,f). Discard rows include and below the row that the first cell is "Hits with subsumed hits removed". print how many exon ranges found for this row.
+
+3. Using Bio package to extract contigs from input directory/gene name/gene_name_contigs.fasta based on ranges in column 14. The sequence name in the fasta refers to 4th column. Concatenate the extracted sequences from the same row into an output, the gap between two interval ranges are filled by 10 "-"s. The extracted sequence is named by >dataname_{gene name}_{sequence name}. 
+
+# Output all sequences from the same exon into a file: genename_exon_name.fasta
+# All input and output are handled by argparse.
 ```
