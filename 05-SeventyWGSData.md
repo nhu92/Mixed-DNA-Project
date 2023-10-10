@@ -98,4 +98,6 @@ The `mafft --addfragment` could not correctly align the concatenated exons prope
 
 I will finish the statistic code today for the per exon pipeline. The remaining stuff are: 1) drop outliers code; 2) statistics table transformation; 3) standardize the mean; 4) refine the ploting code; 5) cross gene summarization code.
 
+```
 
+```
