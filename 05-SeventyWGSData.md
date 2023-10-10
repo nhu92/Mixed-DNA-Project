@@ -92,5 +92,10 @@ The astral tree thought is not valid. The suggested way to generate the tree and
 # All input and output are handled by argparse.
 ```
 
-The mafft --addfragment could not correctly align the concatenated exons properly as the separate exons. I had to switch back to original exon way. However, I removed files that is too large for mafft and iqtree to save some time on the queue.
+The `mafft --addfragment` could not correctly align the concatenated exons properly as the separate exons. I had to switch back to original exon way. However, I removed files that is too large for `mafft` and `iqtree` to save some time on the queue.
+
+---
+
+I will finish the statistic code today for the per exon pipeline. The remaining stuff are: 1) drop outliers code; 2) statistics table transformation; 3) standardize the mean; 4) refine the ploting code; 5) cross gene summarization code.
+
 
