@@ -9,14 +9,14 @@ parser.add_argument('--output', type=str, help='Output CSV file path')
 args = parser.parse_args()
 
 # Load the CSV file into a DataFrame
-df = pd.read_csv(args.input)
+df = pd.read_csv(args.input, index_col=0)
 
 # Store the first row and column names for later reference
 column_names = df.columns.tolist()
 row_names = df.iloc[:, 0].tolist()
 
 # Remove the first column and first row (assuming they contain labels)
-df = df.iloc[1:, 1:].apply(pd.to_numeric)
+df = df.iloc[0:, 1:].apply(pd.to_numeric)
 
 # Perform one-way ANOVA for each column
 alpha = 0.001
@@ -43,4 +43,4 @@ print(statistically_different_columns)
 df_without_outliers = df.drop(columns=statistically_different_columns["Column"].tolist())
 
 # Save the modified DataFrame to a new CSV file
-df_without_outliers.to_csv(args.output, index=True)
+df_without_outliers.to_csv(args.output)
