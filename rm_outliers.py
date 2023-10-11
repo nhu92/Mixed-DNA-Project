@@ -1,8 +1,15 @@
 import pandas as pd
 from scipy.stats import f_oneway
+import argparse
+
+# Parse command line arguments
+parser = argparse.ArgumentParser(description='Process some integers.')
+parser.add_argument('--input', type=str, help='Input CSV file path')
+parser.add_argument('--output', type=str, help='Output CSV file path')
+args = parser.parse_args()
 
 # Load the CSV file into a DataFrame
-df = pd.read_csv("E:/OneDrive/OneDrive - Texas Tech University/2023Fall/mixed_dna_proj/4471_cb.csv")
+df = pd.read_csv(args.input)
 
 # Store the first row and column names for later reference
 column_names = df.columns.tolist()
@@ -36,5 +43,4 @@ print(statistically_different_columns)
 df_without_outliers = df.drop(columns=statistically_different_columns["Column"].tolist())
 
 # Save the modified DataFrame to a new CSV file
-output_csv_path = "E:/OneDrive/OneDrive - Texas Tech University/2023Fall/mixed_dna_proj/4471_cb_without_outliers.csv"
-df_without_outliers.to_csv(output_csv_path, index=False)
+df_without_outliers.to_csv(args.output, index=True)
