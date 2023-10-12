@@ -101,3 +101,8 @@ I will finish the statistic code today for the per exon pipeline. The remaining 
 ---
 
 New work on chloroplast genome!
+
+---
+
+I am exploring the possibility of use the full length of exons. I found the alignment sometimes is good and sometimes is bad. The tree performance is weird with a long branch length byt sometimes the position is fine. The already aligned data is intron-free so I should not add "-" or "N" between exons when concatenating them. However, I found that the exon information in 70 species is different from the exon identified from exonerate. I would like to explore a little bit more to see what happening there.
+
