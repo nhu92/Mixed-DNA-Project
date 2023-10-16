@@ -96,7 +96,7 @@ The `mafft --addfragment` could not correctly align the concatenated exons prope
 
 ---
 
-I will finish the statistic code today for the per exon pipeline. The remaining stuff are: 1) drop outliers code; 2) statistics table transformation; 3) standardize the mean; 4) refine the ploting code; 5) cross gene summarization code.
+I will finish the statistic code today for the per exon pipeline. The remaining stuff are: 1) drop outliers code; 2) statistics table transformation; 3) standardize the mean; 4) refine the plotting code; 5) cross gene summarization code.
 
 ---
 
@@ -108,4 +108,9 @@ I am exploring the possibility of use the full length of exons. I found the alig
 
 ---
 
-It's the Herbarium Day. I found an interesting paper just published! [Ancient DNA is preserved in fish fossils from tropical lake sediments](https://doi.org/10.1111/mec.17159)
+It's the Herbarium Day. I found an interesting paper just published! [Ancient DNA is preserved in fish fossils from tropical lake sediments](https://doi.org/10.1111/mec.17159).
+
+---
+
+Continuing working on the coding. The current stage is to sort the statistics and output plots. I will think about how to make a better summarization and additionally refine the way of alignment. The exon alignment works fine but it takes too long to run. Either we could align the best model for each gene to save time for model finder process. Or we could try concatenate the exon and try the alignment. I found that exons called by exonerate are shorter than the well-aligned, which is weird to me. I will spend some time to explore it.
+
