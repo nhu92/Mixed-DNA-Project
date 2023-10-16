@@ -9,7 +9,7 @@ def remove_rows(df, remove_string):
     df = df[~df[df.columns[0]].str.contains(remove_string, case=False, na=False, regex=True)]
     df = df[df[df.columns[0]].notna()]
     return df.reset_index(drop=True)
-
+	
 def process_tsv_files(input_pattern, output_file, remove_string):
     # Step 1: Read all TSV files matching the input pattern
     tsv_files = glob.glob(input_pattern)
@@ -31,10 +31,7 @@ def process_tsv_files(input_pattern, output_file, remove_string):
 
     first_column = merged_df.iloc[:, 0]
     merged_df = merged_df.loc[:, ~merged_df.columns.str.contains('^Unnamed: 0$', case=False)]
-
     merged_df.index = first_column
-    merged_df.to_csv(f"{output_file}.tsv", sep='\t', index=True)
-	
     # Step 4: Group columns by the pattern "*_NODE{number}_*"
     node_pattern = re.compile(r'_(NODE_\d+)_')
     new_column_names = {'species': first_column}
@@ -44,10 +41,10 @@ def process_tsv_files(input_pattern, output_file, remove_string):
         match = node_pattern.search(col_name)
         if match:
             node_number = match.group(1)
-            new_column_names[col_name] = f"NODE{node_number}"
+            new_column_names[col_name] = f"{node_number}"
 
     merged_df = merged_df.rename(columns=new_column_names)
-    merged_df.to_csv(f"{output_file}.tsv", sep='\t')
+    merged_df.to_csv(f"{output_file}", sep=',')
 
 
 if __name__ == "__main__":
