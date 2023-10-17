@@ -114,3 +114,7 @@ It's the Herbarium Day. I found an interesting paper just published! [Ancient DN
 
 Continuing working on the coding. The current stage is to sort the statistics and output plots. I will think about how to make a better summarization and additionally refine the way of alignment. The exon alignment works fine but it takes too long to run. Either we could align the best model for each gene to save time for model finder process. Or we could try concatenate the exon and try the alignment. I found that exons called by exonerate are shorter than the well-aligned, which is weird to me. I will spend some time to explore it.
 
+---
+
+Yesterday I only finished the combining part. It is harder than I thought. I will finish the statistics half today because the output remover code is already good enough (through ANOVA test alpha = 0.001). Also, I will get the exons extracted from 8 known species (data 1) to examine the distance result by mix the exons to the alignment ith 70 species and known mix. I will use the `intronerate.gff` as the exon information to extract exons from the `{gene}_intronerate_supercontig_individual_contig_hits.fasta`. I checked one gene and the exon that is numbered as the exonerate output and the exon extraction code. And I manually aligned the exons that extracted from `intronerate.gff` to the exons from the knownmix and they aligned pretty well to each other so I think this is workable. I will try to finish the statistics code and then turn to it.
+
