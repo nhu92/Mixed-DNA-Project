@@ -70,9 +70,12 @@ while read line ; do sed -i 's/_R_//g' ${line}_merged.tre; done < ../done_list.t
 while read line ; do python clean_reroot.py --tree ${line}_merged.tre --start_str knownmix --output ${line}_trimmed.tre ; done < ../done_list.txt
 while read line ; do astral -i ${line}_trimmed.tre -o ${line}_astral.tre ; done < ../done_list.txt
 
+
+ls ../*.tre > tree_list.txt
 # Node distance calc
 while read line ; do python ../../../script/distance_calc.py -t $line -n NODE -o $line.csv ; done < tree_list.txt
 mv ../*.csv ./
+
 ```
 
 ---
