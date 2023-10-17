@@ -64,6 +64,8 @@ I really need 128 CPUs to run the exon splitting job. I hope it will reduce the 
 
 Some codes to clean up the tree and form a astral ref as input tree.
 ```bash
+ls | grep -Po "^\d+" | sort | uniq > done_list.txt
+while read line ; do cat ../${line}* >${line}_merged.tre ; done < ../done_list.txt
 while read line ; do sed -i 's/_R_//g' ${line}_merged.tre; done < ../done_list.txt
 while read line ; do python clean_reroot.py --tree ${line}_merged.tre --start_str knownmix --output ${line}_trimmed.tre ; done < ../done_list.txt
 while read line ; do astral -i ${line}_trimmed.tre -o ${line}_astral.tre ; done < ../done_list.txt
