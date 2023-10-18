@@ -124,3 +124,10 @@ Continuing working on the coding. The current stage is to sort the statistics an
 Yesterday I only finished the combining part. It is harder than I thought. I will finish the statistics half today because the output remover code is already good enough (through ANOVA test alpha = 0.001). Also, I will get the exons extracted from 8 known species (data 1) to examine the distance result by mix the exons to the alignment ith 70 species and known mix. I will use the `intronerate.gff` as the exon information to extract exons from the `{gene}_intronerate_supercontig_individual_contig_hits.fasta`. I checked one gene and the exon that is numbered as the exonerate output and the exon extraction code. And I manually aligned the exons that extracted from `intronerate.gff` to the exons from the knownmix and they aligned pretty well to each other so I think this is workable. I will try to finish the statistics code and then turn to it.
 
 Things went nice today. I did not spend a lot of try runs for the statistics code. I could run the statistics pipeline through all the genes to generate tons of figures! Also, there is a change for a PCI analysis by using the genetic distance (may need transformation since the closed related species have smaller number) from all reference species. 
+
+This command line is to run the exon extraction code:
+```bash
+ while read gene; do while read species; do python known_exon_extract.py ../../../202309/mixedDNA/1st_8indv/hyb_output/${species}/${gene}/${species}/intronerate/${gene}_supercontig_without_Ns.fasta ../../../202309/mixedDNA/1st_8indv/hyb_output/${species}/${gene}/${species}/intronerate/intronerate.gff ${gene} ${species} ../output/ ; done < ../../../202309/mixedDNA/1st_8indv/script/namelist.txt ; done < ../../../202309/mixedDNA/1st_8indv/output_exons/shared_exons.txt
+ ```
+
+ 
