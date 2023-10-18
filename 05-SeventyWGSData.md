@@ -147,4 +147,11 @@ python ../../script/noded_stats.py 4471.cleaned.csv 4471.stats.csv
 sed -i 's/,,/,0,/g' 4471.stats.csv
 python ../../script/tree_heatmap.py 4471.stats.csv 4471.astral.tre 4471.heatmap.svg
 
- ```
+```
+
+There are still some issue with these steps. The code is weird when we involve other exons. Also, the exon extraction can be duplicated. I will mark this issue here but will move on.
+
+---
+
+After discussion with Dr. Johnson, I want to use the genetic distance to clustering method. Before that, we want to do a PCA check to select genes that alway showed consistencies in clade grouping. I will generate an output of pairwise genetic distance that used as the input for PCA analysis. The PCA will be done by [scikit-learn](https://scikit-learn.org/stable/auto_examples/decomposition/plot_pca_vs_lda.html#sphx-glr-auto-examples-decomposition-plot-pca-vs-lda-py) package in python. Later, we could use some K-means clustering methods to sort our unknown species.
+
