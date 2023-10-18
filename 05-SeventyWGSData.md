@@ -130,4 +130,21 @@ This command line is to run the exon extraction code:
  while read gene; do while read species; do python known_exon_extract.py ../../../202309/mixedDNA/1st_8indv/hyb_output/${species}/${gene}/${species}/intronerate/${gene}_supercontig_without_Ns.fasta ../../../202309/mixedDNA/1st_8indv/hyb_output/${species}/${gene}/${species}/intronerate/intronerate.gff ${gene} ${species} ../output/ ; done < ../../../202309/mixedDNA/1st_8indv/script/namelist.txt ; done < ../../../202309/mixedDNA/1st_8indv/output_exons/shared_exons.txt
  ```
 
- 
+ ```bash
+ # A typical sample run
+for i in $(find *treefile); do sed -i 's/\.exon[0-9]*//g' $i; done
+cat *treefile > 4471.gene.tre
+sed -i 's/_R_//g' 4471.gene.tre
+python ../../../70species/output_exon_split/partial_trees/merged_tree/clean_reroot.py --tree 4471.gene.tre --start_str knownmix --output 4471.cleaned.tre
+astral -i 4471.cleaned.tre -o 4471.astral.tre
+
+for i in $(find *treefile); do python ../../script/distance_calc.py -t $i -n NODE -o ${i}.csv;  done
+python ../../script/combine_distance.py --input-pattern "*treefile.csv" --output-file ./4471.combined.csv --remove-string knownmix
+python ../../script/rm_outlier.py --input 4471.combined.csv --output 4471.cleaned.csv
+python ../../script/noded_stats.py 4471.cleaned.csv 4471.stats.csv
+python ../../script/rm_outlier.py --input 4471.combined.csv --output 4471.cleaned.csv
+python ../../script/noded_stats.py 4471.cleaned.csv 4471.stats.csv
+sed -i 's/,,/,0,/g' 4471.stats.csv
+python ../../script/tree_heatmap.py 4471.stats.csv 4471.astral.tre 4471.heatmap.svg
+
+ ```
