@@ -19,7 +19,7 @@ row_names = df.iloc[:, 0].tolist()
 df = df.iloc[0:, 1:].apply(pd.to_numeric)
 
 # Perform one-way ANOVA for each column
-alpha = 0.001
+alpha = 0.0000001
 p_values = []
 for col in df.columns:
     group_data = df[col]
@@ -41,6 +41,7 @@ print(statistically_different_columns)
 
 # Drop outlier columns from the original DataFrame
 df_without_outliers = df.drop(columns=statistically_different_columns["Column"].tolist())
+df_without_outliers = df.drop(index=statistically_different_columns["Column"].tolist())
 
 # Save the modified DataFrame to a new CSV file
 df_without_outliers.to_csv(args.output)

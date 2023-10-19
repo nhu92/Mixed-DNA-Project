@@ -9,3 +9,12 @@ The PCA result will be colored by taxonomy groups. The unknown species will be c
 
 Scikit-learn has the package for pca analysis. I will generate a PCA matrix from it.
 
+Made a distance calculating script and a pca script. Also modified the outlier test code for genetic distance matrix. I also found mistakes in taxa assignment in Chris's table. Here is the code for run one sample:
+
+```bash
+python matrix.py -t 4471_exon_1_trimmed.fasta.treefile  -o 4471_1.csv
+python rm_outliers.py --input 4471_1.csv --output 4471_1.cleaned.csv
+python pca.py --matrix 4471_1.cleaned.csv --table colorNtaxa.csv --output 4471_1_pca.svg
+```
+
+The result generally looks fine. However, there are very weird malvids that seems to be closed to fabids. I want to check those species later.
