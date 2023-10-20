@@ -21,3 +21,4 @@ The result generally looks fine. However, there are very weird malvids that seem
 
 ---
 
+I talked to Dr. Yibing Zhang yesterday for questions about PCA and clustering methods. I got the thought about the proper ways to display the results and using parameters to evaluate the clustering. I am thinking the way to pile up the exon data into a gene level. Since they are genetic distances so can we simply add them all together?
