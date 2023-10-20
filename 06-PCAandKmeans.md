@@ -18,3 +18,6 @@ python pca.py --matrix 4471_1.cleaned.csv --table colorNtaxa.csv --output 4471_1
 ```
 
 The result generally looks fine. However, there are very weird malvids that seems to be closed to fabids. I want to check those species later.
+
+---
+
