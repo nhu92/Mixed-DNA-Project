@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 import argparse
 import matplotlib.colors as mcolors
