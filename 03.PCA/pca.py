@@ -12,9 +12,12 @@ def pca_analysis(matrix_file, table_file, output_file):
     matrix.columns = matrix.columns.str.replace(r'\_mean', '', regex=True)
     matrix = matrix.T
 
+    # Normalize the matrix
+    scaler = StandardScaler()
+    normalized_matrix = scaler.fit_transform(matrix)
     # Perform PCA
     pca = PCA(n_components=2)
-    pca_result = pca.fit_transform(matrix)
+    pca_result = pca.fit_transform(normalized_matrix)
 
     # Create a DataFrame for the PCA result
     pca_df = pd.DataFrame(data = pca_result, columns = ['PCA1', 'PCA2'], index=matrix.index)

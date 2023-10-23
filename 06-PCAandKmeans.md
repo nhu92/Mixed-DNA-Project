@@ -65,3 +65,4 @@ done < ./shared_genes_shorter.txt
 rm loop.treelist.txt
 ```
 
+This is the pipeline for PCA. It will take the exon tree as the input to calculate the genetic distance. The 2 Component PCA plot is used for selecting candidate genes that matching up the expected grouping. The real decision-making code will be the K-means clustering results. I also want to generate a distance from clustering to show the closed related species to go deep into the clade.
