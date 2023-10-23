@@ -28,3 +28,7 @@ I talked to Dr. Yibing Zhang yesterday for questions about PCA and clustering me
 No. The idea that add up the genetic distance won't work because not all of them have all the exons of one gene (actually normally very few of them have). I will go back to use the genetic distance by site but I need to think about a nice and neat way to merge the distance from all exons.
 
 Another thing is to evaluate the merged gene PCA results (or the clustering) by the false positives and false negatives. Although we need to eyeball the PCA/K-means results but we also need to have a statistic support to decide which are our candidate gene by controlling the false rate. 
+
+This also reminds me an issue of figuring out the gene level tree. The gene level tree will generate distance that is not comparable across different contigs that assembled by SPAdes since they may not have the same number of exons. Then, the only way is to calculate genetic distance per aligned loci. I will generate a code to run this process.
+
+
