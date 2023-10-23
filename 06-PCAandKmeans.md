@@ -31,4 +31,37 @@ Another thing is to evaluate the merged gene PCA results (or the clustering) by 
 
 This also reminds me an issue of figuring out the gene level tree. The gene level tree will generate distance that is not comparable across different contigs that assembled by SPAdes since they may not have the same number of exons. Then, the only way is to calculate genetic distance per aligned loci. I will generate a code to run this process.
 
+```bash
+# A pipeline for PCA analysis from phylogeny to PCA including data cleaning and merging.
+# Nan Hu, 10/23/2023
+
+# -----
+# Constants. Please edit them to match the data structure of your own directory. Dont include the last "/" in the path.
+tree_dir=../raw
+output_dir=../output
+color_taxa=./colorNtaxa.csv
+sample_name=knownmix
+
+mkdir ${output_dir}/
+
+# A batch run for all genes:
+while read gene_name_shorter
+do
+        ls "${tree_dir}/${gene_name_shorter}"*"treefile" > ./loop.treelist.txt
+        i=1
+        while read filename
+        do
+                python matrix.py -t ${filename} -o ./${gene_name_shorter}.${i}.matrix
+                ((i=i+1))
+        done < loop.treelist.txt
+
+        python combine_distance.py "${gene_name_shorter}*.matrix" ${output_dir}/${gene_name_shorter}.combined.csv ${sample_name}
+        python rm_outliers.py ${output_dir}/${gene_name_shorter}.combined.csv ${output_dir}/${gene_name_shorter}.cleaned.csv
+        python mean_statistics.py ${output_dir}/${gene_name_shorter}.cleaned.csv ${output_dir}/${gene_name_shorter}.stats.csv
+        python pca.py ${output_dir}/${gene_name_shorter}.stats.csv ${color_taxa} ${output_dir}/${gene_name_shorter}.pca.svg
+
+done < ./shared_genes_shorter.txt
+
+rm loop.treelist.txt
+```
 
