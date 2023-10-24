@@ -66,3 +66,8 @@ rm loop.treelist.txt
 ```
 
 This is the pipeline for PCA. It will take the exon tree as the input to calculate the genetic distance. The 2 Component PCA plot is used for selecting candidate genes that matching up the expected grouping. The real decision-making code will be the K-means clustering results. I also want to generate a distance from clustering to show the closed related species to go deep into the clade.
+
+---
+
+Another talk with Dr. Yibing Zhang. It is suggested that we can directly use the large matrix for clustering. The good point is that we won't lose a lot of data but it will be hard to display them on the PCA figure. Another way for clustering is to use PCA1+PCA2 (maybe PCA3?) for clustering thus we could display the clustering onto the figure. The way to decide a matrix (gene) is a good candidate or not is based on a series of parameter. We can try the bulk scoring system by giving 1 point when a reference species is clustered correctly. Or, we could try the scoring system considering the false positives and false negatives.
+
