@@ -71,3 +71,21 @@ This is the pipeline for PCA. It will take the exon tree as the input to calcula
 
 Another talk with Dr. Yibing Zhang. It is suggested that we can directly use the large matrix for clustering. The good point is that we won't lose a lot of data but it will be hard to display them on the PCA figure. Another way for clustering is to use PCA1+PCA2 (maybe PCA3?) for clustering thus we could display the clustering onto the figure. The way to decide a matrix (gene) is a good candidate or not is based on a series of parameter. We can try the bulk scoring system by giving 1 point when a reference species is clustered correctly. Or, we could try the scoring system considering the false positives and false negatives.
 
+The PCA results looks generally good except the Sapindales and Malpighales which should group with Fabids but in PCA they are all closed to Malvids. I will run a species tree methods to check the topology of the expected species phylogeny.
+
+Another minor thing, the normalization for PCA generally giving me worse results compared to the non-normalized. I will check these and possibly try normalize and non-normalize methods for clustering.
+
+Today's task in sequence:
+1. Generate a species tree of 70 species to check the topology of Sapindales and Malpighales.
+2. Clustering 70x70 matrices of several samples to give a try.
+3. Clustering all matrices and calculating the index for choosing candidates.
+4. Try clustering from PCAs (normalized).
+
+While exploring the clustering methods, I might choose the Spectral Clustering from scikit-learn. The comparisons of all the clustering criterion is displayed below. The input will be the matrices (we need to transformation I will mention it below too) and a cluster number.
+![Clustering Method Comparison](https://scikit-learn.org/stable/_images/sphx_glr_plot_cluster_comparison_001.png "Clustering Comparisons")
+
+As I said, we need a ata transformation before we run the clustering. We got a distance matrix but what we need is a similarity matrix. The scikit-learn suggests a way of  transformation:
+```python
+similarity = np.exp(-beta * distance / distance.std())
+```
+
