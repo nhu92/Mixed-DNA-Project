@@ -82,10 +82,20 @@ Today's task in sequence:
 4. Try clustering from PCAs (normalized).
 
 While exploring the clustering methods, I might choose the Spectral Clustering from scikit-learn. The comparisons of all the clustering criterion is displayed below. The input will be the matrices (we need to transformation I will mention it below too) and a cluster number.
-![Clustering Method Comparison](https://scikit-learn.org/stable/_images/sphx_glr_plot_cluster_comparison_001.png "Clustering Comparisons")
+![Clustering Methods Comparison](https://scikit-learn.org/stable/_images/sphx_glr_plot_cluster_comparison_001.png "Clustering Comparisons")
 
 As I said, we need a ata transformation before we run the clustering. We got a distance matrix but what we need is a similarity matrix. The scikit-learn suggests a way of  transformation:
 ```python
 similarity = np.exp(-beta * distance / distance.std())
 ```
+
+---
+
+I worked late night to produce a code for evaluating the clustering results. We used TP, TN, FP, and FN based parameters including ARI, AMI, and V-measure to evaluate the clustering for each gene to the real clustering. These measurements are included in the scikit-learn package. The results can be merged into a file for ranking the genes. The results do not quite make sense since they are not predictable. The talking this morning is focused on the improvement of the pipeline. Here are things we may try:
+1. Try a better distance method by removing the gaps from the alignment.
+2. Use PCoA which focus on a distance measurement to lower the dimension.
+3. Check each dimension to see what they really resolve (e.g. PC1 is to separate Monocots and Dicots).
+4. Try different clustering methods including supervised and unsupervised models.
+5. Use different precise recall parameters to evaluate the cluster.
+
 
