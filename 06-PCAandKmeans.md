@@ -98,4 +98,8 @@ I worked late night to produce a code for evaluating the clustering results. We 
 4. Try different clustering methods including supervised and unsupervised models.
 5. Use different precise recall parameters to evaluate the cluster.
 
+---
 
+Is it better to select good gene set or using a whole dataset to summarize the results?
+
+---
