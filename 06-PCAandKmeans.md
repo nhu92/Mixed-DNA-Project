@@ -103,3 +103,6 @@ I worked late night to produce a code for evaluating the clustering results. We 
 Is it better to select good gene set or using a whole dataset to summarize the results?
 
 ---
+
+Lets try PCoA today. It seems that it needs the least effort. I will also output the distance (PCA - 3 dimensional) of the closest 3 targets to the unknown testing loci and check if those are in the same grouping with the clustering results. I think this is a better criterion than then general non-determinative parameters. The messing grouping hurts the prediction much more than an incorrect identification of the known mix species.
+
