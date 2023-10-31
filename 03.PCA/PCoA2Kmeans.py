@@ -6,7 +6,7 @@ from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.colors as mcolors
-from sklearn.neighbors import (NeighborhoodComponentsAnalysis, KNeighborsClassifier)
+from skbio.stats.ordination import pcoa
 
 def main():
     parser = argparse.ArgumentParser(description='Perform KMeans clustering on data.')

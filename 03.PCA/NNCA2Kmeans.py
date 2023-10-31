@@ -6,7 +6,8 @@ from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.colors as mcolors
-from sklearn.neighbors import (NeighborhoodComponentsAnalysis, KNeighborsClassifier)
+from sklearn.neighbors import NeighborhoodComponentsAnalysis
+from sklearn.preprocessing import StandardScaler
 
 def main():
     parser = argparse.ArgumentParser(description='Perform KMeans clustering on data.')
@@ -20,19 +21,17 @@ def main():
     df = df.transpose()
     df.to_csv("temp.csv")
     df = pd.read_csv("temp.csv", index_col = 0)
-    # Convert distance matrix to similarity matrix
-    similarity_matrix = np.exp(-df ** 2)
 
-    # Perform PCA
-    pca = PCA(n_components=3)
-    pca_result = pca.fit_transform(similarity_matrix)
+    # Perform Neighborhood Component Analysis (NCA)
+    nca = NeighborhoodComponentsAnalysis(n_components=3)
+    nca_result = nca.fit_transform(df, df.index)
 
-    # Save PCA statistics to a CSV file
-    pca_df = pd.DataFrame(pca_result, columns=['PC1', 'PC2', 'PC3'], index=df.index)
-    pca_df.to_csv(args.output + '.csv')
+    # Save NCA results to a CSV file
+    nca_df = pd.DataFrame(nca_result, columns=['NC1', 'NC2', 'NC3'], index=df.index)
+    nca_df.to_csv(args.output + '_nca.csv')
 
-    # Perform KMeans clustering
-    kmeans = KMeans(n_clusters=8, random_state=0).fit(pca_result)
+    # Perform KMeans clustering on NCA results
+    kmeans = KMeans(n_clusters=8, random_state=0).fit(nca_result)
 
     # Read the labels data
     labels_df = pd.read_csv(args.labels)
@@ -47,7 +46,7 @@ def main():
     # Assign colors and taxa to each dot in the PCA plot
     colors = []
     taxa = []
-    for item in pca_df.index:
+    for item in nca_df.index:
         color_assigned = False
         for table_item, color in color_map.items():
             if item.startswith(table_item):
@@ -66,19 +65,19 @@ def main():
     
     ax = fig.add_subplot(111, projection='3d')
     print(colors)
-    scatter = ax.scatter(pca_result[:, 0], pca_result[:, 1], pca_result[:, 2], c=colors)
+    scatter = ax.scatter(nca_result[:, 0], nca_result[:, 1], nca_result[:, 2], c=colors)
     
-    ax.set_xlabel('PC1 - {0}%'.format(np.round(pca.explained_variance_ratio_[0]*100, decimals=2)))
+    ax.set_xlabel('PC1 - {0}%'.format(np.round(nca.explained_variance_ratio_[0]*100, decimals=2)))
     
-    ax.set_ylabel('PC2 - {0}%'.format(np.round(pca.explained_variance_ratio_[1]*100, decimals=2)))
+    ax.set_ylabel('PC2 - {0}%'.format(np.round(nca.explained_variance_ratio_[1]*100, decimals=2)))
     
-    ax.set_zlabel('PC3 - {0}%'.format(np.round(pca.explained_variance_ratio_[2]*100, decimals=2)))
+    ax.set_zlabel('PC3 - {0}%'.format(np.round(nca.explained_variance_ratio_[2]*100, decimals=2)))
     
     plt.title('3D PCA with KMeans Clustering Overlay')
 
     # Connect the dots from the same cluster to the mean using lines
     for i in range(kmeans.n_clusters):
-        cluster_points = pca_result[kmeans.labels_ == i]
+        cluster_points = nca_result[kmeans.labels_ == i]
         centroid = cluster_points.mean(axis=0)
         for point in cluster_points:
             ax.plot([point[0], centroid[0]], [point[1], centroid[1]], [point[2], centroid[2]], 'k-')
