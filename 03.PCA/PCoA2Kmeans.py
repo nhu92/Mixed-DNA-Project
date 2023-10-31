@@ -16,23 +16,22 @@ def main():
     args = parser.parse_args()
 
     # Read the input data
-    df = pd.read_csv(args.input, index_col = 0)
+    df = pd.read_csv(args.input, index_col=0)
     df = df.transpose()
     df.to_csv("temp.csv")
-    df = pd.read_csv("temp.csv", index_col = 0)
-    # Convert distance matrix to similarity matrix
-    similarity_matrix = np.exp(-df ** 2)
-
-    # Perform PCA
-    pca = PCA(n_components=3)
-    pca_result = pca.fit_transform(similarity_matrix)
-
-    # Save PCA statistics to a CSV file
-    pca_df = pd.DataFrame(pca_result, columns=['PC1', 'PC2', 'PC3'], index=df.index)
-    pca_df.to_csv(args.output + '.csv')
+    df = pd.read_csv("temp.csv", index_col=0)
+    
+    
+    # Perform PCoA
+    distance_matrix = DistanceMatrix(df)
+    pcoa_result = pcoa(distance_matrix)
+    
+    # Extract the PCoA results
+    pcoa_df = pd.DataFrame(pcoa_result.samples.values, columns=['PC1', 'PC2', 'PC3'], index=df.index)
+    pcoa_df.to_csv(args.output + '.csv')
 
     # Perform KMeans clustering
-    kmeans = KMeans(n_clusters=8, random_state=0).fit(pca_result)
+    kmeans = KMeans(n_clusters=8, random_state=0).fit(pcoa_result)
 
     # Read the labels data
     labels_df = pd.read_csv(args.labels)
@@ -47,7 +46,7 @@ def main():
     # Assign colors and taxa to each dot in the PCA plot
     colors = []
     taxa = []
-    for item in pca_df.index:
+    for item in pcoa_df.index:
         color_assigned = False
         for table_item, color in color_map.items():
             if item.startswith(table_item):
@@ -66,19 +65,19 @@ def main():
     
     ax = fig.add_subplot(111, projection='3d')
     print(colors)
-    scatter = ax.scatter(pca_result[:, 0], pca_result[:, 1], pca_result[:, 2], c=colors)
+    scatter = ax.scatter(pcoa_result[:, 0], pcoa_result[:, 1], pcoa_result[:, 2], c=colors)
     
-    ax.set_xlabel('PC1 - {0}%'.format(np.round(pca.explained_variance_ratio_[0]*100, decimals=2)))
+    ax.set_xlabel('PC1 - {0}%'.format(np.round(pcoa.explained_variance_ratio_[0]*100, decimals=2)))
     
-    ax.set_ylabel('PC2 - {0}%'.format(np.round(pca.explained_variance_ratio_[1]*100, decimals=2)))
+    ax.set_ylabel('PC2 - {0}%'.format(np.round(pcoa.explained_variance_ratio_[1]*100, decimals=2)))
     
-    ax.set_zlabel('PC3 - {0}%'.format(np.round(pca.explained_variance_ratio_[2]*100, decimals=2)))
+    ax.set_zlabel('PC3 - {0}%'.format(np.round(pcoa.explained_variance_ratio_[2]*100, decimals=2)))
     
     plt.title('3D PCA with KMeans Clustering Overlay')
 
     # Connect the dots from the same cluster to the mean using lines
     for i in range(kmeans.n_clusters):
-        cluster_points = pca_result[kmeans.labels_ == i]
+        cluster_points = pcoa_result[kmeans.labels_ == i]
         centroid = cluster_points.mean(axis=0)
         for point in cluster_points:
             ax.plot([point[0], centroid[0]], [point[1], centroid[1]], [point[2], centroid[2]], 'k-')
