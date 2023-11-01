@@ -108,3 +108,9 @@ Lets try PCoA today. It seems that it needs the least effort. I will also output
 
 I found a method that using the neighbor nearing method to lower the dimension. It refers to [this](https://scikit-learn.org/stable/modules/neighbors.html). I will give it a try in some of our dataset. It is expected to cluster the neighboring data compared to the PCA and K-means.
 
+---
+
+All of the PCoA and the neighbor nearing method require a squared matrix (which we do not have). The target sequences we have in the known mix is going to create extra items. We can generate the distance between target and the references but not the target and the target. In this case, we will only use the PCoA to run the reference matrix to evaluate the reference clustering. The actual clustering using the target sequences will still be the transformed PCA (however, PC1 and PC2 and PC3 are pseudo-ortho). I found the PCA represent most of the monocots (especially the Poaceae), thus I will pull out the Poaceae species from the matrix then check the PCA results.
+
+Another thing we could try is to download data from Kew Garden and then examine the random selected datasets and their classifications. In order to do this, I need to build up a ranking system to output the closest species based on the Euclid Distance in 3D axis.
+
