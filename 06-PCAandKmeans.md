@@ -118,3 +118,6 @@ I tried to remove the Poaceae and other monocots from the matrix. The results ar
 
 I will continuing try different transformation. Also, I will do a sample run for PCoA with a square matrix. Additionally, I will try to plot the genetic distance (with and without Poaceae)
 
+---
+
+Get the idea of "bad apple" of the phylogeny. I would like to try to remove the Malpighales species from the analysis to see the results.
