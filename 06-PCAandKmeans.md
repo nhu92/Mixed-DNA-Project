@@ -131,3 +131,7 @@ Today'ss task:
 4. Set up a model test considering the variance
 5. Test one species from Kew dataset
 
+---
+
+There is a 3-day long maintenance on HPCC from Nov. 6 to Nov. 8. During this period I guess I could only test some scripts to get it work on mass datasets.
+
