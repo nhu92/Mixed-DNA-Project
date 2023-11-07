@@ -120,7 +120,7 @@ I will continuing try different transformation. Also, I will do a sample run for
 
 ---
 
-Get the idea of "bad apple" of the phylogeny. I would like to try to remove the Malpighales species from the analysis to see the results.
+Get the idea of "bad apple" of the phylogeny. I would like to try to remove the Malpighiales species from the analysis to see the results.
 
 ---
 
@@ -135,3 +135,10 @@ Today'ss task:
 
 There is a 3-day long maintenance on HPCC from Nov. 6 to Nov. 8. During this period I guess I could only test some scripts to get it work on mass datasets.
 
+---
+
+I want to use some Kew data to test the pipeline, and maybe some fine tuning. The plan is to select 3 different sets of Kew reads for testing different aspect of the pipeline.
+1. Select widely distributed species (around 8?) on Kew database to test the ability of current method to sort different species into correct related clades.
+2. Select species in a small clade (e.g. Brassicaceae) to make a reference tree and then testing our 8 known mixes on the reference tree within very specific clade. This is to assess the accuracy of presence/absence for an unknown species that belongs to a certain group. Also, this can test the ability for this method to sort species that are relatively closed related. This will use the contig tree method.
+3. Select species within a small clade as query pseudo-unknown species (e.g. Brassicaceae/Poaceae) and test the 70 species with dense selected species in these two clade whether could be able to distinguish the difference of the query sequences. This may involve some clustering methods.
+4. Trim the 70 species tree by only have 1-2 species for each major cladd to make it a better reference for general use.
