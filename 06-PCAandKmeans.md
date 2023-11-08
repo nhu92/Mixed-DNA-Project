@@ -144,3 +144,7 @@ I want to use some Kew data to test the pipeline, and maybe some fine tuning. Th
 4. Trim the 70 species tree by only have 1-2 species for each major clade to make it a better reference for general use.
 
 I gonna select data for the 1st testing. From previous experience, I will avoid the problematic families at this moment.
+
+---
+
+While waiting for the recovery of HPCC today. I am working on some extra stuff for our lab group today. I will create a new repository for this work.
