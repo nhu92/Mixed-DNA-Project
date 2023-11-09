@@ -23,9 +23,10 @@ I will use FastTree instead of iqtree to speed up the process. The evolutionary 
 fasttree -gtr -gamma -nt alignment.fasta > output.tre
 ```
 
-Also record the command line I used from HybPiper output to the exon extractions:
+Also recording the command lines I used from HybPiper output to the exon extractions:
 ```bash
 ls -d */ | grep -Po "\d+" > ../../scripts/gene_list.txt
 cd ../../scripts/gene_list.txt
 while read line; do python split_exon_extract.py ../hyb_output/kewmix $line ../output_exon_extracted/ 0.5; done < gene_list.txt
 ```
+
