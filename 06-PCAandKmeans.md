@@ -124,7 +124,7 @@ Get the idea of "bad apple" of the phylogeny. I would like to try to remove the 
 
 ---
 
-Today'ss task:
+Today's task:
 1. Try the euclid distance based on the PCA results (3 PCs)
 2. If not working, try removing "bad apples"  (Malpighiales)
 3. Generate expected closed related species list, try to consider the variance
