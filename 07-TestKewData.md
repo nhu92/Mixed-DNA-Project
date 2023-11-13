@@ -30,4 +30,8 @@ cd ../../scripts/gene_list.txt
 while read line; do python split_exon_extract.py ../hyb_output/kewmix $line ../output_exon_extracted/ 0.5; done < gene_list.txt
 ```
 
-I found something wrong when we combine all the distance into a single matrix. The PCA cobine_distance scripts are problematic too.
+I found something wrong when we combine all the distance into a single matrix. The PCA combine_distance scripts are problematic too.
+
+---
+
+Currently, I was running the distance on each exons only. The statistics were pulled from the exon level. I will rank the closed related species from each output then merge together to give a probability based on the frequency (and maybe the read size?). 
