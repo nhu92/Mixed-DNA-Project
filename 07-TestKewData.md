@@ -35,3 +35,6 @@ I found something wrong when we combine all the distance into a single matrix. T
 ---
 
 Currently, I was running the distance on each exons only. The statistics were pulled from the exon level. I will rank the closed related species from each output then merge together to give a probability based on the frequency (and maybe the read size?). 
+
+
+The output is giving somehow prediction with some variation (it should be variation not mis-identification since no species were found in the wrong related species group). The frequency is not quite related to reads size since tomato should have lowest frequency but on the contrary it has the highest. I would like to think about a strategy to evaluate the variance in the distance matrix. I will try the normalizing way to transform the matrix (to similarity then normalize). Then, giving a probability distribution of a closed related species, what is the probability the unknown being identified as the same species and what is the CI?
