@@ -47,4 +47,6 @@ The first key step for this thought is to find a good way to make the reference 
 
 It looks like a sigmoid transformation with a standardization is nice for our data transformation. From PCoA analysis, the PC1-PC3 panel gave a good distribution of the species which would be useful when I overlay the distance of unknown exons onto it. Now, lets move to generate those unknown exons part.
 
-Generally, I want to apply a normal transformation to each column of unknown exons to make them add-able. To aggregate all the matrices, I need to fix the rows and columns to match up the correct names for the sum up. The output will be used as the Z-axis of the contour map. I will test the normal transformation approach. If it does not work, I might try some other transformation to expand the data differences.
+Generally, I want to apply a normal transformation to each column of unknown exons to make them add-able. To aggregate all the matrices, I need to fix the rows and columns to match up the correct names for the sum up. The output will be used as the Z-axis of the contour map. I will test the normal transformation approach. If it does not work, I might try some other transformation to expand the data differences. 
+
+The normalized matrix should be positive (? maybe- cause it does not affect the contour plot).
