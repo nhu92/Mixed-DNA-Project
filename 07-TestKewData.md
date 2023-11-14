@@ -49,4 +49,4 @@ It looks like a sigmoid transformation with a standardization is nice for our da
 
 Generally, I want to apply a normal transformation to each column of unknown exons to make them add-able. To aggregate all the matrices, I need to fix the rows and columns to match up the correct names for the sum up. The output will be used as the Z-axis of the contour map. I will test the normal transformation approach. If it does not work, I might try some other transformation to expand the data differences. 
 
-The normalized matrix should be positive (? maybe- cause it does not affect the contour plot).
+The normalized matrix should be positive (? maybe- cause it does not affect the contour plot). (The code is very specified need to make it for common runs.)
