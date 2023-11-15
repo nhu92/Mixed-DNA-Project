@@ -53,3 +53,95 @@ The normalized matrix should be positive (? maybe- cause it does not affect the 
 
 ---
 
+Let me summarize the current workflow of this testing:
+
+For testing mix:
+1. Trim raw reads using fastp
+2. Run HybPiper
+3. Extract the exon based on the exonerate stats
+4. MAFFT --addfragments alignment, trimal, and fasttree GTR+Gamma
+5. Run genetic distance matrix, data clean
+6. Cumulative genetic distance as Z axis on the contour map
+7. Find local optima
+
+For reference panel:
+1. Trimal, iqtree -MFP
+2. Clean up gene trees, merge
+3. Mean genetic distance matrix, some data transformation
+4. PCoA lower dimensions, for the X-Y panel
+
+I will compile these steps into a shell script file.
+```bash
+# This is a pipeline for analyzing raw reads from a mixed sample to the identification.
+# This pipeline is to treat with the mixed reads. There is another pipeline to generate the reference panel.
+
+# Declare the constants
+threads=64
+read1=
+read2=
+mega353=
+proj_name=
+ref_alignment=11_final_alignments_and_gff3 # The directory
+
+
+# ---
+
+fastp -i ${read1} -I ${read2} -o ${read1}.trimmed.fastq.gz -O ${read2}.trimmed.fastq.gz -j fastp.json -h fastp.html
+mkdir hyb_output
+hybpiper assemble -t_dna ${mega353} \
+        -r ${read1}.trimmed.fastq.gz ${read2}.trimmed.fastq.gz \
+        --prefix ${proj_name} \
+        --bwa \
+        --cpu ${threads} \
+        -o ./hyb_output
+
+ls -d hyb_output/* | grep -Po "\d+" > gene_list.txt
+mkdir ./exon_extracted
+while read line; do python split_exon_extract.py ./hyb_output/${proj_name} $line ./exon_extracted 0.8; done < gene_list.txt
+
+input_exon=./exon_extracted
+
+mkdir ./phylo_results
+# A batch run to generate trees for all genes:
+while read gene_name_shorter
+do
+        ls ${input_exon}/*${gene_name_shorter}*.fasta > ./exon.list.txt
+        i=1
+        while read exons
+        do
+                # MAFFT alignment and trim over-gapped
+                mafft --preservecase --maxiterate 1000 --localpair --adjustdirection --thread ${threads} --addfragments ${exons} ${ref_alignment}/${gene_name_shorter}.fasta > phylo_results/${gene_name_shorter}_exon_${i}_aligned.fasta
+                trimal -in phylo_results/${gene_name_shorter}_exon_${i}_aligned.fasta -out phylo_results/${gene_name_shorter}_exon_${i}_trimmed.fasta -gt 0.5
+
+                # Tree construction and comparison
+                fasttree -gtr -gamma -nt phylo_results/${gene_name_shorter}_exon_${i}_trimmed.fasta > phylo_results/${gene_name_shorter}_exon_${i}.tre
+                ((i=i+1))
+        done < exon.list.txt
+done < gene_list.txt
+
+rm exon.list.txt
+# Distance Calc (in progress)
+mkdir all_trees
+
+cp phylo_results/*.tre ./all_trees
+
+tree_dir=all_trees
+while read gene_name_shorter
+do
+        ls "${tree_dir}/${gene_name_shorter}"*"tre" > ./loop.treelist.txt
+        i=1
+        while read filename
+        do
+                python matrix.py -t ${filename} -o ./all_trees/${gene_name_shorter}.${i}.matrix
+                ((i=i+1))
+        done < loop.treelist.txt
+done < ./gene_list.txt
+
+rm loop.treelist.txt
+
+python dist2Z.py all_trees ./${proj_name}.summary_dist.csv SOMEPATTERN!
+python group_sum.py ./${proj_name}.summary_dist.csv ./${proj_name}.cumulative_dist.csv
+grep -v ${proj_name} ${proj_name}.cumulative_dist.csv | cut -f2 > ${proj_name}.Zaxis.csv
+
+
+```
