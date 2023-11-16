@@ -1,4 +1,5 @@
 # Using multiple samples from the Kew database to test the feasibility of our pipeline
+
 3 different samples will be used for testing our pipeline
 
 ---
@@ -170,3 +171,21 @@ cat ref_tree/*.collapsed.tre | sed 's/_R_//g' | sed 's/_\([0-9]\{4\}\)//g' > ${p
 python tree2PCoA.py ${proj_name}_merged.collapsed.tre ${proj_name}_refPCoA.csv ${proj_name}_refPCoA.svg
 
 ```
+
+Now, I am moving the testing the 2nd Kew dataset - the "Brassicaceae medley".
+
+The Brassicaceae has 6 reference species in the 70 species alignment. I want to test the power of our pipeline to precisely estimate the species within a small clade. Also, I want to see if the method can successfully exclude the outgroup from the mixed data. I will first trim the 70 species alignment into 6 Brassicaceae species + 1 outgroup (lavender_scallops should be a good one, not too far but quite distinct). Also, I will mix 3 species from Kew tree of life. 2 from different clades of Brassicaceae and 1 from outgroup. 
+
+For the reference trim, here is the species left and their expected phylogeny:
+1. arabidopsis
+2. rockcress
+3. shepherds_purse
+4. saltwater_cress
+5. schrenkiella_parvula
+6. cabbage
+7. lavender_scallops
+
+(7, ((1, (2, 3)), (4, (5, 6))));
+
+This topology is also checked from the astral tree generated from the alignment. I will choose two arabidopsis species and one Lamiaceae species. The goal is to test the ability of sort the "best hits" onto arabidopsis and the outgroup, but not on the other species.
+
