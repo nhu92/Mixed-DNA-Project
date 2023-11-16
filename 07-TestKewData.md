@@ -169,5 +169,4 @@ done < ./allgenes.txt
 cat ref_tree/*.collapsed.tre | sed 's/_R_//g' | sed 's/_\([0-9]\{4\}\)//g' > ${proj_name}_merged.collapsed.tre
 python tree2PCoA.py ${proj_name}_merged.collapsed.tre ${proj_name}_refPCoA.csv ${proj_name}_refPCoA.svg
 
-
 ```
