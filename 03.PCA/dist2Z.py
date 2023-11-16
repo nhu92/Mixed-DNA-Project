@@ -12,9 +12,9 @@ def distance_to_similarity(distance_df):
     similarity_df[numeric_cols] = 1 / (1 + similarity_df[numeric_cols])
     return similarity_df
 
-def clean_up_matrix(df):
+def clean_up_matrix(df, proj_name):
     # Remove columns that do not contain "kewmix" in their names
-    cols_to_keep = [df.columns[0]] + [col for col in df.columns[1:] if "kewmix" in col]
+    cols_to_keep = [df.columns[0]] + [col for col in df.columns[1:] if proj_name in col]
     df = df[cols_to_keep]
     
     # Clean up row names by removing digits and trailing underscores
@@ -38,7 +38,7 @@ def normalize_columns(df):
 
     return df
 
-def process_matrices(directory):
+def process_matrices(directory, proj_name):
     all_matrices = []
     
     for filename in os.listdir(directory):
@@ -48,7 +48,7 @@ def process_matrices(directory):
             matrix = pd.read_csv(matrix_path)
             
             # Clean up the matrix
-            matrix = clean_up_matrix(matrix) 
+            matrix = clean_up_matrix(matrix, proj_name) 
             # Apply distance to similarity transformation
             matrix = distance_to_similarity(matrix)
 
@@ -77,10 +77,11 @@ def main():
     parser = argparse.ArgumentParser(description='Process batch of matrix files into a single similarity matrix.')
     parser.add_argument('input_dir', type=str, help='Directory containing the matrix CSV files')
     parser.add_argument('output_file', type=str, help='Output file path for the similarity matrix')
+    parser.add_argument('removing_pattern', type=str, help='Name of the target sequences to be removed')
     
     args = parser.parse_args()
     
-    final_output = process_matrices(args.input_dir)
+    final_output = process_matrices(args.input_dir, args.removing_pattern)
     final_output.to_csv(args.output_file, index=False)
     
     print(f"Processed matrices saved to {args.output_file}")
