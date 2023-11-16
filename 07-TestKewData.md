@@ -81,8 +81,7 @@ read1=
 read2=
 mega353=
 proj_name=
-ref_alignment=11_final_alignments_and_gff3 # The directory
-
+ref_alignment=11_final_alignments_and_gff3 # The directory of reference alignment
 
 # ---
 
@@ -142,6 +141,33 @@ rm loop.treelist.txt
 python dist2Z.py all_trees ./${proj_name}.summary_dist.csv SOMEPATTERN!
 python group_sum.py ./${proj_name}.summary_dist.csv ./${proj_name}.cumulative_dist.csv
 grep -v ${proj_name} ${proj_name}.cumulative_dist.csv | cut -f2 > ${proj_name}.Zaxis.csv
+
+```
+
+The pipeline of preparing the reference panel. Make sure the panel used is the same as measuring target species genetic distances.
+
+```bash
+# This is a pipeline for transforming reference alignment to a PCoA panel.
+# This pipeline is to treat with the reference panel. There is another pipeline to generate the mixed input distance matrix.
+
+
+# Constants. Please edit them to match the data structure of your own directory. Don't include the last "/" in the path.
+iqtree_dir=~/software/iqtree/iqtree-2.2.2.7-Linux/bin
+ref_alignment=11_final_alignments_and_gff3 # The directory of reference alignment
+proj_name=
+
+# A batch run for all genes:
+ls ${ref_alignment} > ./allgenes.txt
+mkdir ref_tree
+while read gene
+do
+        # Tree construction and comparison
+        ${iqtree_dir}/iqtree2 -s ${gene} -m MFP -bb 1000 -redo -pre ref_tree/${proj_name}
+        nw_ed ref_tree/${gene}.treefile 'i & b<50' o > ref_tree/${gene}.collapsed.tre
+done < ./allgenes.txt
+
+cat ref_tree/*.collapsed.tre | sed 's/_R_//g' | sed 's/_\([0-9]\{4\}\)//g' > ${proj_name}_merged.collapsed.tre
+python tree2PCoA.py ${proj_name}_merged.collapsed.tre ${proj_name}_refPCoA.csv ${proj_name}_refPCoA.svg
 
 
 ```
