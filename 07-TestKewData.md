@@ -139,7 +139,7 @@ done < ./gene_list.txt
 
 rm loop.treelist.txt
 
-python dist2Z.py all_trees ./${proj_name}.summary_dist.csv SOMEPATTERN!
+python dist2Z.py all_trees ./${proj_name}.summary_dist.csv ${proj_name}
 python group_sum.py ./${proj_name}.summary_dist.csv ./${proj_name}.cumulative_dist.csv
 grep -v ${proj_name} ${proj_name}.cumulative_dist.csv | cut -f2 > ${proj_name}.Zaxis.csv
 
@@ -189,3 +189,6 @@ For the reference trim, here is the species left and their expected phylogeny:
 
 This topology is also checked from the astral tree generated from the alignment. I will choose two arabidopsis species and one Lamiaceae species. The goal is to test the ability of sort the "best hits" onto arabidopsis and the outgroup, but not on the other species.
 
+---
+
+I end up with using only one species from the Kew - The SRR22519327: Didymophysa aucheri (to saltwater_cress). The rest two reads I selected were from the 1st dataset we had. The Thelypodium (to cabbage) and Salvia (to lavender_scallops).
