@@ -192,3 +192,20 @@ This topology is also checked from the astral tree generated from the alignment.
 ---
 
 I end up with using only one species from the Kew - The SRR22519327: Didymophysa aucheri (to saltwater_cress). The rest two reads I selected were from the 1st dataset we had. The Thelypodium (to cabbage) and Salvia (to lavender_scallops).
+
+---
+
+It's the holiday season and seems everyone is slowing down there work! 
+
+I will check the output of the Friday's batch jobs. This will give me more confident in doing the large testing stuff. If this works, I will run another test from identifying the order, towards identifying he family, and end up with smaller taxanomy groups. If this works, it will be super great for me at this moment.
+
+Fixing some pipeline issues. The reference panel has duplicated nodes I am trying to figure out.
+
+Done! I should use mean_distance_genetree.py and the dist2PCoA.py to transform the trees to the PCoA results. I used PC1-PC2 panel since the PC3 is noninformative.
+
+Fixed a folder name extraction command in target distance generator. The current one I used is:
+```bash
+find hyb_output/${proj_name} -maxdepth 1 -type d -exec basename {} \; | grep -Po "\d+" > gene_list.txt
+```
+
+I resubmitted the job. Hope everything comes out fine!
