@@ -209,3 +209,10 @@ find hyb_output/${proj_name} -maxdepth 1 -type d -exec basename {} \; | grep -Po
 ```
 
 I resubmitted the job. Hope everything comes out fine!
+
+---
+
+Come by the office to check the job status. If the results get fluently generated, I will start another one for Poaceae species. 
+
+I found one of the code is super empty. I fixed it. Now, the pipeline will continue running. This time since it only have 7 references and possible 3 mixed species, it is expected to run shorter time than the 70 species mixed with 8 unknowns.
+
