@@ -216,3 +216,6 @@ Come by the office to check the job status. If the results get fluently generate
 
 I found one of the code is super empty. I fixed it. Now, the pipeline will continue running. This time since it only have 7 references and possible 3 mixed species, it is expected to run shorter time than the 70 species mixed with 8 unknowns.
 
+---
+
+Check the result on the road.
