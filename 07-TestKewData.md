@@ -216,6 +216,27 @@ Come by the office to check the job status. If the results get fluently generate
 
 I found one of the code is super empty. I fixed it. Now, the pipeline will continue running. This time since it only have 7 references and possible 3 mixed species, it is expected to run shorter time than the 70 species mixed with 8 unknowns.
 
+Another dataset candidate:
+Astrebla lappacea (to finger_millet)
+Cyrtococcum oxyphyllum (to switchgrass)
+
+The chosen family is Poaceae, with a Poales outgroup Bromeliaceae Ananas comosus (pineapple).
+finger_millet
+barley
+oropetium_thomaeum
+rice
+bread_wheat
+stiff_brome
+chinese_silver_grass
+switchgrass
+biscuit_grass
+foxtail_millet
+sorghum
+maize
+halls_panicgrass
+pineapple
+
 ---
 
-Check the result on the road.
+Checking the results. The pipeline should be in a good shape. It is possible to run larger test about the data. Also, I am expecting the new dataset which claimed to have over 700 species well-aligned. By having this dataset, we can easily subset the reference panel to do precisely matching. Let's start with check the result from the run before the holiday.
+
