@@ -240,3 +240,6 @@ pineapple
 
 Checking the results. The pipeline should be in a good shape. It is possible to run larger test about the data. Also, I am expecting the new dataset which claimed to have over 700 species well-aligned. By having this dataset, we can easily subset the reference panel to do precisely matching. Let's start with check the result from the run before the holiday.
 
+The pipeline showed some patterns that is both expected or not. The expected species showed up in the final optima but also brought up the unexpected answer. I am thinking about the over filtering possibilities and low representative references panel could be the reason that the reference panel falls apart. I will use the unfiltered matrix to calculate the Z-axis. Additionally, the PC1-PC2 is good to differentiate the in-out groups. The PC2-PC3 should be good to differentiate the in groups down to species.
+
+The Brassicaceae panel only has 6 species, which might be too low to find the correct species. I have hope for the Poaceae panel which has 13 species.
