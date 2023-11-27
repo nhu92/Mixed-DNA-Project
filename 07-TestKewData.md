@@ -243,3 +243,8 @@ Checking the results. The pipeline should be in a good shape. It is possible to 
 The pipeline showed some patterns that is both expected or not. The expected species showed up in the final optima but also brought up the unexpected answer. I am thinking about the over filtering possibilities and low representative references panel could be the reason that the reference panel falls apart. I will use the unfiltered matrix to calculate the Z-axis. Additionally, the PC1-PC2 is good to differentiate the in-out groups. The PC2-PC3 should be good to differentiate the in groups down to species.
 
 The Brassicaceae panel only has 6 species, which might be too low to find the correct species. I have hope for the Poaceae panel which has 13 species.
+
+The Poaceae gives a nice prediction overall. The two targeted species are nearly called from the results. The final result is a little bit off but I think it is due to the big polytomy in the Poaceae tree. 
+
+Now, I will search for another Kew dataset for the test in Poaceae. The goal is to estimate the accuracy and the precision. Also, I will trim the 70 species into a simpler one to sort the species in the very beginning. The full pipeline will be submitted tomorrow.
+
