@@ -248,3 +248,11 @@ The Poaceae gives a nice prediction overall. The two targeted species are nearly
 
 Now, I will search for another Kew dataset for the test in Poaceae. The goal is to estimate the accuracy and the precision. Also, I will trim the 70 species into a simpler one to sort the species in the very beginning. The full pipeline will be submitted tomorrow.
 
+---
+
+Today's tasks:
+1. Trim the 70 species into an initial sorting list to quickly sort species into order level
+2. Make a checklist for the pipeline. Add the PC2-PC3 command lines to the pipeline.
+3. Run the coarse sorting for 2 databases we have (Poaceae and Brassicaceae)
+4. Run another Poaceae run with better species identifications.
+
