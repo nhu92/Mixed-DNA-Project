@@ -258,3 +258,8 @@ Today's tasks:
 
 I finished the pipeline and submitted to the github. Now it should be workable through Github. The guild is [here](https://github.com/gudusanjiao/Mixed-DNA-Project/blob/main/pipeline/contour_map.md). The pipeline works pretty fine currently. It takes less than 2 hours when queuing finished. The species identification on the PC1-PC2 is fairly good to sort the species into their correct places. Since it is very easy to run the command line, I will test more datasets (Why not? :) )
 
+Two more for the selected mix (6th mix):
+Oryza australiensis
+Sorghum macrospermum
+
+And for the 7th run, the Brassicaceae will be tested in the initial sorting panel.

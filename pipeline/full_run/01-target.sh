@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -J target_run_third
+#SBATCH -J target_run
 #SBATCH -p nocona
 #SBATCH -o log/%x.out
 #SBATCH -e log/%x.err
