@@ -31,6 +31,10 @@ while read line; do python pick_match_list.py ${DIRECTORY}/${line} ref/${line} $
 ## Run the pipeline
 In the `full_run` folder, there are two submission scripts. There are some constants need to be edited before submission. Also, check the python environment if any packages need to be installed. If everything is prepared and ready to go, then just simply submit as:
 ```bash
+mkdir log
 sbatch 01-target.sh
 sbatch 02-ref_panel.sh
 ```
+
+One thing need to be make sure is that the `02-ref_panel.sh` must finish before the `01-target.sh` (normally will) because the later one has the commandline to merge the output and generate the contour map. It only happens when job submission system is jammed thus the target pipeline runs way ahead than the reference panel pipeline.
+
