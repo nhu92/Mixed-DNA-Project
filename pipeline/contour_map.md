@@ -24,7 +24,6 @@ The selected panel can be generated from the following command lines:
 # prepare a list file that contains the species selected from the large reference (70 or 700+)
 DIRECTORY=
 NAMELIST=
-cd full_run
 mkdir ref
 while read line; do python pick_match_list.py ${DIRECTORY}/${line} ref/${line} ${NAMELIST}; done < gene.list.txt
 ```
