@@ -68,7 +68,7 @@ do
         while read filename
         do
                 python matrix.py -t ${filename} -o ./all_trees/${gene_name_shorter}.${i}.matrix
-		        cp ./all_trees/${gene_name_shorter}.${i}.matrix ./all_trees/${gene_name_shorter}.${i}.cleaned.csv
+		cp ./all_trees/${gene_name_shorter}.${i}.matrix ./all_trees/${gene_name_shorter}.${i}.cleaned.csv
 		((i=i+1))
         done < loop.treelist.txt
 done < ./gene_list.txt
