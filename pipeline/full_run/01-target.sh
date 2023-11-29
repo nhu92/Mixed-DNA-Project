@@ -80,6 +80,6 @@ python group_sum.py ./${proj_name}.summary_dist.csv ./${proj_name}.cumulative_di
 grep -v ${proj_name} ${proj_name}.cumulative_dist.csv | cut -d ',' -f2 > ${proj_name}.Zaxis.csv
 
 paste --delimiter=',' ${proj_name}_refPCoA.csv ${proj_name}.Zaxis.csv | sed '1d' > ${proj_name}.3d.csv
-python contour_optima.py ${proj_name}.3d.csv ${proj_name}.contour.svg
+python contour_optima_normalized.py ${proj_name}.3d.csv ${proj_name}.contour.norm.svg -0.33
 paste --delimiter=',' ${proj_name}_refPCoA23.csv ${proj_name}.Zaxis.csv | sed '1d' > ${proj_name}.3d23.csv
-python contour_optima.py ${proj_name}.3d23.csv ${proj_name}.contour23.svg
+python contour_optima_normalized.py ${proj_name}.3d23.csv ${proj_name}.contour23.norm.svg -0.33
