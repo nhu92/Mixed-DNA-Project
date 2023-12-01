@@ -264,7 +264,14 @@ Sorghum macrospermum
 
 And for the 7th run, the Brassicaceae will be tested in the initial sorting panel.
 
+The 8th run is 2ndMix to eudicots panel. The 9th run is the 3ndMix to trimmed panel v2. The 10th run is the soil(4th Mix) to the trimed panel v2. The trimmed panel v2 is the updated panel to the v1 where the representative species is selected to ensure at least have a reasonable numbers of sp
+
 ---
 
-The run is very smooth now. What I can do now is to test the pipeline parameters with multiple dataset, and, with one dataset but fine tuning the knobs. I will use a matrix to test 2 major inputs for one dataset. I will test 4 levels of unknown species + one extreme mix (2, 3, 4, 5, 20+). And I will use different thresholds for contour selection (0, -0.2, -0.33, -0.5). It will be a 5x4 table showing the changings. Also, I will also test the way to spread the reference panel better. I find that if a reference is the odd one on its side, it will only depend on the threshold settings. At least we can spread the panel and increase the searching radius (now is max/20). 
+The run is very smooth now. What I can do now is to test the pipeline parameters with multiple dataset, and, with one dataset but fine tuning the knobs. I will use a matrix to test 2 major inputs for one dataset. I will test 4 levels of unknown species + one extreme mix (2, 3, 4, 5, 20+). And I will use different thresholds for contour selection (0, -0.2, -0.33, -0.5). It will be a 5x4 table showing the changes. Also, I will also test the way to spread the reference panel better. I find that if a reference is the odd one on its side, it will only depend on the threshold settings. At least we can spread the panel and increase the searching radius (now is max/20). 
 
+---
+
+The testing plan will be run in several parallel lines. The main line is to test the initial species sorting panel. The species choice is from various clades to testing the sorting process. I will evaluate the True Positives (TP), True Negatives (TN), False Positives (FP), and the False Negatives (FN). The other line will be the ability to run deep lineages searching. I will evaluate the parameter space in Poaceae to see which combination performs better in this situation.
+
+After I searched for the parameters in each lines, I will choose a value from the confusion matrix to calculate the "effectiveness" of the parameter choices. 
