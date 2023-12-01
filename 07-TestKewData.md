@@ -263,3 +263,8 @@ Oryza australiensis
 Sorghum macrospermum
 
 And for the 7th run, the Brassicaceae will be tested in the initial sorting panel.
+
+---
+
+The run is very smooth now. What I can do now is to test the pipeline parameters with multiple dataset, and, with one dataset but fine tuning the knobs. I will use a matrix to test 2 major inputs for one dataset. I will test 4 levels of unknown species + one extreme mix (2, 3, 4, 5, 20+). And I will use different thresholds for contour selection (0, -0.2, -0.33, -0.5). It will be a 5x4 table showing the changings. Also, I will also test the way to spread the reference panel better. I find that if a reference is the odd one on its side, it will only depend on the threshold settings. At least we can spread the panel and increase the searching radius (now is max/20). 
+
