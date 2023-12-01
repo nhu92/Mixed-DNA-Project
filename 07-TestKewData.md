@@ -275,3 +275,40 @@ The run is very smooth now. What I can do now is to test the pipeline parameters
 The testing plan will be run in several parallel lines. The main line is to test the initial species sorting panel. The species choice is from various clades to testing the sorting process. I will evaluate the True Positives (TP), True Negatives (TN), False Positives (FP), and the False Negatives (FN). The other line will be the ability to run deep lineages searching. I will evaluate the parameter space in Poaceae to see which combination performs better in this situation.
 
 After I searched for the parameters in each lines, I will choose a value from the confusion matrix to calculate the "effectiveness" of the parameter choices. 
+
+The testing sample will be:
+1. Plantago, Descurainia
+2. Plantago, Descurainia, Astragalus
+3. Plantago, Descurainia, Astragalus, Lotus1
+4. Plantago, Descurainia, Astragalus, Lotus1, Salvia
+5. Plantago, Descurainia, Astragalus, Lotus1, Salvia, ++ Lotus2, Silene, Thelypodium
+6. All above ++ Magnoliaceae Liriodendron chinense, (stout_camphor), Zingiberaceae Aulotandra kmaerunensis, (banana), Cucurbitaceae Cucurbitella asperata(cucumber), Malvaceae Dicarpidium monoicum (cotton), Polygonaceae Rumex spinosus(spinach? some Caryophyllales species), Solanaceae Grammosolen dixonii (tomato), Oliveria decumbens (carrot)
+
+Let me submit these jobs on the queue.
+
+All submitted!
+```
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+          12418809    nocona 4spref_p      nhu  R      13:46      1 cpu-23-10
+          12418780    nocona 3sptarge      nhu  R      16:53      1 cpu-24-16
+          12418755    nocona 2sptarge      nhu  R      19:34      1 cpu-26-49
+          12418757    nocona 2spref_p      nhu  R      19:34      1 cpu-24-34
+          12418182    nocona INTERACT      nhu  R      55:38      1 cpu-23-26
+          12418897    nocona 8spref_p      nhu  R       4:37      1 cpu-25-22
+          12418843    nocona 5sptarge      nhu  R      10:10      1 cpu-24-3
+          12418844    nocona 5spref_p      nhu  R      10:10      1 cpu-25-23
+          12418825    nocona 3spref_p      nhu  R      12:04      1 cpu-23-10
+          12418824    nocona 4sptarge      nhu  R      12:13      1 cpu-24-2
+          12418954    nocona 8sptarge      nhu  R       0:02      1 cpu-24-21
+          12418950    nocona 15spref_      nhu  R       0:20      1 cpu-24-20
+          12418948    nocona 15sptarg      nhu  R       0:22      1 cpu-24-20
+```
+
+Try to submit the second testing line for Poaceae.
+1. Oryza australiensis, Sorghum macrospermum
+2. Oryza australiensis, Sorghum macrospermum, Astrebla lappacea (to finger_millet)
+3. Oryza australiensis, Sorghum macrospermum, Astrebla lappacea (to finger_millet), Cyrtococcum oxyphyllum (to switchgrass)
+4. Oryza australiensis, Sorghum macrospermum, Astrebla lappacea (to finger_millet), Cyrtococcum oxyphyllum (to switchgrass), Poaceae: Gigantochloa atter ERR7621555 (to stiff_brome)
+
+Done! Waiting for the results!
+
