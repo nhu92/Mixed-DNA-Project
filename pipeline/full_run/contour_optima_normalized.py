@@ -17,7 +17,7 @@ def find_local_maxima_normalized(x, y, z, threshold):
     maxima_points = []
     for i in range(len(z_normalized)):
         indices = tree.query_ball_point([x[i], y[i]], r=radius)
-        if all(z_normalized[i] >= z_normalized[j] for j in indices) and z_normalized[i] >= threshold:
+        if all(z_normalized[i] >= z_normalized[j] for j in indices) and z_normalized[i] >= (z_normalized.mean() + threshold * z_normalized.std()):
             maxima_points.append((x[i], y[i]))
     return maxima_points
 
