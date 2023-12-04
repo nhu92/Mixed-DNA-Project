@@ -11,7 +11,7 @@ def load_data(file_path):
 
 def find_local_maxima_normalized(x, y, z, threshold):
     # Normalizing Z values
-    z_normalized = 2 * ((z - np.min(z)) / (np.max(z) - np.min(z))) - 1
+    z_normalized = (z - z.mean() ) / z.std()
     tree = KDTree(list(zip(x, y)))
     radius = (max(x) - min(x)) / 20
     maxima_points = []
