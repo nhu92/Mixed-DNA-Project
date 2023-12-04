@@ -331,3 +331,5 @@ contour_optima_normalized.py
 b01-rescue.sh
 ```
 
+I found that the transform the final Z-axis into 0-1 frame then normalize it would give a better operation to considering teh true hits. Also, it seems that the threshold choice is highly related to how many species in the mix. Thus, it is necessary to figure out some methods to estimate how many species in the mixed samples to form a regression to the threshold choice.
+
