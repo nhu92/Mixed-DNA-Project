@@ -30,7 +30,7 @@ def clean_up_matrix(df, proj_name):
     for col in df.columns[1:]:  # Skip the first column as it's often non-numeric (like names, IDs, etc.)
         col_mean = df[col].mean()
         col_sd = df[col].std()
-        df[col] = df[col].apply(lambda x: 1 if x < (col_mean - col_sd) else x)
+        df[col] = df[col].apply(lambda x: 1 if x > (col_mean - col_sd) else x)
 
     return df
 
