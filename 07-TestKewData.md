@@ -312,3 +312,7 @@ Try to submit the second testing line for Poaceae.
 
 Done! Waiting for the results!
 
+---
+
+Generally the run is fine. There is a small issue in the grouping code that remove all the digitals from the species ID, which make the removal of targeted species in the reference panel failed. I will fix this either by changing the code or just simply change the run name of each into a non-digit job name.
+
