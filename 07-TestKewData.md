@@ -319,3 +319,15 @@ Generally the run is fine. There is a small issue in the grouping code that remo
 I change the code to use "NODE" as the keyword for removing the target hit from the Z-axis file. I reviewed the results then found out that the hazelnut showed higher hits compare to some minor true hits while most of the trees have no closed target sequences associated with hazelnuts. The issue here is because the branch length of the hazelnut is shorter than other lineages. Thus, when there is only one hit to the reference panel, the hazelnut will gain less negative similarities compare to other lineages then been brought up in the final cumulative similarity matrix. To fix this, I came up with a hard modification way to even up the non-related references. I change the `dist2Z.py` code to calculate the `(col_mean - col_sd)` for each target column in the distance matrices from the exons tree. All of the target-reference distance is larger than the value above will be set to 1 (then in similarity transformation they will be transformed into 0.5). This will set all the irrelevant reference into the same number then even out the final cumulative results.
 
 I also changed the final contour map code. The local optima search function used to have a too simple normalizing equation and now was changed to `(z - z.mean()) / z.std()` to perform a true normalizing. I will keep testing this part.
+
+It seems that 0.5 as the threshold for `(z_normalized.mean() + threshold * z_normalized.std())` is good for 2 species in the mix.
+
+Here I update the code need to be replaced for all the testing runs:
+```
+group_sum.py
+dist2Z.py
+contour_optima_normalized.py
+01-target.sh
+b01-rescue.sh
+```
+
