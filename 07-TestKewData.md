@@ -333,3 +333,7 @@ b01-rescue.sh
 
 I found that the transform the final Z-axis into 0-1 frame then normalize it would give a better operation to considering teh true hits. Also, it seems that the threshold choice is highly related to how many species in the mix. Thus, it is necessary to figure out some methods to estimate how many species in the mixed samples to form a regression to the threshold choice.
 
+---
+
+From yesterday's end day results, the carrot constantly showed up at the boundary of True Positive/False Positive, which caused by the super negative value after normalization of the non-hit references while missing reference carrot were set to 0 which is not quite negative. To deal with this issue, I need to fix the distance to similarity transformation to set the missing data as 0 and the non-hit closed to 0 too.
+
