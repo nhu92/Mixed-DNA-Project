@@ -15,10 +15,14 @@ def distance_to_similarity(distance_df):
 def clean_up_matrix(df, proj_name):
     """
     Modified function to clean up a matrix (dataframe).
-    It keeps only columns containing 'proj_name' in their names and cleans up row names.
-    Additionally, it tests each cell in every column, checking if its value is smaller than the column's mean minus 
-    its standard deviation (col_mean - col_sd). If a cell fails this test, its value will be set to 1.
+    It removes rows where row names contain 'proj_name', keeps only columns containing 'proj_name' in their names, 
+    and cleans up row names. Additionally, it tests each cell in every column, checking if its value is smaller 
+    than the column's mean minus its standard deviation (col_mean - 1.96 col_sd). If a cell fails this test, 
+    its value will be set to 999.
     """
+    # Remove rows where row names contain the project name
+    df = df[~df[df.columns[0]].str.contains(proj_name)]
+
     # Keep columns related to the project name
     cols_to_keep = [df.columns[0]] + [col for col in df.columns[1:] if proj_name in col]
     df = df[cols_to_keep]
@@ -30,9 +34,10 @@ def clean_up_matrix(df, proj_name):
     for col in df.columns[1:]:  # Skip the first column as it's often non-numeric (like names, IDs, etc.)
         col_mean = df[col].mean()
         col_sd = df[col].std()
-        df[col] = df[col].apply(lambda x: 999 if x > (col_mean - col_sd) else x)
+        df[col] = df[col].apply(lambda x: 999 if x > (col_mean - 1.96 * col_sd) else x)
 
     return df
+
 
 
 def normalize_columns(df):
