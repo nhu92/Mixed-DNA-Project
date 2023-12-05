@@ -337,3 +337,7 @@ I found that the transform the final Z-axis into 0-1 frame then normalize it wou
 
 From yesterday's end day results, the carrot constantly showed up at the boundary of True Positive/False Positive, which caused by the super negative value after normalization of the non-hit references while missing reference carrot were set to 0 which is not quite negative. To deal with this issue, I need to fix the distance to similarity transformation to set the missing data as 0 and the non-hit closed to 0 too.
 
+I temperately removed the normalization in the `dist2Z.py` code to set the missing data and the non-hit reference similar (non-hit will be 1/1000 and missing will be 0 by default). Hope this will solve the high missing data noise.
+
+I ran all the runs again. I find that the current method is nice when the mixed samples is below 5. It will lose some unknown species when increase the species in the mix. Also, it may increase the false positive when the target reference is missing in some exons. I will continue modifying the `dist2Z.py` by removing all the targeted sequences from the reference panel when calculating the column means and standard deviation. To reduce the false positive rate, I will make the judgement statement more stringent (from Mean + SD to Mean + 1.96SD). I will test if this is better enough to solve the issue. If not, I will then change the similarity equation to a let the similarity go weaker.
+
