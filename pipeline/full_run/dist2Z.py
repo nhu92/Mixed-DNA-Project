@@ -30,7 +30,7 @@ def clean_up_matrix(df, proj_name):
     for col in df.columns[1:]:  # Skip the first column as it's often non-numeric (like names, IDs, etc.)
         col_mean = df[col].mean()
         col_sd = df[col].std()
-        df[col] = df[col].apply(lambda x: 1 if x > (col_mean - col_sd) else x)
+        df[col] = df[col].apply(lambda x: 999 if x > (col_mean - col_sd) else x)
 
     return df
 
@@ -66,9 +66,9 @@ def process_matrices(directory, proj_name):
             matrix = distance_to_similarity(matrix)
 
             # Check if there are any numeric columns left before normalization
-            if not matrix.select_dtypes(include=[np.number]).empty:
-                # Normalize the matrix
-                matrix = normalize_columns(matrix)
+#             if not matrix.select_dtypes(include=[np.number]).empty:
+#                 # Normalize the matrix
+#                 matrix = normalize_columns(matrix)
 
             # Append to the list of all matrices
             all_matrices.append(matrix)
