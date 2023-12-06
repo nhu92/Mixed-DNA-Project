@@ -341,3 +341,7 @@ I temperately removed the normalization in the `dist2Z.py` code to set the missi
 
 I ran all the runs again. I find that the current method is nice when the mixed samples is below 5. It will lose some unknown species when increase the species in the mix. Also, it may increase the false positive when the target reference is missing in some exons. I will continue modifying the `dist2Z.py` by removing all the targeted sequences from the reference panel when calculating the column means and standard deviation. To reduce the false positive rate, I will make the judgement statement more stringent (from Mean + SD to Mean + 1.96SD). I will test if this is better enough to solve the issue. If not, I will then change the similarity equation to a let the similarity go weaker.
 
+---
+
+Initial sorting run can be done by bulk similarity + harsh filtering since the reference panel are distinct enough. However, the Poaceae panel is quite similar to each other thus we still need the normalization plus a looser standard to filter the non-hit species.
+
