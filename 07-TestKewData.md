@@ -345,3 +345,8 @@ I ran all the runs again. I find that the current method is nice when the mixed 
 
 Initial sorting run can be done by bulk similarity + harsh filtering since the reference panel are distinct enough. However, the Poaceae panel is quite similar to each other thus we still need the normalization plus a looser standard to filter the non-hit species.
 
+---
+
+I will run multiple runs for the initial sorting process. The goal is to find a suitable parameter in each stage and output some statistics for checking the accuracy of the pipeline.
+
+ 
