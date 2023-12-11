@@ -357,3 +357,5 @@ The first tool is done. `mix_generator.py` will read a folder with pre-named FAS
 
 I am searching for candidate species on Kew and make a mix out of them. There is a table for the detailed information of these reads and will be used for the final test.
 
+Made 30 candidates from the Kew. Then, I ran this: ```for i in {1..100}; do python mix_generator.py ../reads_pool/ ../reads_mix/; done``` to generate the random mix file for test.
+
