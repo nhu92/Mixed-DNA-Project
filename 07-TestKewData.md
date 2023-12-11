@@ -359,3 +359,4 @@ I am searching for candidate species on Kew and make a mix out of them. There is
 
 Made 30 candidates from the Kew. Then, I ran this: ```for i in {1..100}; do python mix_generator.py ../reads_pool/ ../reads_mix/; done``` to generate the random mix file for test.
 
+The second tool is done by 3 bash scripts. They will create multiple testing folders, modifying submission scripts, and submit them batch by batch. To reduce the running time, I reduce the 353 target genes to ~80, selected from the most shared genes among 70 species reference panel.
