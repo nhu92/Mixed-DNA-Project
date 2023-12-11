@@ -349,4 +349,11 @@ Initial sorting run can be done by bulk similarity + harsh filtering since the r
 
 I will run multiple runs for the initial sorting process. The goal is to find a suitable parameter in each stage and output some statistics for checking the accuracy of the pipeline.
 
- 
+---
+
+There will be 4 tools to be developed. 1) A tool to generate a random mix from an input data set; 2) A tool to initializing multiple testing array; 3) A tool to read the output of each run and perform multiple testing on the results; 4) A tool to summarize all the output and plot the result (in R?).
+
+The first tool is done. `mix_generator.py` will read a folder with pre-named FASTQ reads and generate random mixes out of it. The mean mixed number of species is set to be 5 and followed with a Poisson distribution.
+
+I am searching for candidate species on Kew and make a mix out of them. There is a table for the detailed information of these reads and will be used for the final test.
+
