@@ -362,3 +362,10 @@ Made 30 candidates from the Kew. Then, I ran this: ```for i in {1..100}; do pyth
 The second tool is done by 3 bash scripts. They will create multiple testing folders, modifying submission scripts, and submit them batch by batch. To reduce the running time, I reduce the 353 target genes to ~80, selected from the most shared genes among 70 species reference panel.
 
 A small issue was found on the phylo tree construction code. It will search for any combination of numbers in the proj_name. I will fix it later but currently it just affect the efficiency.
+
+---
+
+The small issue is fixed. Also, for the initial sorting panel. The mean - 1.96 * sd is necessary. 
+
+I am initializing a code to automatically test different parameters and summarize them into a single table. Then, we can merge all tables and play with some statistics and plotting.
+
