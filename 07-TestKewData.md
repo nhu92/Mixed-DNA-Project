@@ -369,3 +369,4 @@ The small issue is fixed. Also, for the initial sorting panel. The mean - 1.96 *
 
 I am initializing a code to automatically test different parameters and summarize them into a single table. Then, we can merge all tables and play with some statistics and plotting.
 
+The evaluation code will output a series of values in t he confusion table, including TPR, TNR, FPR, FNR, PPV, NPV, ACC, etc. These values will be used to select a nice delta value for function mean + delta * sd. I will plot some of these values, also identify the bad samples, classify the valid input. Later I will also link these information to the input reads stats to see the coverage.

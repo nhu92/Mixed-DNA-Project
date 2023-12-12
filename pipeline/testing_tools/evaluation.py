@@ -1,4 +1,7 @@
-# Function to perform the analysis with two input files and save the output as a CSV file
+import argparse
+import pandas as pd
+import numpy as np
+
 def analyze_files(cumulative_csv_path, candidates_tsv_path, output_csv_path):
     # Reading the cumulative CSV file
     df = pd.read_csv(cumulative_csv_path)
@@ -29,20 +32,32 @@ def analyze_files(cumulative_csv_path, candidates_tsv_path, output_csv_path):
         FP = len(set(row_names) - set(true_related_species))
         TN = len(set(df['row_name']) - set(row_names) - set(true_related_species))
         FN = len(set(true_related_species) - set(row_names))
+        PP = len(true_related_species)
+        NN = len(set(df['row_name']) - set(true_related_species))
 
-        FPR = FP / (FP + TN) if (FP + TN) > 0 else 0
-        TNR = TN / (TN + FP) if (TN + FP) > 0 else 0
-        FNR = FN / (FN + TP) if (FN + TP) > 0 else 0
         TPR = TP / len(true_related_species) if true_related_species else 0
+        FNR = 1 - TPR
+        TNR = TN / NN
+        FPR = 1 - TNR
+
+        # Some other statistics
+        PPV = TP / (TP + FP) if (TP + FP) > 0 else 0
+        NPV = TN / (FN + TN) if (FN + TN) > 0 else 0
+        ACC = (TP + TN) / (PP + NN)
+
 
         table_results.append({
+            'Individual IDs': 'x'.join([str(id) for id in project_ids]),
             'Individual Number': individuals_count,
             'Delta Value': round(delta, 1),
             'Number of Rows Passed': len(row_names),
             'True Positive Rate': TPR,
             'False Positive Rate': FPR,
             'True Negative Rate': TNR,
-            'False Negative Rate': FNR
+            'False Negative Rate': FNR,
+            'Positive Predictive Value': PPV,
+            'Negative Predictive Value': NPV,
+            'Accuracy': ACC
         })
 
     # Creating a DataFrame from the results and saving it as a CSV file
@@ -50,6 +65,13 @@ def analyze_files(cumulative_csv_path, candidates_tsv_path, output_csv_path):
     results_df.to_csv(output_csv_path, index=False)
     return "Analysis complete. Results saved to: " + output_csv_path
 
-# Example usage of the function
-# analyze_files('/path/to/cumulative_dist.csv', '/path/to/candidates.tsv', '/path/to/output.csv')
-# Note: Replace '/path/to/...' with actual file paths when using this function.
+# Setting up argparse for command line arguments
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Process cumulative distribution and candidates files.')
+    parser.add_argument('cumulative_csv', type=str, help='Path to the cumulative CSV file')
+    parser.add_argument('candidates_tsv', type=str, help='Path to the candidates TSV file')
+    parser.add_argument('output_csv', type=str, help='Path for the output CSV file')
+    
+    args = parser.parse_args()
+    result_message = analyze_files(args.cumulative_csv, args.candidates_tsv, args.output_csv)
+    print(result_message)
