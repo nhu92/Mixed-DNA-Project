@@ -66,9 +66,9 @@ def analyze_files(cumulative_csv_path, candidates_tsv_path, output_csv_path):
         PP = len(true_related_species)
         NN = len(set(df['row_name']) - set(true_related_species))
 
-        TPR = TP / len(true_related_species) if true_related_species else 0
+        TPR = TP / (TP + FN) if (TP + FN) > 0 else 0
         FNR = 1 - TPR
-        TNR = TN / NN
+        TNR = TN / (TN + FP) if (TN + FP) > 0 else 0
         FPR = 1 - TNR
 
         # Some other statistics
