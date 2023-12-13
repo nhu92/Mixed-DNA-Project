@@ -80,7 +80,7 @@ def analyze_files(cumulative_csv_path, candidates_tsv_path, output_csv_path):
         table_results.append({
             'Individual IDs': 'x'.join([str(id) for id in project_ids]),
             'Individual Number': individuals_count,
-            'Delta Value': round(alpha, 4),
+            'Alpha Value': round(alpha, 4),
             'Number of Rows Passed': len(row_names),
             'True Positive Rate': TPR,
             'False Positive Rate': FPR,
