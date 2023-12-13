@@ -18,7 +18,7 @@ def analyze_files(cumulative_csv_path, candidates_tsv_path, output_csv_path):
     original_data = df['total_value']
     
     # Alpha values to test
-    alpha_values = [0.0001, 0.001, 0.01, 0.05, 0.1]
+    alpha_values = [0.0001, 0.001, 0.005, 0.01, 0.05, 0.1]
     
     # Dictionary to store the final results
     results_item = {}
@@ -26,14 +26,15 @@ def analyze_files(cumulative_csv_path, candidates_tsv_path, output_csv_path):
     # Analysis for each alpha value
     for alpha in alpha_values:
         data_sorted = df.sort_values(by='total_value', ascending=False)
-        significant_change = False
-        row_names = []
+        row_names = []  # List to store removed rows as outliers
     
         # Iteratively remove the highest 'total_value' and perform one-tailed t-test
         for i in range(len(data_sorted)):
             if not data_sorted.empty:
-                current_mean = data_sorted['total_value'].mean()
+                removed_row = data_sorted.iloc[0]
                 data_sorted = data_sorted.iloc[1:]
+                row_names.append(removed_row['row_name'])
+
     
                 # Perform one-tailed t-test
                 if len(data_sorted) > 1:
@@ -44,13 +45,11 @@ def analyze_files(cumulative_csv_path, candidates_tsv_path, output_csv_path):
     
                 # Check for significant difference
                 if one_tailed_p_value < alpha:
-                    significant_change = True
-                    row_names = data_sorted['row_name'].tolist()
                     break
 
         # Add the results to the final dictionary
         results_item[alpha] = row_names
-    
+        
     # Reading the candidates TSV file
     candidates_df = pd.read_csv(candidates_tsv_path, sep='\t')
     project_ids = [int(id) for id in project_name.split('x')]
@@ -60,6 +59,7 @@ def analyze_files(cumulative_csv_path, candidates_tsv_path, output_csv_path):
     table_results = []
     for alpha, row_names in results_item.items():
         TP = len(set(row_names).intersection(set(true_related_species)))
+        print(row_names, true_related_species)
         FP = len(set(row_names) - set(true_related_species))
         TN = len(set(df['row_name']) - set(row_names) - set(true_related_species))
         FN = len(set(true_related_species) - set(row_names))
