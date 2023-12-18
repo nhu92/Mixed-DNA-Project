@@ -370,3 +370,9 @@ The small issue is fixed. Also, for the initial sorting panel. The mean - 1.96 *
 I am initializing a code to automatically test different parameters and summarize them into a single table. Then, we can merge all tables and play with some statistics and plotting.
 
 The evaluation code will output a series of values in t he confusion table, including TPR, TNR, FPR, FNR, PPV, NPV, ACC, etc. These values will be used to select a nice delta value for function mean + delta * sd. I will plot some of these values, also identify the bad samples, classify the valid input. Later I will also link these information to the input reads stats to see the coverage.
+
+---
+
+The accuracy of this pipeline is relatively fine. I will calculate a statistic value showing the probability of a true positive to be missed and the probability of a true negative to be called.
+
+I want to check two alternative changes to this pipeline. 1) The way we compare our target species to the reference. We need a matrix that represent a species relationship to others. By comparing this matrix to the reference species matrices we could find a closed one. I will think how differ this is from our original clustering method. 2) Inspired from meeting with Dr. Chris Jackson, what if I filtered the exons that is shorter than 40bp? I do not think the shorter exons should have the same (or even higher?) weights compared to the long exons. Even this may not make the pipeline more accurate, it will at least reduce the computational time.
