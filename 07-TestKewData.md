@@ -204,6 +204,7 @@ Fixing some pipeline issues. The reference panel has duplicated nodes I am tryin
 Done! I should use mean_distance_genetree.py and the dist2PCoA.py to transform the trees to the PCoA results. I used PC1-PC2 panel since the PC3 is noninformative.
 
 Fixed a folder name extraction command in target distance generator. The current one I used is:
+
 ```bash
 find hyb_output/${proj_name} -maxdepth 1 -type d -exec basename {} \; | grep -Po "\d+" > gene_list.txt
 ```
@@ -251,6 +252,7 @@ Now, I will search for another Kew dataset for the test in Poaceae. The goal is 
 ---
 
 Today's tasks:
+
 1. Trim the 70 species into an initial sorting list to quickly sort species into order level
 2. Make a checklist for the pipeline. Add the PC2-PC3 command lines to the pipeline.
 3. Run the coarse sorting for 2 databases we have (Poaceae and Brassicaceae)
@@ -277,6 +279,7 @@ The testing plan will be run in several parallel lines. The main line is to test
 After I searched for the parameters in each lines, I will choose a value from the confusion matrix to calculate the "effectiveness" of the parameter choices. 
 
 The testing sample will be:
+
 1. Plantago, Descurainia
 2. Plantago, Descurainia, Astragalus
 3. Plantago, Descurainia, Astragalus, Lotus1
@@ -365,7 +368,7 @@ A small issue was found on the phylo tree construction code. It will search for 
 
 ---
 
-The small issue is fixed. Also, for the initial sorting panel. The mean - 1.96 * sd is necessary. 
+The small issue is fixed. Also, for the initial sorting panel. The mean - 1.96 * sd is necessary.
 
 I am initializing a code to automatically test different parameters and summarize them into a single table. Then, we can merge all tables and play with some statistics and plotting.
 
@@ -377,7 +380,8 @@ The accuracy of this pipeline is relatively fine. I will calculate a statistic v
 
 I want to check two alternative changes to this pipeline. 1) The way we compare our target species to the reference. We need a matrix that represent a species relationship to others. By comparing this matrix to the reference species matrices we could find a closed one. I will think how differ this is from our original clustering method. 2) Inspired from meeting with Dr. Chris Jackson, what if I filtered the exons that is shorter than 40bp? I do not think the shorter exons should have the same (or even higher?) weights compared to the long exons. Even this may not make the pipeline more accurate, it will at least reduce the computational time.
 
-
 ---
 
 New year! Back to work. I will think about the possibility of the first thought and test the second. (I got my computer reset and I need to reinstall everything to my new system.)
+
+Through the calculation from scratch, it seems that the first thought is not that useful when we have the external branches in the distance matrix.
