@@ -4,9 +4,10 @@
 
 ---
 
-The first dataset I want to sample from the Kew is a widely distributed cluster containing 7 different species from different major clades. The purpose of this work is to test the ability of our pipeline to correctly sort different species into their correct clades. 
+The first dataset I want to sample from the Kew is a widely distributed cluster containing 7 different species from different major clades. The purpose of this work is to test the ability of our pipeline to correctly sort different species into their correct clades.
 
 The species I chose from the Kew are (what they should be closed to is in the parentheses):
+
 1. Magnoliaceae Liriodendron chinense   (stout_camphor)
 2. Zingiberaceae Aulotandra kmaerunensis    (banana)
 3. Cucurbitaceae Cucurbitella asperata  (cucumber)
@@ -25,6 +26,7 @@ fasttree -gtr -gamma -nt alignment.fasta > output.tre
 ```
 
 Also recording the command lines I used from HybPiper output to the exon extractions:
+
 ```bash
 ls -d */ | grep -Po "\d+" > ../../scripts/gene_list.txt
 cd ../../scripts/gene_list.txt
@@ -35,8 +37,7 @@ I found something wrong when we combine all the distance into a single matrix. T
 
 ---
 
-Currently, I was running the distance on each exons only. The statistics were pulled from the exon level. I will rank the closed related species from each output then merge together to give a probability based on the frequency (and maybe the read size?). 
-
+Currently, I was running the distance on each exons only. The statistics were pulled from the exon level. I will rank the closed related species from each output then merge together to give a probability based on the frequency (and maybe the read size?).
 
 The output is giving somehow prediction with some variation (it should be variation not mis-identification since no species were found in the wrong related species group). The frequency is not quite related to reads size since tomato should have lowest frequency but on the contrary it has the highest. I would like to think about a strategy to evaluate the variance in the distance matrix. I will try the normalizing way to transform the matrix (to similarity then normalize). Then, giving a probability distribution of a closed related species, what is the probability the unknown being identified as the same species and what is the CI?
 
@@ -48,7 +49,7 @@ The first key step for this thought is to find a good way to make the reference 
 
 It looks like a sigmoid transformation with a standardization is nice for our data transformation. From PCoA analysis, the PC1-PC3 panel gave a good distribution of the species which would be useful when I overlay the distance of unknown exons onto it. Now, lets move to generate those unknown exons part.
 
-Generally, I want to apply a normal transformation to each column of unknown exons to make them add-able. To aggregate all the matrices, I need to fix the rows and columns to match up the correct names for the sum up. The output will be used as the Z-axis of the contour map. I will test the normal transformation approach. If it does not work, I might try some other transformation to expand the data differences. 
+Generally, I want to apply a normal transformation to each column of unknown exons to make them add-able. To aggregate all the matrices, I need to fix the rows and columns to match up the correct names for the sum up. The output will be used as the Z-axis of the contour map. I will test the normal transformation approach. If it does not work, I might try some other transformation to expand the data differences.
 
 The normalized matrix should be positive (? maybe- cause it does not affect the contour plot). (The code is very specified need to make it for common runs.)
 
@@ -57,6 +58,7 @@ The normalized matrix should be positive (? maybe- cause it does not affect the 
 Let me summarize the current workflow of this testing:
 
 For testing mix:
+
 1. Trim raw reads using fastp
 2. Run HybPiper
 3. Extract the exon based on the exonerate stats
@@ -66,12 +68,14 @@ For testing mix:
 7. Find local optima
 
 For reference panel:
+
 1. Trimal, iqtree -MFP
 2. Clean up gene trees, merge
 3. Mean genetic distance matrix, some data transformation
 4. PCoA lower dimensions, for the X-Y panel
 
 I will compile these steps into a shell script file.
+
 ```bash
 # This is a pipeline for analyzing raw reads from a mixed sample to the identification.
 # This pipeline is to treat with the mixed reads. There is another pipeline to generate the reference panel.
@@ -174,9 +178,10 @@ python tree2PCoA.py ${proj_name}_merged.collapsed.tre ${proj_name}_refPCoA.csv $
 
 Now, I am moving the testing the 2nd Kew dataset - the "Brassicaceae medley".
 
-The Brassicaceae has 6 reference species in the 70 species alignment. I want to test the power of our pipeline to precisely estimate the species within a small clade. Also, I want to see if the method can successfully exclude the outgroup from the mixed data. I will first trim the 70 species alignment into 6 Brassicaceae species + 1 outgroup (lavender_scallops should be a good one, not too far but quite distinct). Also, I will mix 3 species from Kew tree of life. 2 from different clades of Brassicaceae and 1 from outgroup. 
+The Brassicaceae has 6 reference species in the 70 species alignment. I want to test the power of our pipeline to precisely estimate the species within a small clade. Also, I want to see if the method can successfully exclude the outgroup from the mixed data. I will first trim the 70 species alignment into 6 Brassicaceae species + 1 outgroup (lavender_scallops should be a good one, not too far but quite distinct). Also, I will mix 3 species from Kew tree of life. 2 from different clades of Brassicaceae and 1 from outgroup.
 
 For the reference trim, here is the species left and their expected phylogeny:
+
 1. arabidopsis
 2. rockcress
 3. shepherds_purse
@@ -195,7 +200,7 @@ I end up with using only one species from the Kew - The SRR22519327: Didymophysa
 
 ---
 
-It's the holiday season and seems everyone is slowing down there work! 
+It's the holiday season and seems everyone is slowing down there work!
 
 I will check the output of the Friday's batch jobs. This will give me more confident in doing the large testing stuff. If this works, I will run another test from identifying the order, towards identifying he family, and end up with smaller taxanomy groups. If this works, it will be super great for me at this moment.
 
@@ -213,7 +218,7 @@ I resubmitted the job. Hope everything comes out fine!
 
 ---
 
-Come by the office to check the job status. If the results get fluently generated, I will start another one for Poaceae species. 
+Come by the office to check the job status. If the results get fluently generated, I will start another one for Poaceae species.
 
 I found one of the code is super empty. I fixed it. Now, the pipeline will continue running. This time since it only have 7 references and possible 3 mixed species, it is expected to run shorter time than the 70 species mixed with 8 unknowns.
 
@@ -245,7 +250,7 @@ The pipeline showed some patterns that is both expected or not. The expected spe
 
 The Brassicaceae panel only has 6 species, which might be too low to find the correct species. I have hope for the Poaceae panel which has 13 species.
 
-The Poaceae gives a nice prediction overall. The two targeted species are nearly called from the results. The final result is a little bit off but I think it is due to the big polytomy in the Poaceae tree. 
+The Poaceae gives a nice prediction overall. The two targeted species are nearly called from the results. The final result is a little bit off but I think it is due to the big polytomy in the Poaceae tree.
 
 Now, I will search for another Kew dataset for the test in Poaceae. The goal is to estimate the accuracy and the precision. Also, I will trim the 70 species into a simpler one to sort the species in the very beginning. The full pipeline will be submitted tomorrow.
 
@@ -270,13 +275,13 @@ The 8th run is 2ndMix to eudicots panel. The 9th run is the 3ndMix to trimmed pa
 
 ---
 
-The run is very smooth now. What I can do now is to test the pipeline parameters with multiple dataset, and, with one dataset but fine tuning the knobs. I will use a matrix to test 2 major inputs for one dataset. I will test 4 levels of unknown species + one extreme mix (2, 3, 4, 5, 20+). And I will use different thresholds for contour selection (0, -0.2, -0.33, -0.5). It will be a 5x4 table showing the changes. Also, I will also test the way to spread the reference panel better. I find that if a reference is the odd one on its side, it will only depend on the threshold settings. At least we can spread the panel and increase the searching radius (now is max/20). 
+The run is very smooth now. What I can do now is to test the pipeline parameters with multiple dataset, and, with one dataset but fine tuning the knobs. I will use a matrix to test 2 major inputs for one dataset. I will test 4 levels of unknown species + one extreme mix (2, 3, 4, 5, 20+). And I will use different thresholds for contour selection (0, -0.2, -0.33, -0.5). It will be a 5x4 table showing the changes. Also, I will also test the way to spread the reference panel better. I find that if a reference is the odd one on its side, it will only depend on the threshold settings. At least we can spread the panel and increase the searching radius (now is max/20).
 
 ---
 
 The testing plan will be run in several parallel lines. The main line is to test the initial species sorting panel. The species choice is from various clades to testing the sorting process. I will evaluate the True Positives (TP), True Negatives (TN), False Positives (FP), and the False Negatives (FN). The other line will be the ability to run deep lineages searching. I will evaluate the parameter space in Poaceae to see which combination performs better in this situation.
 
-After I searched for the parameters in each lines, I will choose a value from the confusion matrix to calculate the "effectiveness" of the parameter choices. 
+After I searched for the parameters in each lines, I will choose a value from the confusion matrix to calculate the "effectiveness" of the parameter choices.
 
 The testing sample will be:
 
@@ -290,7 +295,8 @@ The testing sample will be:
 Let me submit these jobs on the queue.
 
 All submitted!
-```
+
+```text
              JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
           12418809    nocona 4spref_p      nhu  R      13:46      1 cpu-23-10
           12418780    nocona 3sptarge      nhu  R      16:53      1 cpu-24-16
@@ -308,6 +314,7 @@ All submitted!
 ```
 
 Try to submit the second testing line for Poaceae.
+
 1. Oryza australiensis, Sorghum macrospermum
 2. Oryza australiensis, Sorghum macrospermum, Astrebla lappacea (to finger_millet)
 3. Oryza australiensis, Sorghum macrospermum, Astrebla lappacea (to finger_millet), Cyrtococcum oxyphyllum (to switchgrass)
@@ -326,7 +333,8 @@ I also changed the final contour map code. The local optima search function used
 It seems that 0.5 as the threshold for `(z_normalized.mean() + threshold * z_normalized.std())` is good for 2 species in the mix.
 
 Here I update the code need to be replaced for all the testing runs:
-```
+
+```text
 group_sum.py
 dist2Z.py
 contour_optima_normalized.py
@@ -385,3 +393,7 @@ I want to check two alternative changes to this pipeline. 1) The way we compare 
 New year! Back to work. I will think about the possibility of the first thought and test the second. (I got my computer reset and I need to reinstall everything to my new system.)
 
 Through the calculation from scratch, it seems that the first thought is not that useful when we have the external branches in the distance matrix.
+
+---
+
+I need a method to calcuate the "shared-ancestral distance" from the tree. I would like to leave the external branch length not counted in the analysis. Although it will create some zeros in the final results
