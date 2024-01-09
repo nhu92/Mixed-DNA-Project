@@ -396,4 +396,7 @@ Through the calculation from scratch, it seems that the first thought is not tha
 
 ---
 
-I need a method to calcuate the "shared-ancestral distance" from the tree. I would like to leave the external branch length not counted in the analysis. Although it will create some zeros in the final results
+I need a method to calcuate the "shared-ancestral distance" from the tree. I would like to leave the external branch length not counted in the analysis. Although it will create some zeros in the final results, we'll see if this resulted in more accurate predictions.
+
+Also, I will add a code to select exon files that have all the exons larger than 40bp. This will speed up the whole pipeline. I am not expected to have better results but the same level of quality. Let me check where the new script could be inserted to the pipeline.
+
