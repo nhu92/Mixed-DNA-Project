@@ -400,3 +400,9 @@ I need a method to calcuate the "shared-ancestral distance" from the tree. I wou
 
 Also, I will add a code to select exon files that have all the exons larger than 40bp. This will speed up the whole pipeline. I am not expected to have better results but the same level of quality. Let me check where the new script could be inserted to the pipeline.
 
+---
+
+Try some thoughts about the ultimetricization methods in dealing with the external branch length estimation. Also, check if the branch length is affected by the software choose. As suggested, I will try the raxml with GTR+CAT model to approximately mimicing GTR+Gamma in fasttree.
+
+Another thought is to estimate the number of mixed species in the pool based on the exon calling information. This will be based on the exonerate outputs and how to select one sequence for each true species in the mix. I would like to make a distribution of the species in the mixed reads to the number of contigs called from hybpiper to see if there are any correlations in between. The estimation of potential species will assist the selection of parameter in our previous tests thus will increase the reliability of the pipeline.
+

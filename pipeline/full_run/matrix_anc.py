@@ -4,11 +4,10 @@ import pandas as pd
 import numpy as np
 
 def calculate_genetic_distance(tree_file):
-    # Read the tree file
-    tree = tree_file
+    # Read the tree file and assume you have a Bio.Phylo tree object
 
     # Get the list of terminal node names (i.e., taxa)
-    taxa = [leaf.name for leaf in tree.get_terminals()]
+    taxa = [leaf.name for leaf in tree_file.get_terminals()]
 
     # Initialize a matrix to store the distances
     distance_matrix = np.zeros((len(taxa), len(taxa)))
@@ -16,9 +15,16 @@ def calculate_genetic_distance(tree_file):
     # Calculate pairwise distances
     for i in range(len(taxa)):
         for j in range(i+1, len(taxa)):
-            distance = tree.distance(taxa[i], taxa[j])
-            distance_matrix[i, j] = distance
-            distance_matrix[j, i] = distance
+            try:
+                # Get the common ancestor of taxa[i] and taxa[j]
+                common_ancestor = tree_file.common_ancestor(taxa[i], taxa[j])
+                # Calculate the patristic distance (sum of branch lengths in the path)
+                distance = common_ancestor.get_distance(tree_file)
+                distance_matrix[i, j] = distance
+                distance_matrix[j, i] = distance
+            except:
+                # Handle cases where the taxa pair is not in the tree
+                pass
 
     return taxa, distance_matrix
 
