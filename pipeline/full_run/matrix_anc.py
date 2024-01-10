@@ -4,27 +4,37 @@ import pandas as pd
 import numpy as np
 
 def calculate_genetic_distance(tree_file):
-    # Read the tree file and assume you have a Bio.Phylo tree object
+    # Read the tree file
+    tree = tree_file
 
     # Get the list of terminal node names (i.e., taxa)
-    taxa = [leaf.name for leaf in tree_file.get_terminals()]
+    taxa = [leaf.name for leaf in tree.get_terminals()]
 
     # Initialize a matrix to store the distances
     distance_matrix = np.zeros((len(taxa), len(taxa)))
 
     # Calculate pairwise distances
     for i in range(len(taxa)):
-        for j in range(i+1, len(taxa)):
-            try:
-                # Get the common ancestor of taxa[i] and taxa[j]
-                common_ancestor = tree_file.common_ancestor(taxa[i], taxa[j])
-                # Calculate the patristic distance (sum of branch lengths in the path)
-                distance = common_ancestor.get_distance(tree_file)
-                distance_matrix[i, j] = distance
-                distance_matrix[j, i] = distance
-            except:
-                # Handle cases where the taxa pair is not in the tree
-                pass
+        for j in range(i + 1, len(taxa)):
+            # Find the last common ancestor
+            lca = tree.common_ancestor({'name': taxa[i]}, {'name': taxa[j]})
+
+            # Function to get distance to parent or LCA if directly connected
+            def get_distance_to_parent_or_lca(taxon):
+                path = tree.get_path(taxon)
+                if len(path) > 1:
+                    return tree.distance(lca, path[-2])  # Distance to parent
+                else:
+                    return 0  # Taxon is directly connected to the LCA
+
+            # Calculate the distances
+            distance_to_parent_i = get_distance_to_parent_or_lca(taxa[i])
+            distance_to_parent_j = get_distance_to_parent_or_lca(taxa[j])
+
+            # Calculate the genetic distance
+            genetic_distance = distance_to_parent_i + distance_to_parent_j
+            distance_matrix[i, j] = genetic_distance
+            distance_matrix[j, i] = genetic_distance
 
     return taxa, distance_matrix
 
