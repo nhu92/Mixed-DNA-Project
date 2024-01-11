@@ -406,3 +406,10 @@ Try some thoughts about the ultimetricization methods in dealing with the extern
 
 Another thought is to estimate the number of mixed species in the pool based on the exon calling information. This will be based on the exonerate outputs and how to select one sequence for each true species in the mix. I would like to make a distribution of the species in the mixed reads to the number of contigs called from hybpiper to see if there are any correlations in between. The estimation of potential species will assist the selection of parameter in our previous tests thus will increase the reliability of the pipeline.
 
+---
+
+Edited the matrix generating script to accomodate the thought about the ancestral distance calculation. The noticed part of the result would be it may affect the criterion of selection outliers from the distance matrix in the later part. However, I gonna evaluate the first 10 outputs and then see how I can tune it.
+
+I checked one of the result and compare it with the previous results. It shows that the prediction parameters are slightly better than previous methods - It still miss one species out of eleven target species. I doubt it is the nature of this data pool. I am testing the total 100 datasets right now. I will cross compare some main statistics after this run.
+
+HPPC gets vvery slow for some reason. I will wait for the result fro 1-60 trials and then send the 61 to 100 to the queue later. In the meantime, I gonna think about how to estimate the potential number of mixed species in the sample.
