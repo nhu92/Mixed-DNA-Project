@@ -55,7 +55,7 @@ do
 done < gene_list.txt
 
 rm exon.list.txt
-# Distance Calc (in progress)
+# Distance Calc 
 mkdir all_trees
 
 cp phylo_results/*.tre ./all_trees
