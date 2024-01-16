@@ -10,4 +10,8 @@ Then, I want to output the exon frequency from each gene. I will group the exons
 
 ---
 
-I would like to check the individual successful rate in the output. I will use `Mean - 0.2 * SD` as the threshold since it performed the best by empirical data. The reason I did this is because I doubt that there are some individuals hard to be identified through the distance method. 
+I would like to check the individual successful rate in the output. I will use `Mean - 0.2 * SD` as the threshold since it performed the best by empirical data. The reason I did this is because I doubt that there are some individuals hard to be identified through the distance method.
+
+I find that some individuals can be constantly failed due to unknown reason. Actually, if some of them were removed, the result will be very good. Not quite sure if I need to remove those individuals at this moment.
+
+I will run the reduced pipeline to the current data. I will offer a list of mixed sample that exclude those hard to identified individuals. 
