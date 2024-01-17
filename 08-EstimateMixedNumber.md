@@ -14,4 +14,8 @@ I would like to check the individual successful rate in the output. I will use `
 
 I find that some individuals can be constantly failed due to unknown reason. Actually, if some of them were removed, the result will be very good. Not quite sure if I need to remove those individuals at this moment.
 
-I will run the reduced pipeline to the current data. I will offer a list of mixed sample that exclude those hard to identified individuals. 
+I will run the reduced pipeline to the current data. I will offer a list of mixed sample that exclude those hard to identified individuals.
+
+---
+
+Check QIIME about the standards of cutting down individuals/exon filtering criteria (field standard).
