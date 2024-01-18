@@ -22,4 +22,8 @@ Check QIIME about the standards of cutting down individuals/exon filtering crite
 
 ---
 
-Figure out one way to give each species a probability in our final estimation based on 100 sampling table. The idea is, for each value, calculate the delta for `Mean + delta * SD`. Use the delta to check the PPV and NPV in the testing datasets. To do this, I need to generate a table for the confusion matrix by fine steps of delta in our testing datasets. Then, I can assign a number to each species a probability of True Positive or True Negative based on the pre-trained results. .
+Figure out one way to give each species a probability in our final estimation based on 100 sampling table. The idea is, for each value, calculate the delta for `Mean + delta * SD`. Use the delta to check the PPV and NPV in the testing datasets. To do this, I need to generate a table for the confusion matrix by fine steps of delta in our testing datasets. Then, I can assign a number to each species a probability of True Positive or True Negative based on the pre-trained results.
+
+Also, I want to check if there are any interactions between certain species in the candidates. After that, I would like to make another mix that have even number for each candidate in the total pool.
+
+Another thing is, it's time to get back to our original mixes. We can try data 2 & 3 for our known and unknown species once we figure out the probability work. I would like to see the predicted power of the current pipeline.
