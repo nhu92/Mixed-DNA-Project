@@ -19,3 +19,7 @@ I will run the reduced pipeline to the current data. I will offer a list of mixe
 ---
 
 Check QIIME about the standards of cutting down individuals/exon filtering criteria (field standard).
+
+---
+
+Figure out one way to give each species a probability in our final estimation based on 100 sampling table. The idea is, for each value, calculate the delta for `Mean + delta * SD`. Use the delta to check the PPV and NPV in the testing datasets. To do this, I need to generate a table for the confusion matrix by fine steps of delta in our testing datasets. Then, I can assign a number to each species a probability of True Positive or True Negative based on the pre-trained results. .
