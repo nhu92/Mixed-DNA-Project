@@ -27,3 +27,6 @@ Figure out one way to give each species a probability in our final estimation ba
 Also, I want to check if there are any interactions between certain species in the candidates. After that, I would like to make another mix that have even number for each candidate in the total pool.
 
 Another thing is, it's time to get back to our original mixes. We can try data 2 & 3 for our known and unknown species once we figure out the probability work. I would like to see the predicted power of the current pipeline.
+
+---
+
