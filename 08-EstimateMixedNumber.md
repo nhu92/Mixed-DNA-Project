@@ -30,3 +30,4 @@ Another thing is, it's time to get back to our original mixes. We can try data 2
 
 ---
 
+Get some deep thinking of the prediction values in the work of "giving each estimate a probabilty". The key to assess the probability of the being true positive at certain delta value `Pr(is True Positive| K > Mean + Delta * SD)` is not the PPV, but instead, is TPR (= TP / P). Then I found that the TPR calculation in previous code is not correct. I will rework on the code to fix this problem.
