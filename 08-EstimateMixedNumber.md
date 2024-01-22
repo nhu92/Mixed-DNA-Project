@@ -30,4 +30,5 @@ Another thing is, it's time to get back to our original mixes. We can try data 2
 
 ---
 
-Get some deep thinking of the prediction values in the work of "giving each estimate a probabilty". The key to assess the probability of the being true positive at certain delta value `Pr(is True Positive| K > Mean + Delta * SD)` is not the PPV, but instead, is TPR (= TP / P). Then I found that the TPR calculation in previous code is not correct. I will rework on the code to fix this problem.
+Get some deep thinking of the prediction values in the work of "giving each estimate a probabilty". The key to assess the probability of the being true positive at certain delta value `Pr(is True Positive| K > Mean + Delta * SD)` is PPV (= TP / P). However, the probability of the value to be a true negative at certain delta value `Pr(is True Negative | K < Mean + Delta * SD)` is actually the FDR (= 1 - PPV). It is because the certain value is either being correctly predicted as positive or negative thus the probability of the value being identified as negtive is just the 1 - PPV.
+
