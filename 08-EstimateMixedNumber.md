@@ -34,3 +34,6 @@ Get some deep thinking of the prediction values in the work of "giving each esti
 
 Glad that I can figure this out. I will run the code tomorrow to try one sample. Also, another plan for tomorrow is to redo the mix data 2 and 3 to see the power of the current pipeline.
 
+---
+
+I will estimate the data from our previous dataset, give a probability and try to tease apart how many species hidden in the mix.
