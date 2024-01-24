@@ -37,3 +37,5 @@ Glad that I can figure this out. I will run the code tomorrow to try one sample.
 ---
 
 I will estimate the data from our previous dataset, give a probability and try to tease apart how many species hidden in the mix.
+
+---
