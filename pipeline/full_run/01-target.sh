@@ -30,7 +30,7 @@ hybpiper assemble -t_dna ${mega353} \
         --cpu ${threads} \
         -o ./hyb_output
 
-find hyb_output/${proj_name} -maxdepth 1 -type d -exec basename {} \; | grep -Po "\d+" > gene_list.txt
+sed s/.fasta//g gene.list.txt > gene_list.txt
 mkdir ./exon_extracted
 while read line; do python split_exon_extract.py ./hyb_output/${proj_name} $line ./exon_extracted 0.8; done < gene_list.txt
 
@@ -55,7 +55,7 @@ do
 done < gene_list.txt
 
 rm exon.list.txt
-# Distance Calc 
+# Distance Calc (in progress)
 mkdir all_trees
 
 cp phylo_results/*.tre ./all_trees
@@ -67,7 +67,7 @@ do
         i=1
         while read filename
         do
-                python matrix.py -t ${filename} -o ./all_trees/${gene_name_shorter}.${i}.matrix
+                python matrix_anc.py -t ${filename} -o ./all_trees/${gene_name_shorter}.${i}.matrix
 		cp ./all_trees/${gene_name_shorter}.${i}.matrix ./all_trees/${gene_name_shorter}.${i}.cleaned.csv
 		((i=i+1))
         done < loop.treelist.txt
@@ -79,7 +79,3 @@ python dist2Z.py all_trees ./${proj_name}.summary_dist.csv ${proj_name}
 python group_sum.py ./${proj_name}.summary_dist.csv ./${proj_name}.cumulative_dist.csv
 grep -v ${proj_name} ${proj_name}.cumulative_dist.csv | cut -d ',' -f2 > ${proj_name}.Zaxis.csv
 
-paste --delimiter=',' ${proj_name}_refPCoA.csv ${proj_name}.Zaxis.csv > ${proj_name}.3d.csv
-python contour_optima_normalized.py ${proj_name}.3d.csv ${proj_name}.contour.norm.svg 0.5
-paste --delimiter=',' ${proj_name}_refPCoA23.csv ${proj_name}.Zaxis.csv > ${proj_name}.3d23.csv
-python contour_optima_normalized.py ${proj_name}.3d23.csv ${proj_name}.contour23.norm.svg 0.5
