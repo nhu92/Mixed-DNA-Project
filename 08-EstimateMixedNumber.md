@@ -39,3 +39,5 @@ Glad that I can figure this out. I will run the code tomorrow to try one sample.
 I will estimate the data from our previous dataset, give a probability and try to tease apart how many species hidden in the mix.
 
 ---
+
+Got a lot of real data to test on. There are several species that I can identify correctly but forr the Monocot, especially the non-grass ones, there is an issue that they will evenly grouped with all of those references plus stout camphor, water lily, and amborella. I wish if I can figure these out by calculate the node probability. Also, the probability is not quite working here I need to tune up the values.
