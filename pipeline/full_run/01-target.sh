@@ -78,4 +78,4 @@ rm loop.treelist.txt
 python dist2Z.py all_trees ./${proj_name}.summary_dist.csv ${proj_name}
 python group_sum.py ./${proj_name}.summary_dist.csv ./${proj_name}.cumulative_dist.csv
 grep -v ${proj_name} ${proj_name}.cumulative_dist.csv | cut -d ',' -f2 > ${proj_name}.Zaxis.csv
-
+python prob_delta.py ${proj_name}.cumulative_dist.csv delta_ppv.csv ${proj_name}.prob.csv
