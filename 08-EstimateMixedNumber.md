@@ -41,3 +41,7 @@ I will estimate the data from our previous dataset, give a probability and try t
 ---
 
 Got a lot of real data to test on. There are several species that I can identify correctly but forr the Monocot, especially the non-grass ones, there is an issue that they will evenly grouped with all of those references plus stout camphor, water lily, and amborella. I wish if I can figure these out by calculate the node probability. Also, the probability is not quite working here I need to tune up the values.
+
+---
+
+What is the possible method to figure out the samples in monocot? I would like to check the gene trees for those monocot groups to see whether some of the species is missing in the tree. Currently, our pipeline is solely based on the phylogeny. If the phylogeny has issue, the distance method would give wrong prediction in some way. 
