@@ -49,3 +49,7 @@ What is the possible method to figure out the samples in monocot? I would like t
 ---
 
 Don't forget to test the result from different mix compositions!
+
+---
+
+I realize that the different reference should use a different delta value to estimate the probability. This will be a problem for me right now since it limits the usage for custom datasets. 
