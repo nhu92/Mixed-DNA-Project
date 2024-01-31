@@ -81,3 +81,5 @@ Back to the cladology work. I wish there is a statistical trend to see. Also, I 
 
 A full run for over 700 species in the tree is a huge load for HPCC right now. The HybPiper step is fast but the alignment and tree construction is super slow. I manually checked some trees and find out that the prediction is not bad for our current data. However, I need to change some code for the later work in the python script because the current reference naming system is different from previous 70 species panel.
 
+I submitted the data2, gard10, and corn20 with new fresh full genes runs. I want to see if the pipeline workable with tons of data. I know there will be some codes required to be modified to fit the new reference naming systems but I will do it later. The idea now is to run it and compare the power of one species to be identified in the pool.
+
