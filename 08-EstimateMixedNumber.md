@@ -57,4 +57,20 @@ I realize that the different reference should use a different delta value to est
 Let's deal with the issue in those monocots clade first! My current thought is, to category the candidates in the pool, we could first estimate the chance that there is/are monocot(s) in the mix. If yes, then we do something special to it. If not, I am still very confident about our current method in eudicots. 
 
 Before we made this ultimate change, I noticed that the support value for the "problematic" species assignment is pretty low. I think we can add a filtering function in the distance calculation and similarity converting code. The logic will be:
-1. 
+1. Read in a tree from the input
+2. Reroot the tree by 'amborella', if not exist then 'water_lily', if both not exist, root by midpoint
+3. Check the leaf node that have a string "NODE". Save those as unknown species
+4. Check each unknown species. Check the node support to its most recent common ancestor. If the support is >0.75, then record what is the sister species in the tree. If the sister is a clade, record the clade in a form (species1, species2, species3, ...). Notice, if the sister species is also an unknown species then directly goto the second recent common ancestor. If the clade contain an unknown species, remove that from the record.
+5. If the support is <=0.75, then go up to the second common ancestor, check the support again, if support is > 0.75, record the clade as the format I showed in step 4. Remove any unknwon species in the record too.
+6. Repeat step 5 until find a node support > 0.75. 
+7. Output the result to a table
+
+After tuning the python code, now I can get the clade that have the most confidence. I will run this for all the trees in a sample output then we can figure out the next step - To use the frequency of these clades to decide the target species.
+
+> The 700+ Angiosperm353 version 2 target file and the alignment is ready now. Super excited to it. 
+
+I will try to make some initial work on this dataset. First, let's start output summary tables.
+1. Read in fasta files in current folder. Each file is a gene alignment that named by its file name (without .fasta)
+2. Summarize each fasta, how many aligned sequences in the fasta. Output into a output table.
+3. For each gene name, for example, >Liliales_Melanthiaceae_Xerophyllum_asphodeloides_1KP-4890 transcript_7797-AFLV, The Liliales is the order name, Melanthiaceae is the family name, Xerophyllum_asphodeloides is the species name, 1KP is the data source.
+4. Summarize each species how many genes they showed up in the alignment. Also, when output into a table, add the order and family information as well.
