@@ -74,3 +74,6 @@ I will try to make some initial work on this dataset. First, let's start output 
 2. Summarize each fasta, how many aligned sequences in the fasta. Output into a output table.
 3. For each gene name, for example, >Liliales_Melanthiaceae_Xerophyllum_asphodeloides_1KP-4890 transcript_7797-AFLV, The Liliales is the order name, Melanthiaceae is the family name, Xerophyllum_asphodeloides is the species name, 1KP is the data source.
 4. Summarize each species how many genes they showed up in the alignment. Also, when output into a table, add the order and family information as well.
+
+I will take some time to sort the order into a evolutionary reasonable list.
+
