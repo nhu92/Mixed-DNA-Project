@@ -77,3 +77,5 @@ I will try to make some initial work on this dataset. First, let's start output 
 
 I will take some time to sort the order into a evolutionary reasonable list.
 
+Back to the cladology work. I wish there is a statistical trend to see. Also, I am running a test run for hybpiper using the new Angiosperm353v2.0 for our artificial mix data. I use a full run here to recover all of the genes from the assembly.
+
