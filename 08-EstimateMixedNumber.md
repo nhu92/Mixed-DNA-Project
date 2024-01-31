@@ -53,3 +53,8 @@ Don't forget to test the result from different mix compositions!
 ---
 
 I realize that the different reference should use a different delta value to estimate the probability. This will be a problem for me right now since it limits the usage for custom datasets. 
+
+Let's deal with the issue in those monocots clade first! My current thought is, to category the candidates in the pool, we could first estimate the chance that there is/are monocot(s) in the mix. If yes, then we do something special to it. If not, I am still very confident about our current method in eudicots. 
+
+Before we made this ultimate change, I noticed that the support value for the "problematic" species assignment is pretty low. I think we can add a filtering function in the distance calculation and similarity converting code. The logic will be:
+1. 
