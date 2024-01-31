@@ -79,3 +79,5 @@ I will take some time to sort the order into a evolutionary reasonable list.
 
 Back to the cladology work. I wish there is a statistical trend to see. Also, I am running a test run for hybpiper using the new Angiosperm353v2.0 for our artificial mix data. I use a full run here to recover all of the genes from the assembly.
 
+A full run for over 700 species in the tree is a huge load for HPCC right now. The HybPiper step is fast but the alignment and tree construction is super slow. I manually checked some trees and find out that the prediction is not bad for our current data. However, I need to change some code for the later work in the python script because the current reference naming system is different from previous 70 species panel.
+
