@@ -61,7 +61,7 @@ Before we made this ultimate change, I noticed that the support value for the "p
 2. Reroot the tree by 'amborella', if not exist then 'water_lily', if both not exist, root by midpoint
 3. Check the leaf node that have a string "NODE". Save those as unknown species
 4. Check each unknown species. Check the node support to its most recent common ancestor. If the support is >0.75, then record what is the sister species in the tree. If the sister is a clade, record the clade in a form (species1, species2, species3, ...). Notice, if the sister species is also an unknown species then directly goto the second recent common ancestor. If the clade contain an unknown species, remove that from the record.
-5. If the support is <=0.75, then go up to the second common ancestor, check the support again, if support is > 0.75, record the clade as the format I showed in step 4. Remove any unknwon species in the record too.
+5. If the support is <=0.75, then go up to the second common ancestor, check the support again, if support is > 0.75, record the clade as the format I showed in step 4. Remove any unknown species in the record too.
 6. Repeat step 5 until find a node support > 0.75. 
 7. Output the result to a table
 
@@ -77,9 +77,12 @@ I will try to make some initial work on this dataset. First, let's start output 
 
 I will take some time to sort the order into a evolutionary reasonable list.
 
-Back to the cladology work. I wish there is a statistical trend to see. Also, I am running a test run for hybpiper using the new Angiosperm353v2.0 for our artificial mix data. I use a full run here to recover all of the genes from the assembly.
+Back to the cladology work. I wish there is a statistical trend to see. Also, I am running a test run for HybPiper using the new Angiosperm353v2.0 for our artificial mix data. I use a full run here to recover all of the genes from the assembly.
 
 A full run for over 700 species in the tree is a huge load for HPCC right now. The HybPiper step is fast but the alignment and tree construction is super slow. I manually checked some trees and find out that the prediction is not bad for our current data. However, I need to change some code for the later work in the python script because the current reference naming system is different from previous 70 species panel.
 
 I submitted the data2, gard10, and corn20 with new fresh full genes runs. I want to see if the pipeline workable with tons of data. I know there will be some codes required to be modified to fit the new reference naming systems but I will do it later. The idea now is to run it and compare the power of one species to be identified in the pool.
 
+---
+
+A week of maintenance in HPCC so I have nothing to run but plan ahead for next week work. I currently have the results for 700+ species full run. I will evaluate the result from those runs then figure out a good way to prune the tree from the 700+ species references. Ideally, I wish to have 2 species for each order unless some tiny orders. Also, I want to give each species hit a series of tags, which will be used in final evaluation. By this, we can estimate the potential hits in different hierarchies. The last thing to do is to thin down the genes/exons in the run to reduce the computational time.
