@@ -86,3 +86,7 @@ I submitted the data2, gard10, and corn20 with new fresh full genes runs. I want
 ---
 
 A week of maintenance in HPCC so I have nothing to run but plan ahead for next week work. I currently have the results for 700+ species full run. I will evaluate the result from those runs then figure out a good way to prune the tree from the 700+ species references. Ideally, I wish to have 2 species for each order unless some tiny orders. Also, I want to give each species hit a series of tags, which will be used in final evaluation. By this, we can estimate the potential hits in different hierarchies. The last thing to do is to thin down the genes/exons in the run to reduce the computational time.
+
+---
+
+Checking the results from the full run. Some of them only have partial results due to the runtime issue. However, I think those would be good enough to have a reasonable estimation in order to look at the predictions. I category the result based on the order, the family, and the genus level. The 80% saff + 20% corn showed great result. At the order level, the Poales and the Asparagales are the only two orders that beyond the threshold. At the family level, we still see Poaceae passes the line and the Asparagaceae followed as the 2nd (but p = 0.058). 
