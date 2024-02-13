@@ -12,7 +12,8 @@ def distance_to_similarity(distance_df):
     similarity_df[numeric_cols] = 1 / (1 + similarity_df[numeric_cols])
     return similarity_df
 
-def clean_up_matrix(df, proj_name):
+def clean_up_matrix(df, proj_name, threshold, use_flag=False):
+
     """
     Modified function to clean up a matrix (dataframe).
     It removes rows where row names contain 'proj_name', keeps only columns containing 'proj_name' in their names, 
@@ -32,10 +33,15 @@ def clean_up_matrix(df, proj_name):
 
     # Checking each cell in every column and modify values if needed
     for col in df.columns[1:]:  # Skip the first column as it's often non-numeric (like names, IDs, etc.)
-        col_mean = df[col].mean()
-        col_sd = df[col].std()
-        df[col] = df[col].apply(lambda x: 999 if x > (col_mean - 1.96 * col_sd) else x)
-
+        if use_flag:
+            # Assign the smallest number as 0 and the rest as 999
+            min_value = df[col].min()
+            df[col] = df[col].apply(lambda x: 0 if x == min_value else 999)
+        else:
+            # Original logic
+            col_mean = df[col].mean()
+            col_sd = df[col].std()
+            df[col] = df[col].apply(lambda x: 999 if x > (col_mean - threshold * col_sd) else x)
     return df
 
 
@@ -96,10 +102,12 @@ def main():
     parser.add_argument('input_dir', type=str, help='Directory containing the matrix CSV files')
     parser.add_argument('output_file', type=str, help='Output file path for the similarity matrix')
     parser.add_argument('removing_pattern', type=str, help='Name of the target sequences to be removed')
+    parser.add_argument('--threshold', type=float, default=1.96, help='Threshold for value adjustment in clean_up_matrix function')
+    parser.add_argument('--use_flag', action='store_true', help='Use the flag to assign the smallest number as 0 and rest as 999 in clean_up_matrix')
     
     args = parser.parse_args()
     
-    final_output = process_matrices(args.input_dir, args.removing_pattern)
+    final_output = process_matrices(args.input_dir, args.removing_pattern, args.threshold, args.use_flag)
     final_output.to_csv(args.output_file, index=False)
     
     print(f"Processed matrices saved to {args.output_file}")
