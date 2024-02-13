@@ -62,7 +62,7 @@ def normalize_columns(df):
 
     return df
 
-def process_matrices(directory, proj_name):
+def process_matrices(directory, proj_name, threshold, flag):
     all_matrices = []
     
     for filename in os.listdir(directory):
@@ -72,7 +72,7 @@ def process_matrices(directory, proj_name):
             matrix = pd.read_csv(matrix_path)
             
             # Clean up the matrix
-            matrix = clean_up_matrix(matrix, proj_name) 
+            matrix = clean_up_matrix(matrix, proj_name, threshold, flag) 
             # Apply distance to similarity transformation
             matrix = distance_to_similarity(matrix)
 
