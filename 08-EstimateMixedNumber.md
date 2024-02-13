@@ -90,3 +90,8 @@ A week of maintenance in HPCC so I have nothing to run but plan ahead for next w
 ---
 
 Checking the results from the full run. Some of them only have partial results due to the runtime issue. However, I think those would be good enough to have a reasonable estimation in order to look at the predictions. I category the result based on the order, the family, and the genus level. The 80% saff + 20% corn showed great result. At the order level, the Poales and the Asparagales are the only two orders that beyond the threshold. At the family level, we still see Poaceae passes the line and the Asparagaceae followed as the 2nd (but p = 0.058). 
+
+---
+
+Evaluating the results from yesterday and figure out what is missing in the key steps. I think it is reasonable to use different distance calculation methods to treat with different hierarchical search. For a general order search, we could use a more spread algorithm (general distance method, do not need to filter the side hits), while in a specific search we would like to use a more stringent one (the one that only pick up the real closest hits). I will modify the distance to matrix python code to accommodate both requirements by adding an additional parameter.
+
