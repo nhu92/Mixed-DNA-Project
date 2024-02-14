@@ -95,3 +95,6 @@ Checking the results from the full run. Some of them only have partial results d
 
 Evaluating the results from yesterday and figure out what is missing in the key steps. I think it is reasonable to use different distance calculation methods to treat with different hierarchical search. For a general order search, we could use a more spread algorithm (general distance method, do not need to filter the side hits), while in a specific search we would like to use a more stringent one (the one that only pick up the real closest hits). I will modify the distance to matrix python code to accommodate both requirements by adding an additional parameter.
 
+---
+
+I tested several real mixed datasets. The current conclusion is, for order level identification, our pipeline works well. We just need to tune in the distance acceptance z score in dist2Z.py. For a small reference, we should use lower Z-score or directly use the `--use_flag` to lock on only one hits on the tree. It may not work well in a mix that the composition is super skewed (e.g. 95%:5%). I also found some relationship between the cumulative similarity and the mixed proportion but it is very comparative not quantitative. 
