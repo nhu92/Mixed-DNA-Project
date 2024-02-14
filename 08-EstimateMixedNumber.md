@@ -97,4 +97,7 @@ Evaluating the results from yesterday and figure out what is missing in the key 
 
 ---
 
-I tested several real mixed datasets. The current conclusion is, for order level identification, our pipeline works well. We just need to tune in the distance acceptance z score in dist2Z.py. For a small reference, we should use lower Z-score or directly use the `--use_flag` to lock on only one hits on the tree. It may not work well in a mix that the composition is super skewed (e.g. 95%:5%). I also found some relationship between the cumulative similarity and the mixed proportion but it is very comparative not quantitative. 
+I tested several real mixed datasets. The current conclusion is, for order level identification, our pipeline works well. We just need to tune in the distance acceptance z score in dist2Z.py. For a small reference, we should use lower Z-score or directly use the `--use_flag` to lock on only one hits on the tree. It may not work well in a mix that the composition is super skewed (e.g. 95%:5%). I also found some relationship between the cumulative similarity and the mixed proportion but it is very comparative not quantitative.
+
+I want to write an automatic evaluation code to output the prediction on order, family, and genus level. Then, I want to test a series of parameter settings on distance transformation methods to see which one works better in specific situation.
+
