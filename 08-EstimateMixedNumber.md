@@ -104,3 +104,13 @@ I want to write an automatic evaluation code to output the prediction on order, 
 ---
 
 I checked the results from the data3. It is marked as a bad data but by current judging criteria it should still recover something. However, when I checked the results from our pipeline, it showed random results with different parameter choice. I will figure out the problem by looking at the trees and the assembly. I was told that some repetitive regions might be assembled by hybpiper causing the issue.
+
+---
+
+I'd like to put some info from my scratch paper to here.
+
+I noticed a pattern in exploring the data: For those mixed samples that have issue in identification (mostly aore missing taxa), they tend to have less reads mapped to the reference Angiosperm353 ( < 1M reads). However, the 3rd dataset from unknown seed mix and the 4th dataset from pooled soil do have very high mapping rates. I want to see what's wrong with these results by retry these data with new pipeline.
+
+In the meantime, I discussed with Dr. Johnson about some phenomenons found in Haley's results. There are some requirements for HybPiper to correctly assemble the read into supercontigs. First, empirically, it requires at least 100k reads mapped to the target in a single sample to recover 250 genes. A BAM file examined less than this mapped reads number will have trouble in SPAdes. Second, the recovered sequences should target most of the genes with relatively high coverage. Even with a lot of reads mapped to target, if the 353 genes are not well covered, it will affect the number of supercontigs assembled. Third, we need to check if the on target sequences are just nonsense repeats. The MyBaits kit would have chance to enrich a bunch of repeated regions from the library. If these repeats assembled by themselves, it would be no information for the downstream analysis.
+
+To deal with the 3 requirements above, I will check the output from 3rd and 4th dataset which were marked as deprecated data. I wish to find some patterns matches the issue above to explain the reason why they cannot be recovered. 
