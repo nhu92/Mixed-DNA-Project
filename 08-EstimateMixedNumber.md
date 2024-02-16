@@ -101,3 +101,6 @@ I tested several real mixed datasets. The current conclusion is, for order level
 
 I want to write an automatic evaluation code to output the prediction on order, family, and genus level. Then, I want to test a series of parameter settings on distance transformation methods to see which one works better in specific situation.
 
+---
+
+I checked the results from the data3. It is marked as a bad data but by current judging criteria it should still recover something. However, when I checked the results from our pipeline, it showed random results with different parameter choice. I will figure out the problem by looking at the trees and the assembly. I was told that some repetitive regions might be assembled by hybpiper causing the issue.
