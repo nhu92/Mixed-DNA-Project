@@ -113,4 +113,16 @@ I noticed a pattern in exploring the data: For those mixed samples that have iss
 
 In the meantime, I discussed with Dr. Johnson about some phenomenons found in Haley's results. There are some requirements for HybPiper to correctly assemble the read into supercontigs. First, empirically, it requires at least 100k reads mapped to the target in a single sample to recover 250 genes. A BAM file examined less than this mapped reads number will have trouble in SPAdes. Second, the recovered sequences should target most of the genes with relatively high coverage. Even with a lot of reads mapped to target, if the 353 genes are not well covered, it will affect the number of supercontigs assembled. Third, we need to check if the on target sequences are just nonsense repeats. The MyBaits kit would have chance to enrich a bunch of repeated regions from the library. If these repeats assembled by themselves, it would be no information for the downstream analysis.
 
-To deal with the 3 requirements above, I will check the output from 3rd and 4th dataset which were marked as deprecated data. I wish to find some patterns matches the issue above to explain the reason why they cannot be recovered. 
+To deal with the 3 requirements above, I will check the output from 3rd and 4th dataset which were marked as deprecated data. I wish to find some patterns matches the issue above to explain the reason why they cannot be recovered.
+
+---
+
+I am going to record what I thought and what I did for today.
+
+Currently, the mis-identification of species is mainly because that a random seq that not matching up with any species so it will be assigned to an outgroup with shorter distance. To address this issue, we could 1) reduce the effect of the short distance, which currently solved by ultrametrification. 2) remove weird nodes/sequences that seems to be incorrect. This is done by manipulate the Z-score threshold by selecting the distance in the matrix. However, these unexpected sequences still popped up around some of our results.
+
+I also find a bug in the exon_extract.py which reads the exonerate table for splitting the supercontigs into exons. We should sort the range of all hits before we ID the exons. Instead of fixing that, I tested that if we pool all the exons from the same gene to build a tree, this will no longer be a problem. I tested this thoughts and it seemed work well. I hope this method could somehow reduce the chance that one single piece being randomly placed on the tree.
+
+I explored the difference between fasttree and iqtree. Iqtree is much slower but seems to be more accurate in compare to fasttree. I think we could probably fix a model on iqtree instead of using fasttree for some analyses.
+
+Finally, I found that in the 3rd dataset (pooled seeds), the exon hits is limited with strong similarities to some unexpected lineages. I want to see the true sequences by just assemble the reads directly with SPAdes. I will see what arere actually captures in the pool.
