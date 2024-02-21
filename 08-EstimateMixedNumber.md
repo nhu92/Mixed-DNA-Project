@@ -119,7 +119,7 @@ To deal with the 3 requirements above, I will check the output from 3rd and 4th 
 
 I am going to record what I thought and what I did for today.
 
-Currently, the mis-identification of species is mainly because that a random seq that not matching up with any species so it will be assigned to an outgroup with shorter distance. To address this issue, we could 1) reduce the effect of the short distance, which currently solved by ultrametrification. 2) remove weird nodes/sequences that seems to be incorrect. This is done by manipulate the Z-score threshold by selecting the distance in the matrix. However, these unexpected sequences still popped up around some of our results.
+Currently, the mis-identification of species is mainly because that a random seq that not matching up with any species so it will be assigned to an outgroup with shorter distance. To address this issue, we could 1) reduce the effect of the short distance, which currently solved by ultrametrication. 2) remove weird nodes/sequences that seems to be incorrect. This is done by manipulate the Z-score threshold by selecting the distance in the matrix. However, these unexpected sequences still popped up around some of our results.
 
 I also find a bug in the exon_extract.py which reads the exonerate table for splitting the supercontigs into exons. We should sort the range of all hits before we ID the exons. Instead of fixing that, I tested that if we pool all the exons from the same gene to build a tree, this will no longer be a problem. I tested this thoughts and it seemed work well. I hope this method could somehow reduce the chance that one single piece being randomly placed on the tree.
 
