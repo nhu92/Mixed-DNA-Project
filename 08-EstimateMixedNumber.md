@@ -125,4 +125,9 @@ I also find a bug in the exon_extract.py which reads the exonerate table for spl
 
 I explored the difference between fasttree and iqtree. Iqtree is much slower but seems to be more accurate in compare to fasttree. I think we could probably fix a model on iqtree instead of using fasttree for some analyses.
 
-Finally, I found that in the 3rd dataset (pooled seeds), the exon hits is limited with strong similarities to some unexpected lineages. I want to see the true sequences by just assemble the reads directly with SPAdes. I will see what arere actually captures in the pool.
+Finally, I found that in the 3rd dataset (pooled seeds), the exon hits is limited with strong similarities to some unexpected lineages. I want to see the true sequences by just assemble the reads directly with SPAdes. I will see what are actually captures in the pool.
+
+---
+
+The prediction of the 3rd dataset is seemingly unexpected. However, when we check the manually de novo assembly, we found the sequences that are very closed related to the predicted species. Not like the 4th dataset which is almost off-target library, the 3rd one is full of real plant DNA.
+
