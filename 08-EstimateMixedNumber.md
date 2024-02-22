@@ -131,3 +131,13 @@ Finally, I found that in the 3rd dataset (pooled seeds), the exon hits is limite
 
 The prediction of the 3rd dataset is seemingly unexpected. However, when we check the manually de novo assembly, we found the sequences that are very closed related to the predicted species. Not like the 4th dataset which is almost off-target library, the 3rd one is full of real plant DNA.
 
+---
+
+Here is a list of testings need to do for the next period:
+
+1. Developing a method to consider both the genetic distance and the support on the node
+2. Testing different settings on the PPV and NPV, probably the precision
+3. Exploring the difference when we choose different references in exonerate run
+4. Exploring the effect of tree constructing software
+
+From now on, to evaluate the effect of different methods and parameter settings, the PPV and NPV will be used at the first priority.
