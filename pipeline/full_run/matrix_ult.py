@@ -55,32 +55,33 @@ def genetic_distance_matrix(tree_file, node_output_file, output_file):
     # Load the tree
     tree = Phylo.read(tree_file, 'newick')
 
-    # Reroot logic
+    # Reroot logic, assuming this part remains unchanged
     reroot_taxa = ["Amborella", "Nymphaea", "Austrobaileya"]
     for taxa in reroot_taxa:
         for clade in tree.find_clades():
-            if clade.name and taxa in clade.name:  # Check if clade.name is not None and contains taxa
+            if clade.name and taxa in clade.name:  # Ensure clade.name is not None
                 tree.root_with_outgroup(clade)
                 break
         else:
-            continue  # Continue if the taxa was not found in any clade
-        break  # Break if the tree was rerooted successfully
+            continue
+        break
     else:
-        # If none of the specified taxa were found, reroot at the midpoint
         tree.root_at_midpoint()
 
-    # Screen all the taxa names containing "NODE"
-    node_related_taxa = {}
-    for clade in tree.find_clades():
-        if "NODE" in clade.name:
-            associated_taxa = find_clade_and_move(tree, clade.name)
-            if associated_taxa:
-                node_related_taxa[clade.name] = associated_taxa
+    # Initialize a list to store records for tips that contain "NODE"
+    node_records = []
 
-    # Save the NODE related taxa into a file
-    with open(node_output_file, 'w') as f:
-        for node, taxa_list in node_related_taxa.items():
-            f.write(f"{node}: {', '.join(taxa_list)}\n")
+    # Screen all the tip names (terminal nodes)
+    for tip in tree.get_terminals():  # Iterate through terminal nodes only
+        if tip.name and "NODE" in tip.name:  # Check if tip has a name and contains "NODE"
+            recorded_taxa = find_clade_and_move(tree, tip.name)
+            if recorded_taxa:  # Only add if there are recorded taxa
+                node_records.append(f'{tip.name}: {"; ".join(recorded_taxa)}')
+
+    # Writing the NODE information to a file
+    with open(node_output_file, 'w') as file:
+        for record in node_records:
+            file.write(f'{record}\n')
 
     # Proceed with the distance matrix calculation (same as before)
     clades, distance_matrix = calculate_genetic_distance(tree)
