@@ -12,24 +12,14 @@ def distance_to_similarity(distance_df):
     similarity_df[numeric_cols] = 1 / (1 + similarity_df[numeric_cols])
     return similarity_df
 
-def clean_up_matrix(df, proj_name, threshold, use_flag=False):
+def clean_up_matrix(df, proj_name, threshold, use_flag=False, taxa_file=None):
 
-    """
-    Modified function to clean up a matrix (dataframe).
-    It removes rows where row names contain 'proj_name', keeps only columns containing 'proj_name' in their names, 
-    and cleans up row names. Additionally, it tests each cell in every column, checking if its value is smaller 
-    than the column's mean minus its standard deviation (col_mean - 1.96 col_sd). If a cell fails this test, 
-    its value will be set to 999.
-    """
     # Remove rows where row names contain the project name
     df = df[~df[df.columns[0]].str.contains(proj_name)]
 
     # Keep columns related to the project name
     cols_to_keep = [df.columns[0]] + [col for col in df.columns[1:] if proj_name in col]
     df = df[cols_to_keep]
-
-    # Clean up row names by removing digits and trailing underscores
-    df.iloc[:, 0] = df.iloc[:, 0].str.replace(r'\d+', '', regex=True).str.rstrip('_')
 
     # Checking each cell in every column and modify values if needed
     for col in df.columns[1:]:  # Skip the first column as it's often non-numeric (like names, IDs, etc.)
@@ -42,6 +32,27 @@ def clean_up_matrix(df, proj_name, threshold, use_flag=False):
             col_mean = df[col].mean()
             col_sd = df[col].std()
             df[col] = df[col].apply(lambda x: 999 if x > (col_mean - threshold * col_sd) else x)
+        
+    if taxa_file:
+        # Read the taxa file and store the information in a dictionary
+        species_to_taxa = {}
+        with open(taxa_file, 'r') as file:
+            for line in file:
+                parts = line.strip().split(':')
+                if len(parts) == 2:
+                    species, taxa = parts
+                    species_to_taxa[species.strip()] = [tax.strip() for tax in taxa.split(';')]
+        
+        # Check overlap for each unknown species and update df accordingly
+        for species, taxa_list in species_to_taxa.items():
+            if species in df.index:  # Assuming the first column of df contains the species names
+                for col in df.columns[1:]:  # Skip the first column which contains names
+                    # If there's no overlap between taxa list and outliers, set similarity to 0
+                    if not any(tax in col for tax in taxa_list):
+                        df.at[species, col] = 0
+    
+    # Clean up row names by removing digits and trailing underscores
+    df.iloc[:, 0] = df.iloc[:, 0].str.replace(r'\d+', '', regex=True).str.rstrip('_')
     return df
 
 
@@ -71,8 +82,11 @@ def process_matrices(directory, proj_name, threshold, flag):
             matrix_path = os.path.join(directory, filename)
             matrix = pd.read_csv(matrix_path)
             
+            # Construct the filename for the corresponding list file
+            prefix = file.split("cleaned.csv")[0]
+            list_file = f"{prefix}list.txt"
             # Clean up the matrix
-            matrix = clean_up_matrix(matrix, proj_name, threshold, flag) 
+            matrix = clean_up_matrix(matrix, proj_name, threshold, flag, list_file) 
             # Apply distance to similarity transformation
             matrix = distance_to_similarity(matrix)
 
