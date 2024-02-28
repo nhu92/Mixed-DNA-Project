@@ -83,7 +83,7 @@ def process_matrices(directory, proj_name, threshold, flag):
             matrix = pd.read_csv(matrix_path)
             
             # Construct the filename for the corresponding list file
-            prefix = file.split("cleaned.csv")[0]
+            prefix = filename.split("cleaned.csv")[0]
             list_file = f"{prefix}list.txt"
             # Clean up the matrix
             matrix = clean_up_matrix(matrix, proj_name, threshold, flag, list_file) 
