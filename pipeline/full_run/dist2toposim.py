@@ -42,14 +42,17 @@ def clean_up_matrix(df, proj_name, threshold, taxa_file, use_flag=False):
                 if len(parts) == 2:
                     species, taxa = parts
                     species_to_taxa[species.strip()] = [tax.strip() for tax in taxa.split(';')]
-        
-        # Check overlap for each unknown species and update df accordingly
-        for species, taxa_list in species_to_taxa.items():
-            if species in df.index:  # Assuming the first column of df contains the species names
-                for col in df.columns[1:]:  # Skip the first column which contains names
-                    # If there's no overlap between taxa list and outliers, set similarity to 0
-                    if not any(tax in col for tax in taxa_list):
-                        df.at[species, col] = 0
+
+        # Loop through each pair (column header and taxa list) and update df accordingly
+        for header in df.columns[1:]:  # Assuming the first column of df contains the species names
+            for species, taxa_list in species_to_taxa.items():
+                # Check if the column header matches any species in the taxa list
+                if species == header:  # Match the header with the species before ":"
+                    for index, row in df.iterrows():  # Loop through rows to check each cell
+                        # If the row's species name is not in the taxa list, set its value to 0
+                        if row[df.columns[0]] not in taxa_list:  # Compare species names with taxa
+                            df.at[index, header] = 999
+
     
     # Clean up row names by removing digits and trailing underscores
     df.iloc[:, 0] = df.iloc[:, 0].str.replace(r'\d+', '', regex=True).str.rstrip('_')
