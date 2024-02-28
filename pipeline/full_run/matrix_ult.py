@@ -4,32 +4,40 @@ import pandas as pd
 import numpy as np
 
 def find_clade_and_move(tree, taxa_name):
-    # Find the clade by taxa name
-    target_clade = None
-    for clade in tree.find_clades():
-        if clade.name == taxa_name:
-            target_clade = clade
-            break
+    # Find the matching leaf and the smallest clade containing this leaf
+    target_leaf = None
+    for leaf in tree.get_terminals():  # Iterate through all terminal nodes
+        if leaf.name == taxa_name:
+            target_leaf = leaf
+            break  # Stop when the target leaf is found
     
+    # Initialize the list for recording taxa names
     recorded_taxa = []
-    while target_clade:
-        # Check sister groups
-        parent = tree.get_path(target_clade)[-2] if len(tree.get_path(target_clade)) > 1 else None
-        if parent:
-            for sister in parent.clades:
-                if sister != target_clade and any("NODE" not in leaf.name for leaf in sister.get_terminals()):
-                    recorded_taxa.append(target_clade.name)
+    
+    if target_leaf:
+        # Get the path from the root to this leaf, which includes all its ancestors
+        path_to_leaf = tree.get_path(target_leaf)
+        
+        # Iterate from the leaf up to the root
+        for clade in reversed(path_to_leaf):
+            # Check sister groups of the current clade
+            parent = clade
+            if parent.clades:  # Ensure this clade has child nodes (i.e., is not a leaf itself)
+                for sister in parent.clades:
+                    if sister != clade and any("NODE" not in leaf.name for leaf in sister.get_terminals()):
+                        # Record names from the sister group if they don't contain "NODE"
+                        recorded_taxa.extend([leaf.name for leaf in sister.get_terminals() if "NODE" not in leaf.name])
+                        break  # Stop checking other sisters once a valid one is found
+                else:
+                    # If no valid sister group is found, move up to the upper clade
+                    continue
+                
+                # If the clade has a support value above 0.7, stop the traversal
+                if parent.confidence is not None and parent.confidence > 0.7:
                     break
-            else:
-                # If no valid sister, move to upper clade
-                target_clade = parent
-                continue
-
-            # Move to upper clade and check support value
-            target_clade = parent
-            if parent.confidence is not None and parent.confidence > 0.7:
-                return [taxa for taxa in recorded_taxa if "NODE" not in taxa]
-        break  # Exit while loop if there's no parent or if other conditions are not met
+    
+    # Return the list of recorded taxa names, excluding any that contain "NODE"
+    return recorded_taxa
 
 def calculate_genetic_distance(tree_file):
     # Read the tree file
