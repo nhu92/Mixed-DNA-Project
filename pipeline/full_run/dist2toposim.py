@@ -12,7 +12,7 @@ def distance_to_similarity(distance_df):
     similarity_df[numeric_cols] = 1 / (1 + similarity_df[numeric_cols])
     return similarity_df
 
-def clean_up_matrix(df, proj_name, threshold, use_flag=False, taxa_file=None):
+def clean_up_matrix(df, proj_name, threshold, use_flag=False, taxa_file):
 
     # Remove rows where row names contain the project name
     df = df[~df[df.columns[0]].str.contains(proj_name)]
