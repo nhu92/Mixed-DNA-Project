@@ -148,15 +148,15 @@ The idea now is to find a good mixed data from Kew mixes. Then, we artificially 
 
 Installed a new toolkit called `seqkit`. This will be used for subsample the reads by different proportion. I will split 3 different composition with 2, 3, and 5 Kew reads mixes. The proportion of split would be 200k, 100k, 50k, and 25k reads per species mapped to target file. The mapped reads were estimated from the HybPiper assembly. For each combination, I want to use 3 different random seeds to make the replicates.
 
-| mix name       | rep | 200k | 100k | 50k | 25k |
-|----------------|-----|------|------|-----|-----|
-| 10x29          | 1   |      |      |     |     |
-| 10x29          | 2   |      |      |     |     |
-| 10x29          | 3   |      |      |     |     |
-| 13x09x03       | 1   |      |      |     |     |
-| 13x09x03       | 2   |      |      |     |     |
-| 13x09x03       | 3   |      |      |     |     |
-| 07x26x25x10x28 | 1   |      |      |     |     |
-| 07x26x25x10x28 | 2   |      |      |     |     |
-| 07x26x25x10x28 | 3   |      |      |     |     |
+| mix name       | rep | mapping cov | 200k | 100k | 50k | 25k |
+|----------------|-----|-------------|------|------|-----|-----|
+| 10x29          | 1   | 26%         |      |      |     |     |
+| 10x29          | 2   | 26%         |      |      |     |     |
+| 10x29          | 3   | 26%         |      |      |     |     |
+| 13x09x03       | 1   | 27%         |      |      |     |     |
+| 13x09x03       | 2   | 27%         |      |      |     |     |
+| 13x09x03       | 3   | 27%         |      |      |     |     |
+| 07x26x25x10x28 | 1   | 34%         |      |      |     |     |
+| 07x26x25x10x28 | 2   | 34%         |      |      |     |     |
+| 07x26x25x10x28 | 3   | 34%         |      |      |     |     |
 
