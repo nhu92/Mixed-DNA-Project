@@ -12,7 +12,7 @@ def distance_to_similarity(distance_df):
     similarity_df[numeric_cols] = 1 / (1 + similarity_df[numeric_cols])
     return similarity_df
 
-def clean_up_matrix(df, proj_name, threshold, use_flag=False, taxa_file):
+def clean_up_matrix(df, proj_name, threshold, taxa_file, use_flag=False):
 
     # Remove rows where row names contain the project name
     df = df[~df[df.columns[0]].str.contains(proj_name)]
@@ -85,8 +85,9 @@ def process_matrices(directory, proj_name, threshold, flag):
             # Construct the filename for the corresponding list file
             prefix = filename.split("cleaned.csv")[0]
             list_file = f"{prefix}list.txt"
+            list_file_path = os.path.join(directory, list_file)
             # Clean up the matrix
-            matrix = clean_up_matrix(matrix, proj_name, threshold, flag, list_file) 
+            matrix = clean_up_matrix(matrix, proj_name, threshold, list_file_path, flag) 
             # Apply distance to similarity transformation
             matrix = distance_to_similarity(matrix)
 
