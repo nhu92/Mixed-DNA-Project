@@ -55,17 +55,18 @@ def genetic_distance_matrix(tree_file, node_output_file, output_file):
     # Load the tree
     tree = Phylo.read(tree_file, 'newick')
 
-    # Reroot logic (same as before)
+    # Reroot logic
     reroot_taxa = ["Amborella", "Nymphaea", "Austrobaileya"]
     for taxa in reroot_taxa:
         for clade in tree.find_clades():
-            if taxa in clade.name:
+            if clade.name and taxa in clade.name:  # Check if clade.name is not None and contains taxa
                 tree.root_with_outgroup(clade)
                 break
         else:
-            continue
-        break
+            continue  # Continue if the taxa was not found in any clade
+        break  # Break if the tree was rerooted successfully
     else:
+        # If none of the specified taxa were found, reroot at the midpoint
         tree.root_at_midpoint()
 
     # Screen all the taxa names containing "NODE"
