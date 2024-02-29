@@ -160,3 +160,12 @@ Installed a new toolkit called `seqkit`. This will be used for subsample the rea
 | 07x26x25x10x28 | 2   | 34%         |      |      |     |     |
 | 07x26x25x10x28 | 3   | 34%         |      |      |     |     |
 
+I am using the following command line to sample the reads. The `-n` is calculated by ExpReadsPairs * EstimatedMappingCov * NumOfMix. The `-s` is a random number seed. We need to make sure the random number seed to be consistent between forward and backward sequences. One thing need to be mentioned is that this function will read all the reads into the memory so make sure the requested memory is larger than the input reads.
+```bash
+# One example run
+seqkit sample -n 769230 -s 100 10x29.R1.fastq.gz > reads_output/10x29.200k.r100.R1.fastq
+```
+
+I will also run multiple tests for different mixed component by proportional mix. It will start with reads proportion of 80%:20%, and then down to 90%:10%, 95%:5%, and 97.5%:2.5%. The absolute reads mapped will be recorded after HybPiper mapping to compare with the reads result.
+
+Two species I would like to use is the 10x29 combination. Species 10 *Galactites tomentosus* has originally 7,462,824 reads, while Species 29 *Dinochloa orenuda* got 2,542,272. I will use Species 10 as the base and the Species 29 for the proportion down.
