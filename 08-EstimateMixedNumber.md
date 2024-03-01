@@ -171,3 +171,6 @@ I will also run multiple tests for different mixed component by proportional mix
 Two species I would like to use is the 10x29 combination. Species 10 *Galactites tomentosus* has originally 7,462,824 reads, while Species 29 *Dinochloa orenuda* got 2,542,272. I will use Species 10 as the base and the Species 29 for the proportion down.
 
 Preparing reads for the work. To automatically evaluate the result, we need several additional scripts to fulfil the task. We need to modify the testing starter code and we need a new candidate table as well.
+
+---
+
