@@ -174,3 +174,4 @@ Preparing reads for the work. To automatically evaluate the result, we need seve
 
 ---
 
+I evaluated most of the result by manually check the output cumulative similarity tables. I found that the limit of a mix mapped read should be (6.25k, 12.5k). All the mix that have single species that more than 12.5k were called (except the No.13 which alway grouped with Ericales, which is not expected). The cumulative distance is reducing when the read is not sufficient. The trend before a plateau effect seems to be a linear (Cumulative similarity ~ Mapped reads). 
