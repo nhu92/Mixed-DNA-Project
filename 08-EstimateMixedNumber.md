@@ -174,4 +174,13 @@ Preparing reads for the work. To automatically evaluate the result, we need seve
 
 ---
 
-I evaluated most of the result by manually check the output cumulative similarity tables. I found that the limit of a mix mapped read should be (6.25k, 12.5k). All the mix that have single species that more than 12.5k were called (except the No.13 which alway grouped with Ericales, which is not expected). The cumulative distance is reducing when the read is not sufficient. The trend before a plateau effect seems to be a linear (Cumulative similarity ~ Mapped reads). 
+I evaluated most of the result by manually check the output cumulative similarity tables. I found that the limit of a mix mapped read should be (6.25k, 12.5k). All the mix that have single species that more than 12.5k were called (except the No.13 which was always grouped with Ericales, which is not expected). The cumulative distance is reducing when the read is not sufficient. The trend before a plateau effect seems to be a linear (Cumulative similarity ~ Mapped reads).
+
+---
+
+I am now redo these analyses. Firstly, I ran the HybPiper to the #10 and #29 raw reads directly to estimate the mapping coverage, respectively. The idea is to accurately control the mapped reads number for the correlation between cumulative similarity and the mapped reads number per species. I will test this correlation in 3 different aspects.
+
+1. Gradient reduction of mapped reads from 100k to 10k, with 3 reps
+2. Gradient reduction of mapped reads from 100k to 10k, at 3 different composition levels (10%, 5%, 2.5%)
+3. Gradient reduction of mapped reads from 100k to 10k for both mixed species, with 3 reps
+
