@@ -192,3 +192,11 @@ Reads were sampled by `seqkit` software by fixed random seeds. The mapping cover
 
 The additional information were simply collected from the exon number. By using bash command `while read mix; do echo $mix; grep ">" ${mix}/exon_extracted/*.fasta | wc -l ; echo "Unique Exon Number:"; ls ${mix}/exon_extracted/ | wc -l ; done < mixed_list.txt`, the number of exon hits and the unique exons found on sample can be extracted. The result could potentially be the adjustment of the final cumulative values.
 
+After today's meeting, there are several tests we can do for the next week:
+
+1. Add some testing points between 50 to 25k range
+2. Add replicates to the proportional mix data
+3. Considering the gene reference selection. By curated selection vs. the random sampling
+4. Considering criteria of reference sequence selection as well
+5. Wrap up for a poster content
+
