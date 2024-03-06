@@ -184,3 +184,11 @@ I am now redo these analyses. Firstly, I ran the HybPiper to the #10 and #29 raw
 2. Gradient reduction of mapped reads from 100k to 10k, at 3 different composition levels (10%, 5%, 2.5%)
 3. Gradient reduction of mapped reads from 100k to 10k for both mixed species, with 3 reps
 
+---
+
+Summaries in this round of test:
+
+Reads were sampled by `seqkit` software by fixed random seeds. The mapping coverages were pre-determined by the single mapping on original reads. The gradient were set from 100k to 10k. The full pipeline was used with 100+ reference and 30+ genes. The output can be retrieved by `while read mix; do echo $mix; grep "Poales" ${mix}/${mix}.cumulative_dist.csv; done < mixed_list.txt`. The output required a few data cleaning process. The result showed that the cumulative similarity will decrease when the mapped reads number drops. The limit for correctly predicting is around 20k while 15k could be the hard limit that failed for assembly. When we mix te samples by proportional data. The different proportion does not have an effect on the final prediction values but may reduce the predictability at low read number side. This part needs to have some replicates as well. Also, the 1:1 ratio reduction mix showed different decline curve for Asterales and Poales which indicate the unknown species and target selection difference. The whole study could have advanced dissected intervals around 25k to 50k to verify the shape of the regression curve.
+
+The additional information were simply collected from the exon number. By using bash command `while read mix; do echo $mix; grep ">" ${mix}/exon_extracted/*.fasta | wc -l ; echo "Unique Exon Number:"; ls ${mix}/exon_extracted/ | wc -l ; done < mixed_list.txt`, the number of exon hits and the unique exons found on sample can be extracted. The result could potentially be the adjustment of the final cumulative values.
+
