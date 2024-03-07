@@ -200,3 +200,8 @@ After today's meeting, there are several tests we can do for the next week:
 4. Considering criteria of reference sequence selection as well
 5. Wrap up for a poster content
 
+---
+
+I want to break down the details for testing the number of candidate genes. I will start with 10 genes, then 30 genes (current pipeline), to 50, 70, 90, 150, 353 (full genes). The selected genes are based on the occurrence on the reference alignment. The power of different genes will be tested on limited mapped reads number (30k, 25k, 20k, 15k). For each test, we may focus more on the per exon hits ratio rather than the cumulative similarity changes.
+
+The design will be a 7 gene number x 4 reads number x 3 replicates = 84 trials in total.
