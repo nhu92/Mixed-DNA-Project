@@ -210,3 +210,9 @@ The design will be a 7 gene number sets x 4 reads number levels x 3 replicates =
 
 The selected gene sets are based on sorting from the highest occurrence to the lowest. The result shows that the current approach on limited reads number only will affect the gene recovery rate when the gene number is lower than 30. With 30k data, there is no difference between 30 to 353 genes as targeted reference.
 
+---
+
+I will generate 100 tests using mixed reads from Kew. I will generate an array that equally use all different species. Also, I need a new candidate table in different hierarchies.
+
+Another thing I should do tomorrow is, I need to think about how to wrap up the results I did for these months into a poster. I should plan the content writing and description of each figures I might display into a file for Dr. Johnson.
+
