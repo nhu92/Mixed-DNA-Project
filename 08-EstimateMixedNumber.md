@@ -216,3 +216,6 @@ I will generate 100 tests using mixed reads from Kew. I will generate an array t
 
 Another thing I should do tomorrow is, I need to think about how to wrap up the results I did for these months into a poster. I should plan the content writing and description of each figures I might display into a file for Dr. Johnson.
 
+---
+
+Spend several days on manuscript and poster design. Also finished two reviews.

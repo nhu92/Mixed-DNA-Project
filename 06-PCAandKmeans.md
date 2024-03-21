@@ -84,7 +84,7 @@ Today's task in sequence:
 While exploring the clustering methods, I might choose the Spectral Clustering from scikit-learn. The comparisons of all the clustering criterion is displayed below. The input will be the matrices (we need to transformation I will mention it below too) and a cluster number.
 ![Clustering Methods Comparison](https://scikit-learn.org/stable/_images/sphx_glr_plot_cluster_comparison_001.png "Clustering Comparisons")
 
-As I said, we need a ata transformation before we run the clustering. We got a distance matrix but what we need is a similarity matrix. The scikit-learn suggests a way of  transformation:
+As I said, we need a data transformation before we run the clustering. We got a distance matrix but what we need is a similarity matrix. The scikit-learn suggests a way of  transformation:
 ```python
 similarity = np.exp(-beta * distance / distance.std())
 ```
