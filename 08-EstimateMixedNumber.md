@@ -218,4 +218,4 @@ Another thing I should do tomorrow is, I need to think about how to wrap up the 
 
 ---
 
-Spend several days on manuscript and poster design. Also finished two reviews.
+I spent several days on manuscript and poster design. Also finished two reviews. I will finish some cover letter writing and polishing my CV.
