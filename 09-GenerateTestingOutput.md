@@ -21,3 +21,8 @@ The first figure would be the regeneration of the topo map. This figure was remo
 This figure requires the astral tree of the testing reference. Since we use the new A353v2, I would like to evaluate the tree before the plot generation. I could reuse the pipeline from 02-reference.sh without generate the contour map. The pipeline should finish before the exon tree generation process.
 
 Find some old code file and pipelines to do this. I may remove the SD for a reason.
+
+---
+
+I will also generate a contour map for the result. I had never used that plot for the 100 species map. I think it might be messy but I will check.
+
