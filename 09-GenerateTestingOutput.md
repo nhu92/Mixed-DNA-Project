@@ -28,3 +28,9 @@ I will also generate a contour map for the result. I had never used that plot fo
 
 Glad to pick up some old scripts generated before. I almost forget them already. The contour map will be manually generated from the two inputs: the reference PCoA result and the cumulative similarity result. I might need to fix the PCoA result by making the seq name into specific hierarchies. For example, we need the level at orders/families. Also, the final contour map does not like a very long descriptional naming. 
 
+```bash
+python categ_PCoA.py secondmix_refPCoA.csv secondmix_refPCoA_family.csv family
+dos2unix secondmix_refPCoA_family.csv  
+paste -d, secondmix_refPCoA_family.csv secondmix.Zaxis.csv  > secondmix_3dcoordfam.csv
+python contour_optima_normalized.py secondmix_3dcoordfam.csv secondmix_contourmapfam.svg 0
+```
