@@ -26,3 +26,5 @@ Find some old code file and pipelines to do this. I may remove the SD for a reas
 
 I will also generate a contour map for the result. I had never used that plot for the 100 species map. I think it might be messy but I will check.
 
+Glad to pick up some old scripts generated before. I almost forget them already. The contour map will be manually generated from the two inputs: the reference PCoA result and the cumulative similarity result. I might need to fix the PCoA result by making the seq name into specific hierarchies. For example, we need the level at orders/families. Also, the final contour map does not like a very long descriptional naming. 
+
