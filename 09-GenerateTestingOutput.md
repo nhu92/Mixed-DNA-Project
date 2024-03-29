@@ -26,11 +26,17 @@ Find some old code file and pipelines to do this. I may remove the SD for a reas
 
 I will also generate a contour map for the result. I had never used that plot for the 100 species map. I think it might be messy but I will check.
 
-Glad to pick up some old scripts generated before. I almost forget them already. The contour map will be manually generated from the two inputs: the reference PCoA result and the cumulative similarity result. I might need to fix the PCoA result by making the seq name into specific hierarchies. For example, we need the level at orders/families. Also, the final contour map does not like a very long descriptional naming. 
+Glad to pick up some old scripts generated before. I almost forget them already. The contour map will be manually generated from the two inputs: the reference PCoA result and the cumulative similarity result. I might need to fix the PCoA result by making the seq name into specific hierarchies. For example, we need the level at orders/families. Also, the final contour map does not like a very long descriptional naming.
+
+This is the small pipeline to generate the expected contour map. We do not need to run the ref_panel pipeline every time for this work. If the reference file does not change (which means, both the number of genes and the reference species), we can use the same `_refPCoA.csv` as the input file.
 
 ```bash
-python categ_PCoA.py secondmix_refPCoA.csv secondmix_refPCoA_family.csv family
-dos2unix secondmix_refPCoA_family.csv  
-paste -d, secondmix_refPCoA_family.csv secondmix.Zaxis.csv  > secondmix_3dcoordfam.csv
-python contour_optima_normalized.py secondmix_3dcoordfam.csv secondmix_contourmapfam.svg 0
+proj_name=
+level=
+python categ_PCoA.py 113_30_refPCoA.csv 113_30_refPCoA_${level}.csv ${level}
+dos2unix 113_30_refPCoA_${level}.csv
+dos2unix ${proj_name}.Zaxis.csv
+paste -d, 113_30_refPCoA_${level}.csv ${proj_name}.Zaxis.csv > ${proj_name}_3dcoord${level}.csv
+python contour_optima_normalized.py s${proj_name}_3dcoord${level}.csv ${proj_name}_contourmap${level}.svg 0
 ```
+
