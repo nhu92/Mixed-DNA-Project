@@ -39,3 +39,9 @@ dos2unix ${proj_name}.Zaxis.csv
 paste -d, 113_30_refPCoA_${level}.csv ${proj_name}.Zaxis.csv > ${proj_name}_3dcoord${level}.csv
 python contour_optima_normalized.py s${proj_name}_3dcoord${level}.csv ${proj_name}_contourmap${level}.svg 0
 ```
+
+---
+
+I will start to rerun the 100 tests from the Kew Garden database. Should I remove the individiuals that we found some issues with? Or I can replace those species with other ones from the Kew? Also, I wish to sample each species with even times to avoid bias. Also, I want to generate a super mix with reduced reads number.
+
+I will check each species reads number, then, I will thin down the read number for each species into 150k reads to avoid a huge input file. 
