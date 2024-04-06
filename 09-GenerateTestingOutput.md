@@ -45,3 +45,7 @@ python contour_optima_normalized.py s${proj_name}_3dcoord${level}.csv ${proj_nam
 I will start to rerun the 100 tests from the Kew Garden database. Should I remove the individiuals that we found some issues with? Or I can replace those species with other ones from the Kew? Also, I wish to sample each species with even times to avoid bias. Also, I want to generate a super mix with reduced reads number.
 
 I will check each species reads number, then, I will thin down the read number for each species into 150k reads to avoid a huge input file. 
+
+---
+
+I need to generate some example trees for the display. It is better to color them in a good way. I probably need to show the heatmap with the topology on side. 
