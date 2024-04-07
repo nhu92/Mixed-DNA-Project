@@ -49,3 +49,22 @@ I will check each species reads number, then, I will thin down the read number f
 ---
 
 I need to generate some example trees for the display. It is better to color them in a good way. I probably need to show the heatmap with the topology on side. 
+
+---
+
+This is the process of generating new sets of 100 mixes.
+
+I will generate 40 3x mixes (120sp, 6/sp), 40 6x mixes (240sp, 12/sp), and 20 10x mixes (200sp, 10/sp). The detailed processes is divided below:
+
+1. Thin down the reads into 1000k (very sufficient) for each input.
+2. Tablize input name to make mix, each column is a random redistribution of 20 names
+3. Merge read according to the random table.
+
+The code for making the mix. 
+```R
+namelist <- c("01x", "02x", "03x", "04x", "07x", "08x", "09x", "10x", "12x", "13x", "15x", "16x", "18x", "19x", "22x", "24x", "25x", "26x", "28x", "30x")
+mix3 <- t(replicate(40, sample(namelist, 3, replace = FALSE)))
+mix6 <- t(replicate(20, sample(namelist, 6, replace = FALSE)))
+mix10 <- t(replicate(20, sample(namelist, 10, replace = FALSE)))
+
+```
