@@ -23,6 +23,7 @@ def main():
 
     # Rename the second column of the summary to 'sum_of_second_column' or any other descriptive name
     summary = summary.rename(columns={'total_value': 'total_value'})
+    summary = summary.rename(columns={'processed_col1': 'row_name'})
 
     # Output the summary to a file
     summary.to_csv(args.output_file, index=False)
