@@ -73,3 +73,10 @@ mix10 <- t(replicate(20, sample(namelist, 10, replace = FALSE)))
 
 Submitted 100 jobs on 10 genes tests. I expect some of them failed due to limited gene number. I will expand those tests to more genes tomorrow.
 
+---
+
+This is the new evaluation pipeline for the new 100 tests:
+```bash
+while read line; do python cumu_order.py ../gene10/${line}/${line}.cumulative_dist.csv ../eval_gene10/${line}.cumulative_dist_order.csv; python evaluate.py ../eval_gene10/${line}.cumulative_dist_order.csv candidates_order.tsv ../eval_gene10/${line}.order_eval.csv; done < mix_namelist.txt
+```
+
