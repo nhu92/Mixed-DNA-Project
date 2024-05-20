@@ -79,4 +79,5 @@ This is the new evaluation pipeline for the new 100 tests:
 ```bash
 while read line; do python cumu_order.py ../gene10/${line}/${line}.cumulative_dist.csv ../eval_gene10/${line}.cumulative_dist_order.csv; python evaluate.py ../eval_gene10/${line}.cumulative_dist_order.csv candidates_order.tsv ../eval_gene10/${line}.order_eval.csv; done < mix_namelist.txt
 ```
+Back to work at TTU today! I gonna check the parallel script to make sure the parallel is perfectly working on the distance matrix.
 
