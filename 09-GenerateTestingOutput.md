@@ -73,3 +73,7 @@ mix10 <- t(replicate(20, sample(namelist, 10, replace = FALSE)))
 
 Submitted 100 jobs on 10 genes tests. I expect some of them failed due to limited gene number. I will expand those tests to more genes tomorrow.
 
+---
+
+Back to work at TTU today! I gonna check the parallel script to make sure the parallel is perfectly working on the distance matrix.
+
