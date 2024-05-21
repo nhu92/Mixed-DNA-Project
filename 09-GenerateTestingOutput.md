@@ -84,7 +84,12 @@ while read line; do python cumu_order.py ../gene10/${line}/${line}.cumulative_di
 
 Back to work at TTU today! I gonna check the parallel script to make sure the parallel is perfectly working on the distance matrix.
 
-The previous parallel was running with 4 jobs, and the process was executed by each gene. The speed was limited both by the number of jobs and the number of exons in each gene. The whole process saved around 1 hour (from 5 to 4). I will try increase the job number in the parallel to see if it drastically reduces the run time. Also, I will work on a script to "flatten" the input tree without categorize them within genes. If we could process all the exon trees at the same time, I believe it will save more time. 
+The previous parallel was running with 4 jobs, and the process was executed by each gene. The speed was limited both by the number of jobs and the number of exons in each gene. The whole process saved around 1 hour (from 5 to 4). I will try increase the job number in the parallel to see if it drastically reduces the run time. Also, I will work on a script to "flatten" the input tree without categorize them within genes. If we could process all the exon trees at the same time, I believe it will save more time.
+
+The reason I do so for the parallel is that we found the accuracy will be obviously increased by using all the references from the A353v2.
+
+The 64 threads run finished the process less than 30 min, which is a very strong improvement from the original pipeline. I will use this to rerun the 800+ references test.
+
 
 ```bash
 # flatten the read in treefiles
