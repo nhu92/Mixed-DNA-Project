@@ -90,13 +90,72 @@ The reason I do so for the parallel is that we found the accuracy will be obviou
 
 The 64 threads run finished the process less than 30 min, which is a very strong improvement from the original pipeline. I will use this to rerun the 800+ references test.
 
+The current version I am using:
+```bash
+#!/bin/bash
+#SBATCH -J parallel_test
+#SBATCH -p nocona
+#SBATCH -o log/%x.out
+#SBATCH -e log/%x.err
+#SBATCH -N 1
+#SBATCH -n 64
+#SBATCH -t 24:00:00
+#SBATCH --mem-per-cpu=3G
+
+# This is a pipeline for analyzing raw reads from a mixed sample to the identification.
+# This pipeline is to treat with the mixed reads. There is another pipeline to generate the reference panel.
+
+# Declare the constants
+threads=64
+read1=01x02x13.R1.fastq.gz
+read2=01x02x13.R2.fastq.gz
+mega353=mega353.fasta
+proj_name=01x02x13
+ref_alignment=ref # The directory of reference alignment
+
+tree_dir=all_trees_par
+
+# Read each gene name from gene_list.txt and process files for each gene in parallel
+cat ./gene_list.txt | parallel --jobs 64 '
+    gene_name_shorter={};
+    ls "./all_trees_par/${gene_name_shorter}"*"tre" > ./loop.treelist.txt;
+    i=1;
+    while read filename; do
+        python matrix_anc.py -t "${filename}" -o "./all_trees_par/${gene_name_shorter}.${i}.matrix";
+        cp "./all_trees_par/${gene_name_shorter}.${i}.matrix" "./all_trees_par/${gene_name_shorter}.${i}.cleaned.csv";
+        ((i++));
+    done < ./loop.treelist.txt;
+'
+
+rm ./loop.treelist.txt
+
+```
+
+
+The better version I gonna test:
 
 ```bash
 # flatten the read in treefiles
+tree_dir=all_trees_par
 
-
+for file in ${tree_dir}/*_exon_*.tre; do
+  # Extract the parts of the filename
+  base=${file%%_exon_*}
+  exon=${file#*_exon_}
+  exon=${exon%%.*}
+  # Construct the new filename
+  newname="${base}.${exon}.tre"
+  # Rename the file
+  mv "${tree_dir}/$file" "${tree_dir}/$newname"
+done
 
 # the parallel part
-
+###### ADD a statement to create a file list
+ls ${tree_dir}/*.tre > tree_list.txt
+cat ./gene_list.txt | parallel --jobs 64 '
+    filename={};
+    python matrix_anc.py -t "${filename}" -o "./all_trees_par/${filename}.matrix";
+    cp "./all_trees_par/${filename}.matrix" "./all_trees_par/${filename}.cleaned.csv";
+'
 
 ```
