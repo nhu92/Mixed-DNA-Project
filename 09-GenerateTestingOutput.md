@@ -79,5 +79,19 @@ This is the new evaluation pipeline for the new 100 tests:
 ```bash
 while read line; do python cumu_order.py ../gene10/${line}/${line}.cumulative_dist.csv ../eval_gene10/${line}.cumulative_dist_order.csv; python evaluate.py ../eval_gene10/${line}.cumulative_dist_order.csv candidates_order.tsv ../eval_gene10/${line}.order_eval.csv; done < mix_namelist.txt
 ```
+
+---
+
 Back to work at TTU today! I gonna check the parallel script to make sure the parallel is perfectly working on the distance matrix.
 
+The previous parallel was running with 4 jobs, and the process was executed by each gene. The speed was limited both by the number of jobs and the number of exons in each gene. The whole process saved around 1 hour (from 5 to 4). I will try increase the job number in the parallel to see if it drastically reduces the run time. Also, I will work on a script to "flatten" the input tree without categorize them within genes. If we could process all the exon trees at the same time, I believe it will save more time. 
+
+```bash
+# flatten the read in treefiles
+
+
+
+# the parallel part
+
+
+```
