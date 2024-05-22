@@ -121,7 +121,7 @@ cat ./gene_list.txt | parallel --jobs 64 '
     ls "./all_trees_par/${gene_name_shorter}"*"tre" > ./loop.treelist.txt;
     i=1;
     while read filename; do
-        python matrix_anc.py -t "${filename}" -o "./all_trees_par/${gene_name_shorter}.${i}.matrix";
+        python matrix_ult.py -t "${filename}" -n "./all_trees/${gene_name_shorter}.${i}.list.txt" -o "./all_trees_par/${gene_name_shorter}.${i}.matrix";
         cp "./all_trees_par/${gene_name_shorter}.${i}.matrix" "./all_trees_par/${gene_name_shorter}.${i}.cleaned.csv";
         ((i++));
     done < ./loop.treelist.txt;
@@ -150,11 +150,11 @@ for file in ${tree_dir}/*_exon_*.tre; do
 done
 
 # the parallel part
-###### ADD a statement to create a file list
-ls ${tree_dir}/*.tre > tree_list.txt
-cat ./gene_list.txt | parallel --jobs 64 '
+###### ADD a statement to create a file list (in progress)
+ls ${tree_dir}/*.tre | sed 's/.tre//g' > exon_list.txt
+cat ./exon_list.txt | parallel --jobs 64 '
     filename={};
-    python matrix_anc.py -t "${filename}" -o "./all_trees_par/${filename}.matrix";
+    python matrix_ult.py -t "${filename}.tre" -n ./all_trees/${filename}.list.txt -o "./all_trees_par/${filename}.matrix";
     cp "./all_trees_par/${filename}.matrix" "./all_trees_par/${filename}.cleaned.csv";
 '
 
