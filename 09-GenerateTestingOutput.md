@@ -159,3 +159,7 @@ cat ./exon_list.txt | parallel --jobs 64 '
 '
 
 ```
+
+---
+
+I am working on the poster for IBC XX. I'll gradually update te progress. The first thing is to submit a job array for 150 gene test. I already optimized the pipeline for a parallel run. Thus, the runtime would be reduced a lot. 
