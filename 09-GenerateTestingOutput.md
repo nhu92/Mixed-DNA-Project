@@ -163,3 +163,17 @@ cat ./exon_list.txt | parallel --jobs 64 '
 ---
 
 I am working on the poster for IBC XX. I'll gradually update te progress. The first thing is to submit a job array for 150 gene test. I already optimized the pipeline for a parallel run. Thus, the runtime would be reduced a lot. 
+
+---
+
+Finished most of the plotting code. The 150 gene test runs not as expected. The pipeline generated a lot of empty files during exon extractions. I tried to figure out the issue. Does it come with the blank line of the `gene.list.txt`? I will double check if the pipeline works properly.
+
+Figured out! It is the blank line issue! The blank line will be read into a `find` command for `*${gene_name}*` in the pipeline. The empty line will replacie the `${}` to produce `**` in finding line, which will generate numerous files. And the whole process was produced twice in a multiplied way.
+
+I am now rethinking about the confusion matrix generated from out pipeline. Currently, the confusion matrix is generated from counting the 4 parameters in each run, which is not that correct. There is a more "standard" way to do this in my mind. For each species in the pool, split the test into two groups: tests with the target species and the tests without the species. Then, we will evaluate if the species is predicted in each groups as TP and FP, as well as the non-predicted counts as FN and TN. The detailed table is below. Finally, summarize all the species to make a averaged predicting value across all the threshold choice.
+
+|                         | With Species A Entries | Species A Free Entries |
+|-------------------------|------------------------|------------------------|
+| Species A Predicted     | True Positives         | False Positives        |
+| SPecies A Not Predicted | False Negatives        | True Negatives         |
+
