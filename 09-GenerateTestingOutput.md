@@ -170,10 +170,14 @@ Finished most of the plotting code. The 150 gene test runs not as expected. The 
 
 Figured out! It is the blank line issue! The blank line will be read into a `find` command for `*${gene_name}*` in the pipeline. The empty line will replacie the `${}` to produce `**` in finding line, which will generate numerous files. And the whole process was produced twice in a multiplied way.
 
-I am now rethinking about the confusion matrix generated from out pipeline. Currently, the confusion matrix is generated from counting the 4 parameters in each run, which is not that correct. There is a more "standard" way to do this in my mind. For each species in the pool, split the test into two groups: tests with the target species and the tests without the species. Then, we will evaluate if the species is predicted in each groups as TP and FP, as well as the non-predicted counts as FN and TN. The detailed table is below. Finally, summarize all the species to make a averaged predicting value across all the threshold choice.
+I am now rethinking about the confusion matrix generated from out pipeline. Currently, the confusion matrix is generated from counting the 4 parameters in each run, which is not that correct. There is a more "standard" way to do this in my mind. For each species in the pool, split tests into two groups: tests with the target species and the tests without the species. Then, we will evaluate if the species is predicted in each groups as TP and FP, as well as the non-predicted counts as FN and TN. The detailed table is below. Finally, summarize all the species to make a averaged predicting value across all the threshold choice.
 
 |                         | With Species A Entries | Species A Free Entries |
 |-------------------------|------------------------|------------------------|
 | Species A Predicted     | True Positives         | False Positives        |
-| SPecies A Not Predicted | False Negatives        | True Negatives         |
+| Species A Not Predicted | False Negatives        | True Negatives         |
+
+---
+
+I just realized that, only using the prepared species to estimate the data is not sufficient. All of the candidate orders should be evaluated, even most of them do not show up in the sampling. They could contribute to the FP and TN counts and contribute to the positive predictions. I will manually calculate that in this case if the parameter estimation is different from previous method.
 
