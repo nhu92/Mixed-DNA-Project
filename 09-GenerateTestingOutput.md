@@ -274,3 +274,7 @@ Certainly! Here is the logic outlined in markdown style:
    ```
 
 This logic outlines the steps taken to transform and adjust the correlation matrix, ensuring that \( Q \) is independent of \( a \), \( b \), and \( c \).
+
+---
+
+There is a new thoughts from Dr. Johnson. We could use the distribution of the ACS to estimate the number of the mixed species in the pool. We could generate a statistical output based on our tests.
