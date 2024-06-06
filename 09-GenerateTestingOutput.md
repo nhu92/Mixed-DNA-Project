@@ -187,25 +187,21 @@ I find the two different methods may have the same number in those parameters.
 
 I reviewed the results from the gene150 and 871species run and compared them with the gene30 runs. I found the boundary of the cumulative similarity is some how blurry because the source of closed related species. We used a lot of logics already to deal with this issue but it is still affecting the results. I come up with the de-correlation methods based on a matrix treating system. I make some samples using ChatGPT. I will apply this to our pipeline tomorrow to see if anything could act better than before.
 
-Certainly! Here is the logic outlined in markdown style:
+Logic to Remove Correlation in a Matrix:
 
-### Logic to Remove Correlation in a Matrix
+Step-by-Step Process
 
-#### Step-by-Step Process
-
-1. **Define the Original Matrices**
+1. Define the Original Matrices
    - The original correlation matrix and the matrix with \( Q \).
 
-2. **Conversion of Matrices**
+2. Conversion of Matrices
    - Convert each element of the initial matrices using the formula \( \frac{1}{1+x} \).
 
-3. **Adjusting for Independence**
+3. Adjusting for Independence
    - Use the converted matrices to adjust the correlation matrix such that \( Q \) becomes independent of \( a \), \( b \), and \( c \).
 
-#### Detailed Steps
-
-1. **Original Correlation Matrices:**
-   ```plaintext
+Original Correlation Matrices:
+```plaintext
    Correlation Matrix:
    a b c
    a 0 0.1 0.9
@@ -218,60 +214,47 @@ Certainly! Here is the logic outlined in markdown style:
    b 0.1 0 1 0.3
    c 0.9 1 0 0.8
    Q 0.4 0.3 0.8 0
-   ```
+```
 
-2. **Conversion Function:**
-   ```python
-   def convert_matrix(matrix):
-       return 1 / (1 + matrix)
-   ```
+Python scripts to reduce the correlation in the matrix using the example matrices:
 
-3. **Conversion of Matrices:**
-   ```python
-   converted_new_cor_matrix = convert_matrix(new_cor_matrix)
-   converted_new_cor_matrix_with_q = convert_matrix(new_cor_matrix_with_q)
-   ```
-
-4. **Function to Adjust \( Q \) to Make it Independent:**
-   ```python
-   def adjust_q(cor_matrix, cor_matrix_with_q):
-       q_index = cor_matrix_with_q.shape[0] - 1
+```python
+def convert_matrix(matrix):
+   return 1 / (1 + matrix)
+converted_new_cor_matrix = convert_matrix(new_cor_matrix)
+converted_new_cor_matrix_with_q = convert_matrix(new_cor_matrix_with_q)
+def adjust_q(cor_matrix, cor_matrix_with_q):
+   q_index = cor_matrix_with_q.shape[0] - 1
        
-       # Placeholder for the adjusted matrix
-       adjusted_matrix = cor_matrix_with_q.copy()
+   # Placeholder for the adjusted matrix
+   adjusted_matrix = cor_matrix_with_q.copy()
        
-       # Iterate over the rows and columns of Q
-       for i in range(q_index):
-           for j in range(q_index):
-               if i != j:
-                   adjusted_matrix[q_index, i] -= cor_matrix[i, j] * cor_matrix_with_q[j, q_index]
-                   adjusted_matrix[i, q_index] = adjusted_matrix[q_index, i]
+   # Iterate over the rows and columns of Q
+   for i in range(q_index):
+      for j in range(q_index):
+         if i != j:
+            adjusted_matrix[q_index, i] -= cor_matrix[i, j] * cor_matrix_with_q[j, q_index]
+            adjusted_matrix[i, q_index] = adjusted_matrix[q_index, i]
        
-       # Set the diagonal element of Q to 0 (no self-correlation)
-       adjusted_matrix[q_index, q_index] = 0
+   # Set the diagonal element of Q to 0 (no self-correlation)
+   adjusted_matrix[q_index, q_index] = 0
        
-       return adjusted_matrix
-   ```
+return adjusted_matrix
 
-5. **Adjust the New Matrix:**
-   ```python
-   adjusted_new_matrix = adjust_q(converted_new_cor_matrix, converted_new_cor_matrix_with_q)
-   ```
+adjusted_new_matrix = adjust_q(converted_new_cor_matrix, converted_new_cor_matrix_with_q)
+adjusted_new_df = pd.DataFrame(adjusted_new_matrix, columns=['a', 'b', 'c', 'Q'], index=['a', 'b', 'c', 'Q'])
 
-6. **Convert to DataFrame for Better Visualization:**
-   ```python
-   adjusted_new_df = pd.DataFrame(adjusted_new_matrix, columns=['a', 'b', 'c', 'Q'], index=['a', 'b', 'c', 'Q'])
-   ```
+```
 
-7. **Output the Adjusted Correlation Matrix:**
-   ```plaintext
+The test output would be:
+```plaintext
    Adjusted Correlation Matrix with Q (New Data):
    a         b         c         Q
    a  1.000000  0.909091  0.526316 -0.277413
    b  0.909091  1.000000  0.500000 -0.157898
    c  0.526316  0.500000  1.000000 -0.205000
    Q -0.277413 -0.157898 -0.205000  0.000000
-   ```
+```
 
 This logic outlines the steps taken to transform and adjust the correlation matrix, ensuring that \( Q \) is independent of \( a \), \( b \), and \( c \).
 
