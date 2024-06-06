@@ -261,3 +261,8 @@ This logic outlines the steps taken to transform and adjust the correlation matr
 ---
 
 There is a new thoughts from Dr. Johnson. We could use the distribution of the ACS to estimate the number of the mixed species in the pool. We could generate a statistical output based on our tests.
+
+---
+
+The distribution of the ACS should be affected by the reads number for different species. Thus, the idea may not be appropriate in predicting mixed species number, unless the raw data size is huge enough for identifying all the unknown species in it, or we assume the species reads distribution is quite even.
+
