@@ -266,3 +266,6 @@ There is a new thoughts from Dr. Johnson. We could use the distribution of the A
 
 The distribution of the ACS should be affected by the reads number for different species. Thus, the idea may not be appropriate in predicting mixed species number, unless the raw data size is huge enough for identifying all the unknown species in it, or we assume the species reads distribution is quite even.
 
+---
+
+The unrelated but short branch length may affect the all the species equally due to the short branch?
