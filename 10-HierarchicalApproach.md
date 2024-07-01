@@ -4,3 +4,8 @@ The take the output from the order level search into an input for the second rou
 
 ---
 
+First, let me collect the meeting notes from last discussion of the pipeline.
+
+1. The pipeline will be a couple of python scripts, with minor bash commands required(?)
+2. The dependencies will be installed by conda (what about the python libs?)
+3. 
