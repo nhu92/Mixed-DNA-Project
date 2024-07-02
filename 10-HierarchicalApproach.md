@@ -25,6 +25,7 @@ First, let me collect the meeting notes from last discussion of the pipeline.
 8. Consider multiprocessing using Python
 9. For the **Hierarchical approach**, the first round predictions will be used as reference selection criteria
 10. Naming system fix
+    - Using the Python non-conflict form? Adding trailing and tail "__" to a project name?
 
 To build up the hierarchical prediction, I will extend the current pipeline to run again with selected species according to the initial predictions.
 
@@ -41,4 +42,7 @@ Prepare some testing data samples:
 
 Evaluating processes:
 
-- Both evaluate 
+- Evaluate the order level threshold and the family level threshold together
+- The evaluation will be shown in a plot where X-Y panel is two threshold choice and color scale showed the specific evaluating parameters
+- Consider the threshold choice other than Z-score from normal distribution. Maybe Kruskal-Wallis test?
+
