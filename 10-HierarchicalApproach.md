@@ -47,3 +47,6 @@ Evaluating processes:
 - Consider the threshold choice other than Z-score from normal distribution. Maybe Kruskal-Wallis test?
 
 First, I did a sample run for 3 Rosales species. I will use `seqkit` to thin down the reads of each species down to 1000k. Then, I selected 30 genes and run an order prediction pipeline. I will later evaluate the order prediction results based on the threshold to run different family prediction line.
+
+---
+
