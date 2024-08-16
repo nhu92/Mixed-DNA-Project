@@ -105,9 +105,19 @@ Before running the pipeline, ensure that you have the following:
   - `HybPiper`, `fastp`, `mafft`, `fasttree`, `seqkit`. Suggest using Conda to install
   - Required Python libraries: `pandas`, `argparse`, `scipy`, `scikit-learn`, `numpy`, `biopython`
 
-  ```bash
+```bash
+  # Create environment for HybPiper
+  conda config --add channels defaults
+  conda config --add channels bioconda
+  conda config --add channels conda-forge
+  conda create -n pacificod hybpiper
+  conda activate pacificod
+  # Install dependencies
+  conda install seqkit
+  conda install fasttree
+  conda install fastp
   pip install numpy pandas scipy scikit-learn biopython argparse
-  ```
+```
 
 - **Data**:
   - Paired-end reads from mixed plant DNA samples.
