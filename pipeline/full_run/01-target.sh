@@ -12,12 +12,13 @@
 # This pipeline is to treat with the mixed reads. There is another pipeline to generate the reference panel.
 
 # Declare the constants
-threads=64
+threads=
 read1=
 read2=
 mega353=angiosperms353_v2_interim_targetfile.fasta
 proj_name=
 ref_alignment=ref # The directory of reference alignment
+gene_list=
 
 # ---
 
