@@ -196,7 +196,7 @@ if __name__ == "__main__":
     log_status(log_file, f"  Gene List: {args.gene_list}")
 
     # Run the sequence assembly
-    # sequence_assembly(args.threads, args.read1, args.read2, args.mega353, args.proj_name, log_file)
+    sequence_assembly(args.threads, args.read1, args.read2, args.mega353, args.proj_name, log_file)
 
     # Run the exon tree creation
     exon_tree(args.gene_list, args.overlapping_rate, project_name, log_file)
