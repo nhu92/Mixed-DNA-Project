@@ -11,6 +11,7 @@ This tutorial provides step-by-step instructions to run a pipeline designed for 
 To run the entire pipeline, execute each script in the following order:
 
 ```bash
+# The pipeline is recommended to run under job submission systems.
 # Step 0: Pipeline Clone
 git clone -n  https://github.com/nhu92/Mixed-DNA-Project.git --depth=1
 cd Mixed-DNA-Project/
@@ -41,10 +42,10 @@ cat 01_1.fastq 02_1.fastq 03_1.fastq > 01x02x03.R1.fastq
 cat 01_2.fastq 02_2.fastq 03_2.fastq > 01x02x03.R2.fastq 
 
 # Step 1: Sequence Assembly
-python 01_exon_assembly.py -t 64 -r1 01x02x03.R1.fastq -r2 01x02x03.R2.fastq -p z010203 -g gene.list.txt
+python 01_exons_assembly.py -t 64 -r1 01x02x03.R1.fastq -r2 01x02x03.R2.fastq -p z010203 -g gene.list.txt
 
 # Step 2: Exon Tree Creation
-python 02_exons_phylo.py -t 64 -p z010203 
+python 02_exon_trees.py -t 64 -p z010203 
 
 # Step 3: Distance Matrix Calculation
 python 03_distance_matrices.py -t 64 -p z010203 --threshold 1
