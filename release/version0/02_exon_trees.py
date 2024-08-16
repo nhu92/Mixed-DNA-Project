@@ -66,8 +66,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Pipeline for generating phylogenetic trees from exon data.")
     parser.add_argument("-t", "--threads", required=True, help="Number of threads to use")
     parser.add_argument("-e", "--input_exon", type=str, default="02_exon_extracted", help="Directory of extracted exon sequences")
-    parser.add_argument("-r", "--ref_alignment", required=True, help="Directory of reference alignments")
-    parser.add_argument("-g", "--gene_list", required=True, help="Path to the gene list file")
+    parser.add_argument("-r", "--ref_alignment", type=str, default="ref", help="Directory of reference alignments")
+    parser.add_argument("-g", "--gene_list", type=str, default="gene_list.txt", help="Path to the gene list file")
     parser.add_argument("-p", "--proj_name", required=True, help="Project name")
 
     args = parser.parse_args()
