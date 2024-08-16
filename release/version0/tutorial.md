@@ -47,8 +47,9 @@ Before running the pipeline, ensure that you have the following:
 
 - **Software and Tools**:
   - Python 3.8+
-  - `HybPiper`, `fastp`, `mafft`, `fasttree`
+  - `HybPiper`, `fastp`, `mafft`, `fasttree`, `seqkit` Suggest using Conda to install
   - Required Python libraries: `pandas`, `argparse`, `scipy`, `scikit-learn`, `numpy`, `biopython`
+
   `pip install numpy pandas scipy scikit-learn biopython argparse`
 
 - **Data**:
@@ -138,6 +139,35 @@ python 04_prediction.py -i <input_distance_matrix> -o <output_file> -tl <taxonom
 To run the entire pipeline, execute each script in the following order:
 
 ```bash
+# Step 0: Pipeline Clone
+git clone -n  https://github.com/nhu92/Mixed-DNA-Project.git --depth=1
+cd Mixed-DNA-Project/
+git checkout HEAD release/version0
+git checkout HEAD release/sample_data
+cd ..
+cp -r Mixed-DNA-Project/release/version0 ./
+cp -r Mixed-DNA-Project/release/sample_data ./
+rm -rf Mixed-DNA-Project/
+gunzip angiosperms353_v2_interim_targetfile.fasta.gz
+
+  ## In-silico Mix Generation
+wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR762/001/ERR7621631/ERR7621631_1.fastq.gz
+wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR762/001/ERR7621631/ERR7621631_2.fastq.gz
+wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR762/002/ERR7621392/ERR7621392_1.fastq.gz
+wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR762/002/ERR7621392/ERR7621392_2.fastq.gz
+wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR762/007/ERR7621767/ERR7621767_1.fastq.gz
+wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR762/007/ERR7621767/ERR7621767_2.fastq.gz
+
+seqkit sample -n 10000000 -s 100 ERR7621631_1.fastq.gz > 01_1.fastq.gz
+seqkit sample -n 10000000 -s 100 ERR7621631_2.fastq.gz > 01_2.fastq.gz
+seqkit sample -n 10000000 -s 100 ERR7621392_1.fastq.gz > 02_1.fastq.gz
+seqkit sample -n 10000000 -s 100 ERR7621392_2.fastq.gz > 02_2.fastq.gz
+seqkit sample -n 10000000 -s 100 ERR7621767_1.fastq.gz > 03_1.fastq.gz
+seqkit sample -n 10000000 -s 100 ERR7621767_2.fastq.gz > 03_2.fastq.gz
+
+cat 01_1.fastq.gz 02_1.fastq.gz 03_1.fastq.gz > 01x02x03.R1.fastq 
+cat 01_2.fastq.gz 02_2.fastq.gz 03_2.fastq.gz > 01x02x03.R2.fastq 
+
 # Step 1: Sequence Assembly
 python 01_exon_assembly.py -t 64 -r1 01x02x03.R1.fastq -r2 01x02x03.R2.fastq -p z010203 -g gene.list.txt
 
@@ -149,6 +179,12 @@ python 03_distance_matrices.py -t 64 -p z010203 --threshold 1
 
 # Step 4: Prediction and Identification into Order
 python 04_prediction.py -i distance_matrices/matrix.csv -o predictions.csv -tl o
+
+# Additional steps
+# If want to predicted into family level, a customized reference file should be generated through:
+while read line; do python pick_match_list.py ref_871/${line} ref/${line} species_sp.txt; done < gene.list.txt
+# where species_sp.txt is a list of keywords in species taxonomy groups that we want to use as reference in the next round. For example, if result is Rosales, the list can just have "Rosales" in the list file.
+# Then, just apply Step 2-4 to generate a prediction in family. 
 ```
 
-The results should predict Roaceae only for a species mixed in 3.
+The results should predict **Rosales** only for DNA of species mixed in 3.
