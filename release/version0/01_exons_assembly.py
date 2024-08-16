@@ -136,18 +136,31 @@ def sequence_assembly(threads, read1, read2, mega353, proj_name, log_file):
     run_command(hybpiper_cmd, "Sequence Assembly (hybpiper)", log_file)
 
 # Exon tree creation
-def exon_tree(gene_list, overlapping_rate, log_file):
+def exon_tree(gene_list, overlapping_rate, proj_name, log_file):
     # Step 4: Modify gene list file
     run_command(f"sed s/.fasta//g {gene_list} > gene_list.txt", "Modify Gene List", log_file)
 
     # Step 5: Create output directory for exon extraction
     os.makedirs("./02_exon_extracted", exist_ok=True)
     log_status(log_file, "Create Output Directory (exon_extracted): SUCCESS")
+    file_path = os.path.join("./01_hyb_output/", proj_name)
 
+    # Read the list of gene names from a file
+    with open('gene_list.txt', 'r') as file:
+        lines = file.readlines()
+    
+    lines = [line.strip() for line in lines]
+    
     # Step 6: Process the gene data and extract exons
-    for gene in gene_list:  # Assuming gene_list is a list of gene names
-        process_exon_data("./hyb_output", gene, "./02_exon_extracted", overlapping_rate)
-        log_status(log_file, f"Processed Exons for Gene {gene}", "SUCCESS")
+    for gene in lines:  # Assuming lines is a list of gene names
+        try:
+            # Process exon data for the current gene
+            process_exon_data(file_path, gene, "./02_exon_extracted", overlapping_rate)
+            # Log the success status
+            log_status(log_file, f"Processed Exons for Gene {gene}: SUCCESS")
+        except Exception as e:
+            # Log the failure status with the exception message
+            log_status(log_file, f"Failed to Process Exons for Gene {gene}: {str(e)}: FAILURE")
 
 # Main execution
 if __name__ == "__main__":
@@ -183,10 +196,11 @@ if __name__ == "__main__":
     log_status(log_file, f"  Gene List: {args.gene_list}")
 
     # Run the sequence assembly
-    sequence_assembly(args.threads, args.read1, args.read2, args.mega353, args.proj_name, log_file)
+    # sequence_assembly(args.threads, args.read1, args.read2, args.mega353, args.proj_name, log_file)
 
     # Run the exon tree creation
-    exon_tree(args.gene_list, args.overlapping_rate, log_file)
+    exon_tree(args.gene_list, args.overlapping_rate, project_name, log_file)
 
     log_status(log_file, "Pipeline completed successfully.")
     print(f"Pipeline completed. Check {log_file} for the status of each step.")
+
