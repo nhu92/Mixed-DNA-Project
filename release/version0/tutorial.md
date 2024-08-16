@@ -6,6 +6,34 @@ Nan Hu, 2024 August
 
 This tutorial provides step-by-step instructions to run a pipeline designed for identifying plant species from mixed DNA samples using the Angiosperms353 target sequencing kit and the HybPiper workflow. The pipeline is efficient and cost-effective, making it a valuable tool in various scientific and practical applications.
 
+## Prerequisites
+
+Before running the pipeline, ensure that you have the following:
+
+- **Software and Tools**:
+  - Python 3.8+
+  - `HybPiper`, `fastp`, `mafft`, `fasttree`, `seqkit`. Suggest using Conda to install
+  - Required Python libraries: `pandas`, `argparse`, `scipy`, `scikit-learn`, `numpy`, `biopython`
+
+```bash
+  # Create environment for HybPiper
+  conda config --add channels defaults
+  conda config --add channels bioconda
+  conda config --add channels conda-forge
+  conda create -n pacificod hybpiper
+  conda activate pacificod
+  # Install dependencies
+  conda install seqkit
+  conda install fasttree
+  conda install fastp
+  pip install numpy pandas scipy scikit-learn biopython argparse
+```
+
+- **Data**:
+  - Paired-end reads from mixed plant DNA samples.
+  - Reference database of Angiosperms353 sequences.
+  > Reference sequences name should follow Order_Family_Genus_Species format for prediction. For example: >Rosales_Rosaceae_Rose_rosa
+
 ### Quick Example Run
 
 To run the entire pipeline, execute each script in the following order:
@@ -96,34 +124,6 @@ Plant species identification from mixed samples is critical in fields such as ec
   - **Genetic Distance Calculation**: Distance matrices are calculated from the phylogenetic trees to quantify the genetic differences among the taxa.
   - **ACS Evaluation**: An ACS (Adaptive Cluster Sampling) array is created based on the distance matrices to evaluate the species' relationships.
   - **Species Prediction**: The final species prediction is made using the ACS array, identifying the plant species present in the mixed sample.
-
-## Prerequisites
-
-Before running the pipeline, ensure that you have the following:
-
-- **Software and Tools**:
-  - Python 3.8+
-  - `HybPiper`, `fastp`, `mafft`, `fasttree`, `seqkit`. Suggest using Conda to install
-  - Required Python libraries: `pandas`, `argparse`, `scipy`, `scikit-learn`, `numpy`, `biopython`
-
-```bash
-  # Create environment for HybPiper
-  conda config --add channels defaults
-  conda config --add channels bioconda
-  conda config --add channels conda-forge
-  conda create -n pacificod hybpiper
-  conda activate pacificod
-  # Install dependencies
-  conda install seqkit
-  conda install fasttree
-  conda install fastp
-  pip install numpy pandas scipy scikit-learn biopython argparse
-```
-
-- **Data**:
-  - Paired-end reads from mixed plant DNA samples.
-  - Reference database of Angiosperms353 sequences.
-  > Reference sequences name should follow Order_Family_Genus_Species format for prediction. For example: >Rosales_Rosaceae_Rose_rosa
 
 ## Pipeline Overview
 
