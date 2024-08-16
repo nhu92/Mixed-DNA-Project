@@ -159,7 +159,7 @@ if __name__ == "__main__":
     parser.add_argument("-m", "--mega353", default="angiosperms353_v2_interim_targetfile.fasta", help="Path to the mega353 file")
     parser.add_argument("-p", "--proj_name", required=True, help="Project name")
     parser.add_argument("-g", "--gene_list", required=True, help="Path to the gene list file")
-    parser.add_argument("-ov", "--overlapping_rate", type=float, default=0.8 help="Overlapping to consider the same exon (0-1, default 0.8")
+    parser.add_argument("-ov", "--overlapping_rate", type=float, default=0.8, help="Overlapping to consider the same exon (0-1, default 0.8)")
 
     # Parse the arguments
     args = parser.parse_args()
