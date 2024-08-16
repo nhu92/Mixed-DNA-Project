@@ -43,11 +43,11 @@ def process_gene(gene_name_shorter, tree_dir, log_file):
         print(f"Failed processing {gene_name_shorter}: {e}")
 
 def main(threads, proj_name, gene_list, log_file):
-    tree_dir = "all_trees"
+    tree_dir = "04_all_trees"
     os.makedirs(tree_dir, exist_ok=True)
     log_status(log_file, "Created directory ./all_trees")
 
-    run_command(f'cp phylo_results/*.tre {tree_dir}', "Copy tree files to ./all_trees", log_file)
+    run_command(f'cp 03_phylo_results/*.tre {tree_dir}', "Copy tree files to ./04_all_trees", log_file)
 
     # Process each gene in parallel
     with open(gene_list, 'r') as genes:
