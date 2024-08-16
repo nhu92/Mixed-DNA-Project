@@ -171,10 +171,7 @@ def main(threads, proj_name, gene_list, log_file, threshold, use_flag):
     cumulative_output_file = f'./{proj_name}.cumulative_dist.csv'
     group_and_sum(output_file, cumulative_output_file)
     log_status(log_file, f"Generated cumulative distance file: {cumulative_output_file}")
-
-    grep_cmd = f'grep -v {proj_name} {cumulative_output_file} | cut -d \',\' -f2 > {proj_name}.Zaxis.csv'
-    run_command(grep_cmd, "Generate Z-axis file", log_file)
-
+    
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Pipeline for distance calculation and tree processing.")
     parser.add_argument("-t", "--threads", required=True, help="Number of threads to use for parallel processing")
