@@ -76,7 +76,7 @@ def process_exon_data(input_dir, gene_name, output_dir, overlap_percentage):
         os.makedirs(output_dir)
 
     df = pd.read_csv(file_path, sep='\t')
-    end_index = df[df.iloc[:, 0] == 'Hits with subsumed hits removed'].index[0]
+    end_index = df[df.iloc[:, 0] == 'Hits filtered to remove hits with frameshifts'].index[0]
     df = df.loc[:end_index-1]
 
     exon_ranges = []
