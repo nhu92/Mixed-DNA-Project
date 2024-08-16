@@ -170,14 +170,14 @@ if __name__ == "__main__":
     parser.add_argument("-r1", "--read1", required=True, help="Path to the first read file")
     parser.add_argument("-r2", "--read2", required=True, help="Path to the second read file")
     parser.add_argument("-m", "--mega353", default="angiosperms353_v2_interim_targetfile.fasta", help="Path to the mega353 file")
-    parser.add_argument("-p", "--proj_name", required=True, help="Project name")
+    parser.add_argument("-p", "--proj_name", type=str, required=True, help="Project name")
     parser.add_argument("-g", "--gene_list", required=True, help="Path to the gene list file")
     parser.add_argument("-ov", "--overlapping_rate", type=float, default=0.8, help="Overlapping to consider the same exon (0-1, default 0.8)")
 
     # Parse the arguments
     args = parser.parse_args()
 
-    project_name = args.proj_name  # Assuming args.proj_name is where you get the project name
+    project_name = args.proj_name 
 
     if not is_valid_project_name(project_name):
         print(f"Error: The project name '{project_name}' is invalid.")
