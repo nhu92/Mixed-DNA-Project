@@ -15,7 +15,7 @@ Plant species identification from mixed samples is critical in fields such as ec
 - **Input**: The process starts with raw mixed plant samples.
 - **Steps**:
   - **DNA Extraction**: DNA is extracted from the mixed plant sample following established protocols (e.g., Hale et al., 2019).
-  - **Target Sequencing Library Preparation**: The extracted DNA undergoes library preparation for target sequencing (as per Simp et al., 2021).
+  - **Target Sequencing Library Preparation**: The extracted DNA undergoes library preparation for target sequencing (as Slimp et al., 2021).
   - **Illumina Sequencing**: The prepared libraries are sequenced using Illumina technology to produce short reads, which serve as the input for the next stage.
 
 ## 2. Target Assembly
@@ -30,7 +30,7 @@ Plant species identification from mixed samples is critical in fields such as ec
 - **Input**: Contigs and exon FASTA files from the Target Assembly stage.
 - **Steps**:
   - **MAFFT Alignment**: The contigs and exons are aligned using MAFFT against a reference panel.
-  - **TrimAl**: The aligned exons are trimmed to ensure consistency and remove low-quality alignments.
+  - **Trimal**: The aligned exons are trimmed to ensure consistency and remove low-quality alignments.
   - **FastTree/IQ-TREE**: The trimmed alignments are used to infer phylogenetic trees, which illustrate the evolutionary relationships among the sequences.
 
 ## 4. Prediction
@@ -48,11 +48,13 @@ Before running the pipeline, ensure that you have the following:
 - **Software and Tools**:
   - Python 3.8+
   - `HybPiper`, `fastp`, `mafft`, `fasttree`
-  - Required Python libraries: `pandas`, `argparse`, `scipy`, `
+  - Required Python libraries: `pandas`, `argparse`, `scipy`, `scikit-learn`, `numpy`, `biopython`
+  `pip install numpy pandas scipy scikit-learn biopython argparse`
 
 - **Data**:
   - Paired-end reads from mixed plant DNA samples.
   - Reference database of Angiosperms353 sequences.
+  > Reference sequences name should follow Order_Family_Genus_Species format
 
 ## Pipeline Overview
 
