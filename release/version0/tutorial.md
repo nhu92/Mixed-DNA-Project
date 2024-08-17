@@ -21,11 +21,12 @@ Before running the pipeline, ensure that you have the following:
   conda config --add channels bioconda
   conda config --add channels conda-forge
   conda create -n pacificod hybpiper
-  conda activate pacificod
+  conda activate pacificod.
   # Install dependencies
   conda install seqkit
   conda install fasttree
   conda install fastp
+  conda install trimal
   pip install numpy pandas scipy scikit-learn biopython argparse
 ```
 
