@@ -63,6 +63,68 @@ def calculate_genetic_distance(tree_file):
 
     return taxa, distance_matrix
 
+def distance_to_similarity(distance_df):
+    similarity_df = distance_df.copy()
+    numeric_cols = similarity_df.select_dtypes(include=['float64', 'int']).columns
+    similarity_df[numeric_cols] = 1 / (1 + similarity_df[numeric_cols])
+    return similarity_df
+
+def clean_up_matrix(df, proj_name, threshold, taxa_file, use_flag=False):
+    df = df[~df[df.columns[0]].str.contains(proj_name)]
+    cols_to_keep = [df.columns[0]] + [col for col in df.columns[1:] if proj_name in col]
+    df = df[cols_to_keep]
+
+    for col in df.columns[1:]:
+        if use_flag:
+            min_value = df[col].min()
+            df[col] = df[col].apply(lambda x: 0 if x == min_value else 999)
+        else:
+            col_mean = df[col].mean()
+            col_sd = df[col].std()
+            df[col] = df[col].apply(lambda x: 999 if x > (col_mean - threshold * col_sd) else x)
+
+        if taxa_file:
+            species_to_taxa = {}
+            with open(taxa_file, 'r') as file:
+                for line in file:
+                    parts = line.strip().split(':')
+                    if len(parts) == 2:
+                        species, taxa = parts
+                        species_to_taxa[species.strip()] = [tax.strip() for tax in taxa.split(';')]
+
+            for header in df.columns[1:]:
+                for species, taxa_list in species_to_taxa.items():
+                    if species == header:
+                        for index, row in df.iterrows():
+                            if row[df.columns[0]] not in taxa_list:
+                                df.at[index, header] = 999 
+
+    df.iloc[:, 0] = df.iloc[:, 0].str.replace(r'\d+', '', regex=True).str.rstrip('_')
+    return df
+
+def process_matrices(directory, proj_name, threshold, flag):
+    all_matrices = []
+    
+    for filename in os.listdir(directory):
+        if filename.endswith('cleaned.csv'):
+            matrix_path = os.path.join(directory, filename)
+            matrix = pd.read_csv(matrix_path)
+            
+            prefix = filename.split("cleaned.csv")[0]
+            list_file = f"{prefix}list.txt"
+            list_file_path = os.path.join(directory, list_file)
+            
+            matrix = clean_up_matrix(matrix, proj_name, threshold, list_file_path, flag)
+            matrix = distance_to_similarity(matrix)
+            all_matrices.append(matrix)
+
+    total_matrix = pd.concat(all_matrices, ignore_index=True)
+    total_matrix.fillna(0, inplace=True)
+    numeric_cols = [col for col in total_matrix.columns if col != 'Unnamed: 0']
+    total_matrix['total_value'] = total_matrix[numeric_cols].sum(axis=1)
+    final_output = total_matrix[['Unnamed: 0', 'total_value']].rename(columns={'Unnamed: 0': 'row_name'})
+    
+    return final_output
 
 def genetic_distance_matrix(tree_file, node_output_file, output_file):
     # Load the tree
@@ -195,3 +257,4 @@ if __name__ == "__main__":
 
     log_status(log_file, "Pipeline completed successfully.")
     print(f"Pipeline completed. Check {log_file} for the status of each step.")
+
