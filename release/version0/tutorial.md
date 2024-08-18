@@ -12,7 +12,7 @@ Before running the pipeline, ensure that you have the following:
 
 - **Software and Tools**:
   - Python 3.8+
-  - `HybPiper`, `fastp`, `mafft`, `fasttree`, `seqkit`. Suggest using Conda to install
+  - `HybPiper`, `fastp`, `mafft`, `fasttree`, `seqkit`, `trimal`. Suggest using Conda to install
   - Required Python libraries: `pandas`, `argparse`, `scipy`, `scikit-learn`, `numpy`, `biopython`
 
 ```bash
@@ -21,7 +21,7 @@ Before running the pipeline, ensure that you have the following:
   conda config --add channels bioconda
   conda config --add channels conda-forge
   conda create -n pacificod hybpiper
-  conda activate pacificod.
+  conda activate pacificod
   # Install dependencies
   conda install seqkit
   conda install fasttree
