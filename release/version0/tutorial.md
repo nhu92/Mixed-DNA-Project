@@ -188,8 +188,8 @@ python 03_distance_matrices.py -t <threads> -p <project_name> -g <gene_list> --t
 - `-t` or `--threads`: Number of CPU threads to use.
 - `-p` or `--project_name`: Project name for output files.
 - `-g` or `--gene_list`: Path to the list of gene names. Default is generated from Step 1 `gene_list.txt`.
-- `--threshold`: Parameter to control specificity of candidate branches on phylogeny. Default is `1.96`, which means only genetic similarity is over `1.96*SD+Mean` will be considered.
-- `--use_flag`: A boolean parameter to mark if all the non-outliers distances set to 0.
+- `--threshold`: Parameter to control specificity of candidate branches on phylogeny. Default is `1.96`, which means only genetic similarity is over `1.96*SD+Mean` will be counted.
+- `--use_flag`: A boolean parameter to mark if all the non-outliers' similarity set to 0.
 
 ### Step 4: Prediction and Identification (`04_prediction.py`)
 
