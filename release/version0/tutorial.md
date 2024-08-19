@@ -82,6 +82,7 @@ python 03_distance_matrices.py -t 64 -p z010203 --threshold 1
 # Step 4: Prediction and Identification into Order
 python 04_prediction.py -i z010203.cumulative_dist.csv -o predictions.csv -tl o
 
+# ----------------
 # Additional steps
 # If want to predicted into family level, a customized reference file should be generated through:
 while read line; do python pick_match_list.py ref_871/${line} ref_family/${line} species_sp.txt; done < gene.list.txt
