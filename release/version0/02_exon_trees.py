@@ -73,6 +73,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     log_file = f"{args.proj_name}_02_exons_phylo.log"
+    os.remove(log_file)
 
     log_status(log_file, "Pipeline started with the following parameters:")
     log_status(log_file, f"  Threads: {args.threads}")

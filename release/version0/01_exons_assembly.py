@@ -185,6 +185,7 @@ if __name__ == "__main__":
 
     # Define the log file name
     log_file = f"{args.proj_name}_01_exon_assembly.out"
+    os.remove(log_file)
 
     # Log the input parameters
     log_status(log_file, "Pipeline started with the following parameters:")
