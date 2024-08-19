@@ -84,9 +84,14 @@ python 04_prediction.py -i z010203.cumulative_dist.csv -o predictions.csv -tl o
 
 # Additional steps
 # If want to predicted into family level, a customized reference file should be generated through:
-while read line; do python pick_match_list.py ref_871/${line} ref/${line} species_sp.txt; done < gene.list.txt
+while read line; do python pick_match_list.py ref_871/${line} ref_family/${line} species_sp.txt; done < gene.list.txt
 # where species_sp.txt is a list of keywords in species taxonomy groups that we want to use as reference in the next round. For example, if result is Rosales, the list can just have "Rosales" in the list file.
 # Then, just apply Step 2-4 to generate a prediction in family level. 
+
+# Remove folders start with 03_, 04_, restart from alignment
+python 02_exon_trees.py -t 64 -p z010203_fam -r ref_family
+python 03_distance_matrices.py -t 64 -p z010203_fam --threshold 1
+python 04_prediction.py -i z010203_fam.cumulative_dist.csv -o predictions.csv -tl f
 ```
 
 The results should predict **Rosales** only for DNA of species mixed in 3. If go further into family, it should predict **Rosaceae**, **Ulmaceae**, and **Canabaceae**.
@@ -169,7 +174,7 @@ python 02_exon_trees.py -t <threads> -e <exon_dir> -r <ref_dir> -p <project_name
 
 - `-t` or `--threads`: Number of CPU threads to use.
 - `-e` or `--input_exon`: Directory of extracted exon sequences. Default is `02_exon_extracted`.
-- `-r` or `--input_exon`: Directory of reference alignments. Default is `ref`.
+- `-r` or `--ref_alignment`: Directory of reference alignments. Default is `ref`.
 - `-p` or `--project_name`: Project name for output files.
 - `-g` or `--gene_list`: Path to the list of gene names. Default is generated from Step 1 `gene_list.txt`.
 
