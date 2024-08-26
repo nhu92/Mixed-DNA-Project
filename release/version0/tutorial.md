@@ -11,7 +11,7 @@ This tutorial provides step-by-step instructions to run a pipeline designed for 
 Before running the pipeline, ensure that you have the following:
 
 - **Software and Tools**:
-  - Python 3.8+
+  - Python 3.9+
   - `HybPiper 2.2.0`, `fastp 0.23.4`, `mafft 7.526`, `fasttree 2.1.11`, `seqkit 2.8.2`, `trimal 1.5.0`. Suggest using Conda to install
   - Required Python libraries: `pandas 2.2.2`, `argparse 1.4.0`, `scipy 1.14.0`, `scikit-learn 1.5.1`, `numpy 2.0.1`, `biopython 1.84`
 
