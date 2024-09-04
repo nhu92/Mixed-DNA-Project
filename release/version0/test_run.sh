@@ -30,16 +30,16 @@ seqkit sample -n 10000000 -s 100 ERR7621767_2.fastq.gz > 03_2.fastq
 cat 01_1.fastq 02_1.fastq 03_1.fastq > 01x02x03.R1.fastq 
 cat 01_2.fastq 02_2.fastq 03_2.fastq > 01x02x03.R2.fastq 
 
-echo "# Step 1: Sequence Assembly"
+# Step 1: Sequence Assembly
 python 01_exons_assembly.py -t 64 -r1 01x02x03.R1.fastq -r2 01x02x03.R2.fastq -p z010203 -g gene.list.txt
 
-echo "# Step 2: Exon Tree Creation"
+# Step 2: Exon Tree Creation
 python 02_exon_trees.py -t 64 -p z010203 
 
-echo "# Step 3: Distance Matrix Calculation"
+# Step 3: Distance Matrix Calculation
 python 03_distance_matrices.py -t 64 -p z010203 --threshold 1
 
-echo "# Step 4: Prediction and Identification into Order"
+# Step 4: Prediction and Identification into Order
 python 04_prediction.py -i z010203.cumulative_dist.csv -o predictions.csv -tl o
 
-echo "Order level predictions is saved in "
+# Order level predictions is saved in predictions.csv
