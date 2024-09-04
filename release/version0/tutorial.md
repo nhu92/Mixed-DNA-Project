@@ -47,9 +47,11 @@ cd Mixed-DNA-Project/
 git checkout HEAD release/version0
 git checkout HEAD release/sample_data
 cd ..
-cp -r Mixed-DNA-Project/release/version0/* ./
-cp -r Mixed-DNA-Project/release/sample_data/* ./
-rm -rf Mixed-DNA-Project/
+mkdir MDNA_test
+cd MDNA_test
+cp -r ../Mixed-DNA-Project/release/version0/* ./
+cp -r ../Mixed-DNA-Project/release/sample_data/* ./
+rm -rf ../Mixed-DNA-Project/
 gunzip angiosperms353_v2_interim_targetfile.fasta.gz
 
   ## In-silico Mix Generation
