@@ -50,6 +50,8 @@ while read line; do python pick_match_list.py ref_871/${line} ref_family/${line}
 # Then, just apply Step 2-4 to generate a prediction in family level. 
 
 # Remove folders start with 03_, 04_, restart from alignment
+rm -rf 03_phylo_results
+rm -rf 03_phylo_results
 python 02_exon_trees.py -t 64 -p z010203_fam -r ref_family
 python 03_distance_matrices.py -t 64 -p z010203_fam --threshold 1
 python 04_prediction.py -i z010203_fam.cumulative_dist.csv -o predictions.csv -tl f
