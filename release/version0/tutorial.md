@@ -34,9 +34,9 @@ Before running the pipeline, ensure that you have the following:
 
 ### Quick Example Run
 
+Run this [Preparing commands](https://github.com/nhu92/Mixed-DNA-Project/blob/main/release/version0/test_run.sh) to clone the package and download the sample input files.
 
-
-To run the entire pipeline, execute each script in the following order:
+To run the entire pipeline, execute each script in the following order. These steps require running on a node/job submission systems, preferring high performance computer clusters:
 
 ```bash
 # Step 1: Sequence Assembly
@@ -61,7 +61,7 @@ while read line; do python pick_match_list.py ref_871/${line} ref_family/${line}
 # Remove folders start with 03_, 04_, restart from alignment
 python 02_exon_trees.py -t 64 -p z010203_fam -r ref_family
 python 03_distance_matrices.py -t 64 -p z010203_fam --threshold 1
-python 04_prediction.py -i z010203_fam.cumulative_dist.csv -o predictions.csv -tl f
+python 04_prediction.py -i z010203_fam.cumulative_dist.csv -o predictions_family.csv -tl f
 ```
 
 The results should predict **Rosales** only for DNA of species mixed in 3. If go further into family, it should predict **Rosaceae**, **Ulmaceae**, and **Canabaceae**.
