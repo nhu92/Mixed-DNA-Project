@@ -53,6 +53,11 @@ First, I did a sample run for 3 Rosales species. I will use `seqkit` to thin dow
     1. Select corresponding families (refer to github notes)
     2. Prepare the mix
     3. Make auto pipeline down to family
+        3.1 Check each step and let us customize all the folder names as output and input
+        3.2 Handle output from the prediction.csv
     4. Make 3 levels of Order level selection (modify the selecting logic)
+        4.1 From order results - Make a selection based on the empirical PPV - Output to a list
+        4.2 
     5. Run the pipeline
     6. Evaluate the results
+
