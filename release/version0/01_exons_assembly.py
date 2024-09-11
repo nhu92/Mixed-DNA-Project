@@ -115,7 +115,7 @@ def process_exon_data(input_dir, gene_name, output_dir, overlap_percentage):
         extract_contigs(row, fasta_sequences, output_dir)
 
 # Sequence assembly
-def sequence_assembly(threads, read1, read2, mega353, proj_name, log_file):
+def sequence_assembly(threads, read1, read2, mega353, proj_name, log_file, output_hyb):
     # Step 1: Run fastp for trimming
     fastp_cmd = (
         f"fastp -i {read1} -I {read2} -o {read1}.trimmed.fastq.gz -O {read2}.trimmed.fastq.gz "
@@ -124,26 +124,27 @@ def sequence_assembly(threads, read1, read2, mega353, proj_name, log_file):
     run_command(fastp_cmd, "Sequence Trimming (fastp)", log_file)
 
     # Step 2: Create output directory
-    os.makedirs("01_hyb_output", exist_ok=True)
-    log_status(log_file, "Create Output Directory (hyb_output): SUCCESS")
+    os.makedirs(output_hyb, exist_ok=True)
+    log_status(log_file, f"Create Output Directory ({output_hyb}): SUCCESS")
 
     # Step 3: Run hybpiper for sequence assembly
     hybpiper_cmd = (
         f"hybpiper assemble -t_dna {mega353} "
         f"-r {read1}.trimmed.fastq.gz {read2}.trimmed.fastq.gz "
-        f"--prefix {proj_name} --bwa --cpu {threads} -o ./01_hyb_output"
+        f"--prefix {proj_name} --bwa --cpu {threads} -o ./{output_hyb}"
     )
     run_command(hybpiper_cmd, "Sequence Assembly (hybpiper)", log_file)
 
+
 # Exon tree creation
-def exon_tree(gene_list, overlapping_rate, proj_name, log_file):
+def exon_tree(gene_list, overlapping_rate, proj_name, log_file, output_hyb, output_exon):
     # Step 4: Modify gene list file
     run_command(f"sed s/.fasta//g {gene_list} > gene_list.txt", "Modify Gene List", log_file)
 
     # Step 5: Create output directory for exon extraction
-    os.makedirs("./02_exon_extracted", exist_ok=True)
-    log_status(log_file, "Create Output Directory (exon_extracted): SUCCESS")
-    file_path = os.path.join("./01_hyb_output/", proj_name)
+    os.makedirs(output_exon, exist_ok=True)
+    log_status(log_file, f"Create Output Directory ({output_exon}): SUCCESS")
+    file_path = os.path.join(output_hyb, proj_name)
 
     # Read the list of gene names from a file
     with open('gene_list.txt', 'r') as file:
@@ -155,12 +156,13 @@ def exon_tree(gene_list, overlapping_rate, proj_name, log_file):
     for gene in lines:  # Assuming lines is a list of gene names
         try:
             # Process exon data for the current gene
-            process_exon_data(file_path, gene, "./02_exon_extracted", overlapping_rate)
+            process_exon_data(file_path, gene, output_exon, overlapping_rate)
             # Log the success status
             log_status(log_file, f"Processed Exons for Gene {gene}: SUCCESS")
         except Exception as e:
             # Log the failure status with the exception message
             log_status(log_file, f"Failed to Process Exons for Gene {gene}: {str(e)}: FAILURE")
+
 
 # Main execution
 if __name__ == "__main__":
@@ -173,7 +175,12 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--proj_name", type=str, required=True, help="Project name")
     parser.add_argument("-g", "--gene_list", required=True, help="Path to the gene list file")
     parser.add_argument("-ov", "--overlapping_rate", type=float, default=0.8, help="Overlapping to consider the same exon (0-1, default 0.8)")
+    parser.add_argument("--output_hyb", default="01_hyb_output", help="Custom output folder for hyb results (default is '01_hyb_output')")
+    parser.add_argument("--output_exon", default="02_exon_extracted", help="Custom output folder for exon results (default is '02_exon_extracted')")
 
+
+# Main execution
+if __name__ == "__main__":
     # Parse the arguments
     args = parser.parse_args()
 
@@ -185,7 +192,8 @@ if __name__ == "__main__":
 
     # Define the log file name
     log_file = f"{args.proj_name}_01_exon_assembly.out"
-    os.remove(log_file)
+    if os.path.exists(log_file):
+        os.remove(log_file)
 
     # Log the input parameters
     log_status(log_file, "Pipeline started with the following parameters:")
@@ -195,12 +203,14 @@ if __name__ == "__main__":
     log_status(log_file, f"  Mega353: {args.mega353}")
     log_status(log_file, f"  Project Name: {args.proj_name}")
     log_status(log_file, f"  Gene List: {args.gene_list}")
+    log_status(log_file, f"  Output Hyb: {args.output_hyb}")
+    log_status(log_file, f"  Output Exon: {args.output_exon}")
 
     # Run the sequence assembly
-    sequence_assembly(args.threads, args.read1, args.read2, args.mega353, args.proj_name, log_file)
+    sequence_assembly(args.threads, args.read1, args.read2, args.mega353, args.proj_name, log_file, args.output_hyb)
 
     # Run the exon tree creation
-    exon_tree(args.gene_list, args.overlapping_rate, project_name, log_file)
+    exon_tree(args.gene_list, args.overlapping_rate, project_name, log_file, args.output_hyb, args.output_exon)
 
     log_status(log_file, "Pipeline completed successfully.")
     print(f"Pipeline completed. Check {log_file} for the status of each step.")

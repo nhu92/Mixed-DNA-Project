@@ -245,8 +245,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     log_file = f"{args.proj_name}_03_distance_calc.log"
-    os.remove(log_file)
-
+    if os.path.exists(log_file):
+        os.remove(log_file)
     log_status(log_file, "Pipeline started with the following parameters:")
     log_status(log_file, f"  Threads: {args.threads}")
     log_status(log_file, f"  Project Name: {args.proj_name}")
