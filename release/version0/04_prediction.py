@@ -17,10 +17,9 @@ def process_column(column, taxonomic_level):
 
     return result
 
-def filter_taxonomy_by_zscore(df, threshold):
-    """Filter taxonomy names by a z-score threshold."""
-    filtered_taxonomies = df[df['z_score'] > threshold]['row_name'].tolist()
-    return filtered_taxonomies
+def select_taxonomy_by_zscore(summary, zscore_threshold):
+    """Select taxonomy names based on a given z-score threshold."""
+    return summary.loc[summary['z_score'] > zscore_threshold, 'row_name'].tolist()
 
 def main():
     # Create an argparse object
@@ -28,7 +27,8 @@ def main():
     parser.add_argument('-i', '--input_file', type=str, required=True, help='Path to the input file.')
     parser.add_argument('-o', '--output_file', type=str, required=True, help='Path to the output file.')
     parser.add_argument('-tl', '--taxonomic_level', choices=['o', 'f', 'g', 's'], required=True, help='Taxonomic level to process (o: Order, f: Family, g: Genus, s: Species).')
-    parser.add_argument('-z', '--zscore_threshold', type=float, required=True, help='Z-score threshold for filtering taxonomy names.')
+    parser.add_argument('-z', '--zscore_threshold', type=float, required=True, help='Z-score threshold to select taxonomy names.')
+    parser.add_argument('-to', '--taxonomy_output_file', type=str, required=True, help='Path to the output file for selected taxonomy names.')
     args = parser.parse_args()
 
     # Read the file
@@ -49,15 +49,19 @@ def main():
     # Sort the result by the sum_of_total_value column
     summary = summary.sort_values(by='sum_of_total_value', ascending=False)
 
-    # Filter taxonomy names based on the z-score threshold
-    filtered_taxonomies = filter_taxonomy_by_zscore(summary, args.zscore_threshold)
-    
     # Output the summary to a file
     summary.to_csv(args.output_file, index=False)
     print(f'Summary has been written to {args.output_file}')
-    
-    # Output the filtered taxonomy names
-    print(f'Taxonomy names with z-score above {args.zscore_threshold}: {filtered_taxonomies}')
+
+    # Select taxonomy names based on the z-score threshold
+    selected_taxonomies = select_taxonomy_by_zscore(summary, args.zscore_threshold)
+
+    # Write the selected taxonomy names to the output file
+    with open(args.taxonomy_output_file, 'w') as f:
+        for taxonomy in selected_taxonomies:
+            f.write(f"{taxonomy}\n")
+
+    print(f'Selected taxonomy names have been written to {args.taxonomy_output_file}')
 
 if __name__ == '__main__':
     main()
