@@ -21,9 +21,9 @@ def run_command(command, step_name, log_file):
         exit(1)  # Stop execution if a step fails
 
 # Function to perform the batch run to generate trees for all genes
-def generate_trees(threads, input_exon, ref_alignment, gene_list, proj_name, log_file):
-    os.makedirs("./03_phylo_results", exist_ok=True)
-    log_status(log_file, "Created directory ./03_phylo_results")
+def generate_trees(threads, input_exon, ref_alignment, gene_list, proj_name, output_dir, log_file):
+    os.makedirs(output_dir, exist_ok=True)
+    log_status(log_file, f"Created directory {output_dir}")
 
     with open(gene_list, 'r') as genes:
         for gene_name_shorter in genes:
@@ -40,20 +40,20 @@ def generate_trees(threads, input_exon, ref_alignment, gene_list, proj_name, log
                     mafft_cmd = (
                         f"mafft --preservecase --maxiterate 1000 --localpair --adjustdirection "
                         f"--thread {threads} --addfragments {exon_file} {ref_alignment}/{gene_name_shorter}.fasta "
-                        f"> 03_phylo_results/{gene_name_shorter}_exon_{i}_aligned.fasta"
+                        f"> {output_dir}/{gene_name_shorter}_exon_{i}_aligned.fasta"
                     )
                     run_command(mafft_cmd, f"MAFFT alignment for {gene_name_shorter} exon {i}", log_file)
 
                     trimal_cmd = (
-                        f"trimal -in 03_phylo_results/{gene_name_shorter}_exon_{i}_aligned.fasta "
-                        f"-out 03_phylo_results/{gene_name_shorter}_exon_{i}_trimmed.fasta -gt 0.5"
+                        f"trimal -in {output_dir}/{gene_name_shorter}_exon_{i}_aligned.fasta "
+                        f"-out {output_dir}/{gene_name_shorter}_exon_{i}_trimmed.fasta -gt 0.5"
                     )
                     run_command(trimal_cmd, f"Trim alignment for {gene_name_shorter} exon {i}", log_file)
 
                     # Tree construction
                     fasttree_cmd = (
-                        f"fasttree -gtr -gamma -nt 03_phylo_results/{gene_name_shorter}_exon_{i}_trimmed.fasta "
-                        f"> 03_phylo_results/{gene_name_shorter}_exon_{i}.tre"
+                        f"fasttree -gtr -gamma -nt {output_dir}/{gene_name_shorter}_exon_{i}_trimmed.fasta "
+                        f"> {output_dir}/{gene_name_shorter}_exon_{i}.tre"
                     )
                     run_command(fasttree_cmd, f"Tree construction for {gene_name_shorter} exon {i}", log_file)
 
@@ -69,6 +69,7 @@ if __name__ == "__main__":
     parser.add_argument("-r", "--ref_alignment", type=str, default="ref", help="Directory of reference alignments")
     parser.add_argument("-g", "--gene_list", type=str, default="gene_list.txt", help="Path to the gene list file")
     parser.add_argument("-p", "--proj_name", required=True, help="Project name")
+    parser.add_argument("--output_dir", type=str, default="03_phylo_results", help="Directory for output phylogenetic trees")
 
     args = parser.parse_args()
 
@@ -82,8 +83,9 @@ if __name__ == "__main__":
     log_status(log_file, f"  Reference Alignment Directory: {args.ref_alignment}")
     log_status(log_file, f"  Gene List: {args.gene_list}")
     log_status(log_file, f"  Project Name: {args.proj_name}")
+    log_status(log_file, f"  Output Directory: {args.output_dir}")
 
-    generate_trees(args.threads, args.input_exon, args.ref_alignment, args.gene_list, args.proj_name, log_file)
+    generate_trees(args.threads, args.input_exon, args.ref_alignment, args.gene_list, args.proj_name, args.output_dir, log_file)
 
     log_status(log_file, "Pipeline completed successfully.")
     print(f"Pipeline completed. Check {log_file} for the status of each step.")
