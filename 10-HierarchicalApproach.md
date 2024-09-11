@@ -50,3 +50,9 @@ First, I did a sample run for 3 Rosales species. I will use `seqkit` to thin dow
 
 ---
 
+    1. Select corresponding families (refer to github notes)
+    2. Prepare the mix
+    3. Make auto pipeline down to family
+    4. Make 3 levels of Order level selection (modify the selecting logic)
+    5. Run the pipeline
+    6. Evaluate the results
