@@ -179,7 +179,7 @@ def main(threads, proj_name, gene_list, log_file, threshold, use_flag, input_dir
     output_file = f'{output_dir}/{proj_name}.summary_dist.csv'
     final_output.to_csv(output_file, index=False)
     log_status(log_file, f"Processed matrices saved to {output_file}")
-    cumulative_output_file = f'{output_dir}/{proj_name}.cumulative_dist.csv'
+    cumulative_output_file = f'{proj_name}.cumulative_dist.csv'
     group_and_sum(output_file, cumulative_output_file)
     log_status(log_file, f"Generated cumulative distance file: {cumulative_output_file}")
 
