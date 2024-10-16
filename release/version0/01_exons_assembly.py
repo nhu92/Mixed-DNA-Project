@@ -21,14 +21,17 @@ def log_status(log_file, message):
         log.write(f"[{timestamp}] {message}\n")
 
 # Function to run shell commands and log status
-def run_command(command, step_name, log_file):
+def run_command(command, step_name, log_file, critical=False):
     try:
         subprocess.run(command, shell=True, check=True)
         log_status(log_file, f"{step_name}: SUCCESS")
     except subprocess.CalledProcessError:
         log_status(log_file, f"{step_name}: FAILURE")
         print(f"Error: {step_name} failed. Check {log_file} for details.")
-        exit(1)  # Stop execution if a step fails
+        
+        if critical:
+            exit(1)  # Stop execution if a critical step fails
+
 
 def extract_contigs(row, fasta_sequences, output_dir):
     ranges = eval(row.iloc[13])
@@ -121,7 +124,7 @@ def sequence_assembly(threads, read1, read2, mega353, proj_name, log_file, outpu
         f"fastp -i {read1} -I {read2} -o {read1}.trimmed.fastq.gz -O {read2}.trimmed.fastq.gz "
         f"-j fastp.json -h fastp.html"
     )
-    run_command(fastp_cmd, "Sequence Trimming (fastp)", log_file)
+    run_command(fastp_cmd, "Sequence Trimming (fastp)", log_file, critical=True)
 
     # Step 2: Create output directory
     os.makedirs(output_hyb, exist_ok=True)
@@ -133,7 +136,7 @@ def sequence_assembly(threads, read1, read2, mega353, proj_name, log_file, outpu
         f"-r {read1}.trimmed.fastq.gz {read2}.trimmed.fastq.gz "
         f"--prefix {proj_name} --bwa --cpu {threads} -o ./{output_hyb}"
     )
-    run_command(hybpiper_cmd, "Sequence Assembly (hybpiper)", log_file)
+    run_command(hybpiper_cmd, "Sequence Assembly (hybpiper)", log_file, critical=True)
 
 
 # Exon tree creation

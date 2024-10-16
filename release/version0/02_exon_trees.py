@@ -10,15 +10,17 @@ def log_status(log_file, message):
         log.write(f"[{timestamp}] {message}\n")
         log.flush()  # Ensure the log is written to the file immediately
 
-# Function to run shell commands with logging
-def run_command(command, step_name, log_file):
+def run_command(command, step_name, log_file, critical=False):
     try:
         subprocess.run(command, shell=True, check=True)
         log_status(log_file, f"{step_name}: SUCCESS")
     except subprocess.CalledProcessError:
         log_status(log_file, f"{step_name}: FAILURE")
         print(f"Error: {step_name} failed. Check {log_file} for details.")
-        exit(1)  # Stop execution if a step fails
+        
+        if critical:
+            exit(1)  # Stop execution if a critical step fails
+
 
 # Function to perform the batch run to generate trees for all genes
 def generate_trees(threads, input_exon, ref_alignment, gene_list, proj_name, output_dir, log_file):
@@ -28,8 +30,17 @@ def generate_trees(threads, input_exon, ref_alignment, gene_list, proj_name, out
     with open(gene_list, 'r') as genes:
         for gene_name_shorter in genes:
             gene_name_shorter = gene_name_shorter.strip()
+            
+            # Non-critical ls command: failure won't stop the pipeline
             run_command(f"ls {input_exon}/*{gene_name_shorter}*.fasta > ./exon.list.txt", 
-                        f"List exons for {gene_name_shorter}", log_file)
+                        f"List exons for {gene_name_shorter}", log_file, critical=False)
+
+            # Check if the exon list file is empty
+            if not os.path.exists('./exon.list.txt') or os.path.getsize('./exon.list.txt') == 0:
+                log_status(log_file, f"No exon files found for {gene_name_shorter}, skipping.")
+                if os.path.exists('./exon.list.txt'):
+                    os.remove('./exon.list.txt')
+                continue
 
             with open('./exon.list.txt', 'r') as exons:
                 i = 1
@@ -61,6 +72,7 @@ def generate_trees(threads, input_exon, ref_alignment, gene_list, proj_name, out
 
             os.remove('./exon.list.txt')
             log_status(log_file, "Removed temporary file exon.list.txt")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Pipeline for generating phylogenetic trees from exon data.")

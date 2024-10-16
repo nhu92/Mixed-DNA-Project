@@ -138,14 +138,16 @@ def log_status(log_file, message):
         log.write(f"[{timestamp}] {message}\n")
         log.flush()
 
-def run_command(command, step_name, log_file):
+def run_command(command, step_name, log_file, critical=False):
     try:
         subprocess.run(command, shell=True, check=True)
         log_status(log_file, f"{step_name}: SUCCESS")
     except subprocess.CalledProcessError:
         log_status(log_file, f"{step_name}: FAILURE")
         print(f"Error: {step_name} failed. Check {log_file} for details.")
-        exit(1)
+        
+        if critical:
+            exit(1)  # Stop execution if a critical step fails
 
 def process_gene(gene_name_shorter, tree_dir, log_file):
     try:
