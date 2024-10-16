@@ -8,3 +8,8 @@ To estimate the OTUs (Operational Taxonomic Units), there are several thoughts i
 
 The downside of this approach can be: 1) This assembled contigs are shorter than the full length exons. Thus, there will be more than one copy for each exons on a gene. They follow a distribution, while, not really equal to the number of species in the mix. We need an algorithm to estimate the real number of species from this information; 2) Plants are naturally favor of polyploidy. Our pipeline is very hard to distinguish the difference between multiple species in the same taxonomy group or it is polyploidy (especially for allopolyploidy). I do not have any potential polyploidy samples to test this but I guess there will be differences in the contig/exon distribution between two independent species in the same group and the same species with two copies of genes.
 
+---
+
+I fixed a critical issue from the pipeline. The previous `run_command()` function will quit the entire pipeline when there are any errors happened on the command it takes. Thus, when the `ls` is failed to take the list of exons from the gene (mainly because HybPiper does not generate a useful exonerate output), the entire pipeline will crash and exit. The solution is to take a `run_command` function into "critical" or "non-critical" with a parameter to handle. For the situation like the `ls` command, it is not critical but for some steps (e.g. HybPiper), it should be critical. I will change all the code to avoid this issue and rerun the testing pipeline on the family level.
+
+
