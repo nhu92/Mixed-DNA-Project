@@ -151,7 +151,7 @@ def run_command(command, step_name, log_file, critical=False):
 
 def process_gene(gene_name_shorter, tree_dir, log_file):
     try:
-        tree_list_file = "./{gene_name_shorter}.loop.treelist.txt"
+        tree_list_file = f"./{gene_name_shorter}.loop.treelist.txt"
         run_command(f'ls "{tree_dir}/{gene_name_shorter}"*"tre" > {tree_list_file}', f"List trees for {gene_name_shorter}", log_file)
         with open(tree_list_file, 'r') as tree_files:
             for i, filename in enumerate(tree_files, start=1):
