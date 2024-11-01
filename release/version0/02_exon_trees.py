@@ -8,7 +8,7 @@ def log_status(log_file, message):
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     with open(log_file, 'a') as log:
         log.write(f"[{timestamp}] {message}\n")
-        log.flush()  # Ensure the log is written to the file immediately
+        log.flush()
 
 def run_command(command, step_name, log_file, critical=False):
     try:
@@ -19,11 +19,17 @@ def run_command(command, step_name, log_file, critical=False):
         print(f"Error: {step_name} failed. Check {log_file} for details.")
         
         if critical:
-            exit(1)  # Stop execution if a critical step fails
+            exit(1)
 
+def get_first_sequence_length(file_path):
+    """Reads the first sequence from a FASTA file and returns its length."""
+    with open(file_path, 'r') as f:
+        for line in f:
+            if not line.startswith('>'):  # Skip header lines
+                return len(line.strip())  # Return length of first sequence line
 
 # Function to perform the batch run to generate trees for all genes
-def generate_trees(threads, input_exon, ref_alignment, gene_list, proj_name, output_dir, log_file):
+def generate_trees(threads, input_exon, ref_alignment, gene_list, proj_name, output_dir, log_file, exon_min_size=80):
     os.makedirs(output_dir, exist_ok=True)
     log_status(log_file, f"Created directory {output_dir}")
 
@@ -46,6 +52,12 @@ def generate_trees(threads, input_exon, ref_alignment, gene_list, proj_name, out
                 i = 1
                 for exon_file in exons:
                     exon_file = exon_file.strip()
+
+                    # Get the length of the first sequence in the exon file
+                    exon_length = get_first_sequence_length(exon_file)
+                    if exon_length < exon_min_size:
+                        log_status(log_file, f"Skipping {exon_file} (sequence length: {exon_length} < {exon_min_size})")
+                        continue
 
                     # MAFFT alignment and trimming
                     mafft_cmd = (
@@ -73,7 +85,6 @@ def generate_trees(threads, input_exon, ref_alignment, gene_list, proj_name, out
             os.remove('./exon.list.txt')
             log_status(log_file, "Removed temporary file exon.list.txt")
 
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Pipeline for generating phylogenetic trees from exon data.")
     parser.add_argument("-t", "--threads", required=True, help="Number of threads to use")
@@ -81,7 +92,8 @@ if __name__ == "__main__":
     parser.add_argument("-r", "--ref_alignment", type=str, default="ref", help="Directory of reference alignments")
     parser.add_argument("-g", "--gene_list", type=str, default="gene_list.txt", help="Path to the gene list file")
     parser.add_argument("-p", "--proj_name", required=True, help="Project name")
-    parser.add_argument("--output_dir", type=str, default="03_phylo_results", help="Directory for output phylogenetic trees")
+    parser.add_argument("-o", "--output_dir", type=str, default="03_phylo_results", help="Directory for output phylogenetic trees")
+    parser.add_argument("-m", "--exon_min_size", type=int, default=80, help="Minimum exon size to include in analysis")
 
     args = parser.parse_args()
 
@@ -96,8 +108,9 @@ if __name__ == "__main__":
     log_status(log_file, f"  Gene List: {args.gene_list}")
     log_status(log_file, f"  Project Name: {args.proj_name}")
     log_status(log_file, f"  Output Directory: {args.output_dir}")
+    log_status(log_file, f"  Exon Minimum Size: {args.exon_min_size}")
 
-    generate_trees(args.threads, args.input_exon, args.ref_alignment, args.gene_list, args.proj_name, args.output_dir, log_file)
+    generate_trees(args.threads, args.input_exon, args.ref_alignment, args.gene_list, args.proj_name, args.output_dir, log_file, args.exon_min_size)
 
     log_status(log_file, "Pipeline completed successfully.")
     print(f"Pipeline completed. Check {log_file} for the status of each step.")
