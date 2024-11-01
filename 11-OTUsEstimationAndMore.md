@@ -11,3 +11,8 @@ The downside of this approach can be: 1) This assembled contigs are shorter than
 ---
 
 I fixed a critical issue from the pipeline. The previous `run_command()` function will quit the entire pipeline when there are any errors happened on the command it takes. Thus, when the `ls` is failed to take the list of exons from the gene (mainly because HybPiper does not generate a useful exonerate output), the entire pipeline will crash and exit. The solution is to take a `run_command` function into "critical" or "non-critical" with a parameter to handle. For the situation like the `ls` command, it is not critical but for some steps (e.g. HybPiper), it should be critical. I will change all the code to avoid this issue and rerun the testing pipeline on the family level.
+
+---
+
+Add a function to filter the exon size, by default is 80bp in the exon file. I am testing the result in 06_01_07 sample but found that the 06 (Poaceae) cannot be identified. I wonder if it is the reads issue.
+
