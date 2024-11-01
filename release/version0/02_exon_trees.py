@@ -1,6 +1,7 @@
 import subprocess
 import os
 import argparse
+from Bio import SeqIO
 from datetime import datetime
 
 # Function to log status with timestamp and flush immediately
@@ -21,15 +22,16 @@ def run_command(command, step_name, log_file, critical=False):
         if critical:
             exit(1)
 
-def get_first_sequence_length(file_path):
-    """Reads the first sequence from a FASTA file and returns its length."""
-    with open(file_path, 'r') as f:
-        for line in f:
-            if not line.startswith('>'):  # Skip header lines
-                return len(line.strip())  # Return length of first sequence line
+def all_sequences_meet_minimum_length(file_path, min_length=80):
+    """Checks if all sequences in a FASTA file meet the minimum length."""
+    for record in SeqIO.parse(file_path, "fasta"):
+        if len(record.seq) < min_length:
+            return False
+    return True
+
 
 # Function to perform the batch run to generate trees for all genes
-def generate_trees(threads, input_exon, ref_alignment, gene_list, proj_name, output_dir, log_file, exon_min_size=80):
+def generate_trees(threads, input_exon, ref_alignment, gene_list, proj_name, output_dir, log_file, exon_min_size):
     os.makedirs(output_dir, exist_ok=True)
     log_status(log_file, f"Created directory {output_dir}")
 
@@ -53,10 +55,9 @@ def generate_trees(threads, input_exon, ref_alignment, gene_list, proj_name, out
                 for exon_file in exons:
                     exon_file = exon_file.strip()
 
-                    # Get the length of the first sequence in the exon file
-                    exon_length = get_first_sequence_length(exon_file)
-                    if exon_length < exon_min_size:
-                        log_status(log_file, f"Skipping {exon_file} (sequence length: {exon_length} < {exon_min_size})")
+                    # Check if all sequences in the exon file meet the minimum length requirement
+                    if not all_sequences_meet_minimum_length(exon_file, exon_min_size):
+                        log_status(log_file, f"Skipping {exon_file} (contains sequences shorter than {exon_min_size} bp)")
                         continue
 
                     # MAFFT alignment and trimming
