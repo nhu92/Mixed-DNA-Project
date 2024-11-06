@@ -9,7 +9,7 @@ import sys
 
 def is_valid_project_name(project_name):
     # Check if it starts with a letter, doesn't contain "NODE", and only contains letters, numbers, and underscores
-    if re.match(r'^[A-Za-z0-9_]*$', project_name) and "NODE" not in project_name:
+    if re.match(r'^[A-Za-z0-9_-]*$', project_name) and "NODE" not in project_name:
         return True
     else:
         return False
