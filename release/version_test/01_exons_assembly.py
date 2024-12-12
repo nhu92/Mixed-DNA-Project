@@ -194,7 +194,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     # Define the log file name
-    log_file = f"{args.proj_name}_01_exon_assembly.out"
+    log_file = f"{args.proj_name}_01_exon_assembly.log"
     if os.path.exists(log_file):
         os.remove(log_file)
 
