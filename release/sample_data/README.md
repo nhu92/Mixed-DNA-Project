@@ -2,8 +2,8 @@
 
 ---
 
-1. **ref_871/** 871 species references FASTA files
-2. **ref/** selected order level 113 species references FASTA files
-3. **angiosperms353_v2_interim_targetfile.fasta** Angiosperm353 version 2 target file
-4. **gene.list.txt** 30 selected gene list
+1. **order106_refs_50genes/** 106 selected species references FASTA files for Order lever predictions
+2. **family298_refs_50genes/** 298 selected species references FASTA files for Order lever predictions
+3. **50targetfiles.fasta** Angiosperm353 version 2 target file, simplified into 50 genes
+4. **gene.list.txt** 50 selected gene list
 5. **selected_sp.txt** selected species name to customize references
