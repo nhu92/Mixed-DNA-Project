@@ -34,37 +34,17 @@ Before running the pipeline, ensure that you have the following:
 
 ### Quick Example Run
 
-Run this [Preparing commands](https://github.com/nhu92/Mixed-DNA-Project/blob/main/release/version0/test_run.sh) to clone the package and download the sample input files.
+Run this [Preparing commands](https://github.com/nhu92/Mixed-DNA-Project/blob/main/release/version_test/test_run.sh) to clone the package and download the sample input files.
 
-To run the entire pipeline, execute each script in the following order. These steps require running on a node/job submission systems, preferring high performance computer clusters:
-
+To run the entire pipeline, execute the script [here](https://github.com/nhu92/Mixed-DNA-Project/blob/main/release/version_test/sample_command.sh) (Using SLURM job submission system as an example). These steps require running on a node/job submission systems, preferring high performance computer clusters. You need to modify the job names and replace the placeholder "RENAME" with your sample names. Then, submit the script with:
 ```bash
-# Step 1: Sequence Assembly
-python 01_exons_assembly.py -t 64 -r1 01x02x03.R1.fastq -r2 01x02x03.R2.fastq -p z010203 -g gene.list.txt
-
-# Step 2: Exon Tree Creation
-python 02_exon_trees.py -t 64 -p z010203 
-
-# Step 3: Distance Matrix Calculation
-python 03_distance_matrices.py -t 64 -p z010203 --threshold 1
-
-# Step 4: Prediction and Identification into Order
-python 04_prediction.py -i z010203.cumulative_dist.csv -o predictions.csv -tl o
-
-# ----------------
-# Additional steps
-# If want to predicted into family level, a customized reference file should be generated through:
-while read line; do python pick_match_list.py ref_871/${line} ref_family/${line} species_sp.txt; done < gene.list.txt
-# where species_sp.txt is a list of keywords in species taxonomy groups that we want to use as reference in the next round. For example, if result is Rosales, the list can just have "Rosales" in the list file.
-# Then, just apply Step 2-4 to generate a prediction in family level. 
-
-# Remove folders start with 03_, 04_, restart from alignment
-python 02_exon_trees.py -t 64 -p z010203_fam -r ref_family
-python 03_distance_matrices.py -t 64 -p z010203_fam --threshold 1
-python 04_prediction.py -i z010203_fam.cumulative_dist.csv -o predictions_family.csv -tl f
+sbatch sample_command.sh
 ```
 
-The results should predict **Rosales** only for DNA of species mixed in 3. If go further into family, it should predict **Rosaceae**, **Ulmaceae**, and **Canabaceae**.
+and check the status with:
+```bash
+squeue --me
+```
 
 ## Background
 
@@ -129,6 +109,8 @@ python 01_exons_assembly.py -t <threads> -r1 <read1.fastq> -r2 <read2.fastq> -m 
 - `-p` or `--project_name`: Project name for output files.
 - `-g` or `--gene_list`: Path to the selected gene list.
 - `-ov` or `--overlapping_rate`: Overlapping to consider the same exon (0-1, default 0.8).
+- `--output_hyb`: Output directory for HybPiper results (default is '01_hyb_output').
+- `--output_exon`: Output directory for extracted exons (default is '02_exon_extracted').
 
 ### Step 2: Exon Tree Creation (`02_exon_trees.py`)
 
@@ -147,6 +129,8 @@ python 02_exon_trees.py -t <threads> -e <exon_dir> -r <ref_dir> -p <project_name
 - `-r` or `--ref_alignment`: Directory of reference alignments. Default is `ref`.
 - `-p` or `--project_name`: Project name for output files.
 - `-g` or `--gene_list`: Path to the list of gene names. Default is generated from Step 1 `gene_list.txt`.
+- `--exon_min_size`: Minimum exon size to include in analysis (default is 80bp)
+- `--output_dir`: Output directory for phylogenetic trees (default is 03_phylo_results)
 
 ### Step 3: Distance Matrix Calculation (`03_distance_matrices.py`)
 
@@ -165,6 +149,8 @@ python 03_distance_matrices.py -t <threads> -p <project_name> -g <gene_list> --t
 - `-g` or `--gene_list`: Path to the list of gene names. Default is generated from Step 1 `gene_list.txt`.
 - `--threshold`: Parameter to control specificity of candidate branches on phylogeny. Default is `1.96`, which means only genetic similarity is over `1.96*SD+Mean` will be counted.
 - `--use_flag`: A boolean parameter to mark if all the non-outliers' similarity set to 0.
+- `--input_dir`: Input directory containing the tree files (default is 03_phylo_results)
+- `--output_dir`: Output directory for storing results (default is 04_all_trees)
 
 ### Step 4: Prediction and Identification (`04_prediction.py`)
 
@@ -181,3 +167,5 @@ python 04_prediction.py -i <input_ACS_file> -o <output_file> -tl <taxonomic_leve
 - `-i` or `--input_distance_matrix`: Path to the input cumulative distances file (*cumulative_dist.csv).
 - `-o` or `--output_file`: Path to save the prediction results.
 - `-tl` or `--taxonomic_level`: Taxonomic level to process (choices: `o` for Order, `f` for Family, `g` for Genus, `s` for Species).
+- `-z` or `--zscore_threshold`: Z-score threshold to select taxonomy names.
+- `-to` or `--taxonomy_output_file`: Path to the output file for selected taxonomy names.
