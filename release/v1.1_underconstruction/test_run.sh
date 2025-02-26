@@ -2,12 +2,12 @@ echo "# The pipeline is recommended to run under job submission systems."
 echo "# Step 0: Pipeline Clone"
 git clone -n  https://github.com/nhu92/Mixed-DNA-Project.git --depth=1
 cd Mixed-DNA-Project/
-git checkout HEAD release/version_test
+git checkout HEAD release/v1.1_underconstruction
 git checkout HEAD release/sample_data
 cd ..
 mkdir MDNA_test
 cd MDNA_test
-cp -r ../Mixed-DNA-Project/release/version0/* ./
+cp -r ../Mixed-DNA-Project/release/v1.1_underconstruction/* ./
 cp -r ../Mixed-DNA-Project/release/sample_data/* ./
 rm -rf ../Mixed-DNA-Project/
 
