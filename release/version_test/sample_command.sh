@@ -9,7 +9,7 @@
 #SBATCH --mem-per-cpu=3G
 
 # Step 1: Sequence Assembly
-python 01_exons_assembly.py -t 64 -r1 RENAME_R1_001.fastq.gz -r2 RENAME_R2_001.fastq.gz \
+python 01_exons_assembly.py -t 64 -r1 RENAME.R1.fastq -r2 RENAME.R2.fastq \
 	-p RENAME -g gene.list.txt -m 50targetfiles.fasta \
 	--output_hyb RENAME_hyb \
 	--output_exon RENAME_exon
