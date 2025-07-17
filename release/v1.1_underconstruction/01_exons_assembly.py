@@ -1,7 +1,17 @@
 #!/usr/bin/env python3
 """
 01_exons_assembly.py – Assemble raw reads and extract exon sequences.
-Optimized for speed, readability, and configurable parameters.
+This script performs the following steps:
+1. Quality trimming of raw reads using fastp.
+2. Assembly of target sequences using HybPiper.
+3. For each gene in the provided gene list:
+    - Processes exon data from exonerate results.
+    - Extracts exon sequences from assembled contigs.
+    - Writes exon assignments to a TSV file and creates FASTA files for each exon.
+This script is designed to be run as part of a larger pipeline for phylogenomic analysis.
+It requires a config file for parameters, or command-line arguments can be used to override defaults.  
+It is expected to be run in an environment with the necessary dependencies installed, including Biopython, pandas, and HybPiper.
+It also assumes the presence of a shared utilities module (`pipeline_utils`) for logging and command execution
 """
 import os
 import sys
