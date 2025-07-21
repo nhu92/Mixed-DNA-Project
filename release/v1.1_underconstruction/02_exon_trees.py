@@ -33,7 +33,18 @@ def process_gene_exon_alignment(
     """
     Align and build tree for all exon contigs of a given gene.
     Supports FastTree and IQ-TREE (fixed or MFP mode).
-    """
+    Args:
+        gene_name: Name of the gene to process.
+        threads: Number of threads to use for parallel processing.
+        input_dir: Directory containing exon FASTA files.
+        ref_dir: Directory containing reference alignments.
+        output_dir: Directory to save output trees.
+        log_file: Log file to record status messages.
+        min_size: Minimum length of exon sequences to include.
+        tree_method: Phylogenetic tree construction method ('fasttree' or 'iqtree').
+        iqtree_mode: IQ-TREE mode ('fixed', 'fixed+gamma', or 'mfp').
+ 
+        """
     # Find all exon FASTA files for this gene
     try:
         pattern = os.path.join(input_dir, f"*{gene_name}*.fasta")
