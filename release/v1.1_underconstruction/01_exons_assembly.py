@@ -8,10 +8,26 @@ This script performs the following steps:
     - Processes exon data from exonerate results.
     - Extracts exon sequences from assembled contigs.
     - Writes exon assignments to a TSV file and creates FASTA files for each exon.
-This script is designed to be run as part of a larger pipeline for phylogenomic analysis.
+
 It requires a config file for parameters, or command-line arguments can be used to override defaults.  
 It is expected to be run in an environment with the necessary dependencies installed, including Biopython, pandas, and HybPiper.
 It also assumes the presence of a shared utilities module (`pipeline_utils`) for logging and command execution
+Arguments:
+- `-c`, `--config`: Path to a configuration file (YAML/JSON/TOML).
+- `-t`, `--threads`: Number of threads to use for assembly.
+- `-r1`, `--read1`: Path to the first reads file (FASTQ).
+- `-r2`, `--read2`: Path to the second reads file (FASTQ).
+- `-m`, `--mega353`: Path to the target FASTA file (default is "angiosperms353_v2_interim_targetfile.fasta").
+- `-p`, `--proj_name`: Project name identifier.
+- `-g`, `--gene_list`: Path to the gene list file.
+- `-ov`, `--overlap`: Overlap ratio to consider the same exon (default is 0.8).
+- `--output_hyb`: Output folder for HybPiper results (default is "01_hyb_output").
+- `--output_exon`: Output folder for exon FASTAs (default is "02_exon_extracted").
+
+Example usage:
+python 01_exons_assembly.py -c config.yaml -t 8 -r1 reads_1.fastq -r2 reads_2.fastq -p my_project -g gene_list.txt
+or
+python 01_exons_assembly.py --threads 8 --read1 reads_1.fastq --read2 reads_2.fastq --proj_name my_project --gene_list gene_list.txt
 """
 import os
 import sys
