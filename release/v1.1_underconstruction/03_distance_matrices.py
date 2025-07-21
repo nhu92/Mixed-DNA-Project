@@ -5,6 +5,21 @@ This script processes phylogenetic trees for each gene, calculating pairwise gen
 and generating a summary distance matrix for all taxa.
 
 It can be run with command-line arguments or a configuration file.
+
+Arguments:
+- `-c`, `--config`: Path to configuration file (YAML/JSON/TOML).
+- `-t`, `--threads`: Number of threads for parallel processing. Defaults to 1 if not specified.
+- `-p`, `--proj_name`: Project name identifier for output files.
+- `-g`, `--gene_list`: Path to file containing list of gene names.  Defaults to "gene_list.txt".
+- `--threshold`: Threshold for distance filtering (default: 1.96). 
+- `--use_flag`: Use flag method for filtering (min=0, others=999).
+- `--input_dir`: Directory containing input .tre files (default: "03_phylo_results").
+- `--output_dir`: Directory for output matrices (default: "04_all_trees").
+
+Usage:
+python 03_distance_matrices.py -c config.yaml -t 4 -p my_project -g gene_list.txt --threshold 1.96 --use_flag --input_dir 03_phylo_results --output_dir 04_all_trees
+or
+python 03_distance_matrices.py --config config.yaml --threads 4 --proj_name my_project --gene_list gene_list.txt --threshold 1.96 --use_flag --input_dir 03_phylo_results --output_dir 04_all_trees
 """
 import os
 import glob
