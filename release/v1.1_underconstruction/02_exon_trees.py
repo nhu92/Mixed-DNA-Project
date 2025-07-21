@@ -145,6 +145,9 @@ if __name__ == "__main__":
     min_size = args.min_exon_size if args.min_exon_size != parser.get_default('min_exon_size') else config.get('min_exon_size', 80)
     tree_method = args.tree_method if args.tree_method else config.get('tree_method', 'fasttree')
     iqtree_mode = args.iqtree_mode if args.iqtree_mode else config.get('iqtree_mode', 'fixed')
+    # Disable iqtree_mode if tree_method is fasttree
+    if tree_method == "fasttree":
+        iqtree_mode = None
     if threads is None or not proj_name:
         parser.error("Required parameters missing: threads and proj_name must be specified.")
     if not is_valid_project_name(proj_name):
