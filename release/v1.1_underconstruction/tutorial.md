@@ -34,16 +34,11 @@ Before running the pipeline, ensure that you have the following:
 
 ### Quick Example Run
 
-Run this [Preparing commands](https://github.com/nhu92/Mixed-DNA-Project/blob/main/release/version_test/test_run.sh) to clone the package and download the sample input files.
+Run this [Preparing commands](https://github.com/nhu92/Mixed-DNA-Project/blob/main/release/v1.1_underconstruction/test_run.sh) to clone the package and download the sample input files.
 
-To run the entire pipeline, execute the script [here](https://github.com/nhu92/Mixed-DNA-Project/blob/main/release/version_test/sample_command.sh) (Using SLURM job submission system as an example). These steps require running on a node/job submission systems, preferring high performance computer clusters. You need to modify the job names and replace the placeholder "RENAME" with your sample names. Then, submit the script with:
+To run the entire pipeline, execute the script [here](https://github.com/nhu92/Mixed-DNA-Project/blob/main/release/v1.1_underconstruction/sample_command.sh) (Using SLURM job submission system as an example). These steps require running on a node/job submission systems, preferring high performance computer clusters. You need to modify the job names and replace the placeholder "RENAME" with your sample names. Then, submit the script with:
 ```bash
 sbatch sample_command.sh
-```
-
-and check the status with:
-```bash
-squeue --me
 ```
 
 ## Background
