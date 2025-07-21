@@ -13,6 +13,7 @@ Arguments:
 - `-g`, `--gene_list`: Path to file containing list of gene names.  Defaults to "gene_list.txt".
 - `--threshold`: Threshold for distance filtering (default: 1.96). 
 - `--use_flag`: Use flag method for filtering (min=0, others=999).
+- `--use_threshold`: Enable threshold-based filtering (default: off).
 - `--input_dir`: Directory containing input .tre files (default: "03_phylo_results").
 - `--output_dir`: Directory for output matrices (default: "04_all_trees").
 
@@ -77,7 +78,7 @@ def distance_to_similarity(dist_df):
     sim_df[numeric_cols] = 1 / (1 + sim_df[numeric_cols])
     return sim_df
 
-def clean_up_matrix(df, project, threshold, taxa_file=None, use_flag=False):
+def clean_up_matrix(df, project, threshold, taxa_file=None, use_flag=False, use_threshold=True):
     """
     Clean a distance matrix DataFrame by filtering out irrelevant entries:
     - Remove rows where the taxon name contains the project name (i.e., self-hits).
@@ -96,11 +97,12 @@ def clean_up_matrix(df, project, threshold, taxa_file=None, use_flag=False):
             # Flag method: set the minimum value in this column to 0 (best match) and all others to 999
             min_val = df[col].min()
             df[col] = df[col].apply(lambda x: 0 if x == min_val else 999)
-        else:
+        elif use_threshold:
             # Standard deviation method: mark as 999 any value higher than (mean - threshold*std) for the column
             mean = df[col].mean()
             sd = df[col].std()
             df[col] = df[col].apply(lambda x: 999 if x > (mean - threshold * sd) else x)
+        # If neither flag nor threshold, do not filter
     # If a taxa mapping file is available, use it to further clean the matrix
     if taxa_file and os.path.exists(taxa_file):
         species_to_taxa = {}
@@ -121,7 +123,7 @@ def clean_up_matrix(df, project, threshold, taxa_file=None, use_flag=False):
     df.iloc[:, 0] = df.iloc[:, 0].str.replace(r'\d+', '', regex=True).str.rstrip('_')
     return df
 
-def process_matrices(matrix_dir, project, threshold, use_flag):
+def process_matrices(matrix_dir, project, threshold, use_flag, use_threshold):
     """
     Combine all per-gene distance matrices in `matrix_dir` into one summary DataFrame.
     Converts distances to similarities and computes a total sum per taxon.
@@ -134,7 +136,7 @@ def process_matrices(matrix_dir, project, threshold, use_flag):
             # Identify corresponding taxa list file (if exists) for further filtering
             prefix = filename.split('cleaned.csv')[0]
             taxa_file = os.path.join(matrix_dir, f"{prefix}list.txt")
-            df = clean_up_matrix(df, project, threshold, taxa_file if os.path.exists(taxa_file) else None, use_flag)
+            df = clean_up_matrix(df, project, threshold, taxa_file if os.path.exists(taxa_file) else None, use_flag, use_threshold)
             df = distance_to_similarity(df)
             all_dfs.append(df)
     # Concatenate all gene similarity data
@@ -147,74 +149,6 @@ def process_matrices(matrix_dir, project, threshold, use_flag):
     result = total_df[['Unnamed: 0', 'total_value']].rename(columns={'Unnamed: 0': 'row_name'})
     return result
 
-def genetic_distance_matrix(tree_path, node_output_path, output_csv_path):
-    """
-    Generate a distance matrix from a single gene tree:
-    - Reroots the tree using outgroups (if available) or midpoint.
-    - Records sister taxa for internal "NODE" clades to a list file.
-    - Writes the pairwise distance matrix to a CSV file.
-    """
-    tree = Phylo.read(tree_path, 'newick')
-    # Reroot the tree at a known outgroup (or midpoint if outgroups not found)
-    outgroups = ["Amborella", "Nymphaea", "Austrobaileya"]
-    rooted = False
-    for out in outgroups:
-        for clade in tree.find_clades(name=lambda name: name and out in name):
-            tree.root_with_outgroup(clade)
-            rooted = True
-            break
-        if rooted:
-            break
-    if not rooted:
-        tree.root_at_midpoint()
-    # Identify sister taxa for collapsed nodes and save to file
-    node_records = []
-    for tip in tree.get_terminals():
-        if tip.name and "NODE" in tip.name:
-            sisters = find_clade_and_move(tree, tip.name)
-            if sisters:
-                node_records.append(f"{tip.name}: {'; '.join(sisters)}")
-    with open(node_output_path, 'w') as f:
-        for record in node_records:
-            f.write(record + "\n")
-    # Compute pairwise distances and output to CSV
-    taxa, dist_matrix = calculate_genetic_distance(tree)
-    dist_df = pd.DataFrame(dist_matrix, columns=taxa, index=taxa).reset_index()
-    dist_df.rename(columns={'index': 'row_name'}, inplace=True)
-    dist_df.to_csv(output_csv_path, index=False)
-
-def group_and_sum(input_csv, output_csv):
-    """
-    Summation helper: Group the summary CSV by taxon and sum their total values, then save.
-    Excludes any internal node entries from the summation.
-    """
-    data = pd.read_csv(input_csv)
-    filtered = data[~data['row_name'].str.contains("NODE")]
-    summed = filtered.groupby('row_name')['total_value'].sum().reset_index()
-    summed.to_csv(output_csv, index=False)
-
-def process_gene(gene_name, input_dir, output_dir, log_file):
-    """
-    Process all tree files for one gene: generate distance matrices for each tree and write outputs.
-    """
-    try:
-        pattern = os.path.join(input_dir, f"{gene_name}*.tre")
-        tree_files = glob.glob(pattern)
-        log_status(log_file, f"List trees for {gene_name}: SUCCESS")
-        if not tree_files:
-            log_status(log_file, f"No tree files found for {gene_name}, skipping.")
-            return
-        tree_files.sort()
-        for i, tree_path in enumerate(tree_files, start=1):
-            node_list_file = os.path.join(output_dir, f"{gene_name}.{i}.list.txt")
-            matrix_csv = os.path.join(output_dir, f"{gene_name}.{i}.cleaned.csv")
-            genetic_distance_matrix(tree_path, node_list_file, matrix_csv)
-            log_status(log_file, f"Generated distance matrix for {gene_name} tree {i}")
-            log_status(log_file, f"Saved distance matrix to CSV for {gene_name} tree {i}")
-    except Exception as e:
-        log_status(log_file, f"Failed processing {gene_name}: {e}")
-        print(f"Failed processing {gene_name}: {e}")
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Compute distance matrices from exon trees and aggregate them.")
     parser.add_argument("-c", "--config", help="Path to config file (YAML/JSON/TOML)")
@@ -223,6 +157,7 @@ if __name__ == "__main__":
     parser.add_argument("-g", "--gene_list", help="Path to gene list file", default="gene_list.txt")
     parser.add_argument("--threshold", type=float, help="Threshold for distance filtering", default=1.96)
     parser.add_argument("--use_flag", action="store_true", help="Use flag method (min=0, others=999) for filtering")
+    parser.add_argument("--use_threshold", action="store_true", help="Enable threshold-based filtering (default: off)")
     parser.add_argument("--input_dir", help="Directory with input .tre files", default="03_phylo_results")
     parser.add_argument("--output_dir", help="Directory for output matrices", default="04_all_trees")
     args = parser.parse_args()
@@ -236,8 +171,14 @@ if __name__ == "__main__":
     gene_list_path = args.gene_list if args.gene_list != parser.get_default('gene_list') else config.get('gene_list', "gene_list.txt")
     threshold = args.threshold if args.threshold is not None else config.get('threshold', 1.96)
     use_flag = args.use_flag or bool(config.get('use_flag', False))
+    use_threshold = args.use_threshold or bool(config.get('use_threshold', False))
     input_dir = args.input_dir if args.input_dir != parser.get_default('input_dir') else config.get('input_dir', "03_phylo_results")
     output_dir = args.output_dir if args.output_dir != parser.get_default('output_dir') else config.get('output_dir', "04_all_trees")
+
+    # Conflict check: use_flag and use_threshold cannot both be True
+    if use_flag and use_threshold:
+        parser.error("You cannot enable both --use_flag and --use_threshold at the same time.")
+
     if threads is None or not proj_name:
         parser.error("Required parameters missing: threads and proj_name must be specified.")
     if not is_valid_project_name(proj_name):
@@ -252,7 +193,7 @@ if __name__ == "__main__":
     log_status(log_file, f"  Threads: {threads}")
     log_status(log_file, f"  Project Name: {proj_name}")
     log_status(log_file, f"  Gene List: {gene_list_path}")
-    log_status(log_file, f"  Threshold: {threshold}")
+    log_status(log_file, f"  Threshold: {threshold} (enabled: {use_threshold})")
     log_status(log_file, f"  Use Flag: {use_flag}")
     log_status(log_file, f"  Input Directory: {input_dir}")
     log_status(log_file, f"  Output Directory: {output_dir}")
@@ -266,7 +207,7 @@ if __name__ == "__main__":
         for future in futures:
             future.result()  # raise exceptions if any
     # Combine all matrices and output summary
-    summary_df = process_matrices(output_dir, proj_name, threshold, use_flag)
+    summary_df = process_matrices(output_dir, proj_name, threshold, use_flag, use_threshold)
     summary_csv = os.path.join(output_dir, f"{proj_name}.summary_dist.csv")
     summary_df.to_csv(summary_csv, index=False)
     log_status(log_file, f"Processed matrices saved to {summary_csv}")
