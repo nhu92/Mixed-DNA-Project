@@ -4,6 +4,19 @@
 This script processes cumulative scores from a CSV file, summarizes them by taxonomic level,
 and filters taxa based on a z-score threshold.
 It supports command-line arguments or a configuration file for flexibility.
+
+Arguments:
+    -c, --config: Path to a configuration file (YAML/JSON/TOML).
+    -i, --input_file: Input CSV file containing cumulative scores.
+    -o, --output_file: Output CSV file for summarized scores by taxonomy.
+    -tl, --taxonomic_level: Taxonomic level to summarize (o = Order, f = Family, g = Genus, s = Species).
+    -z, --zscore_threshold: Z-score threshold for filtering significant taxa.
+    -to, --taxonomy_output_file: Output file for selected taxonomy names based on z-score.
+
+Usage:
+    python 04_prediction.py -i input_scores.csv -o summary_scores.csv -tl g -z 2.0 -to selected_taxa.txt
+    or
+    python 04_prediction.py --config config.yaml
 """
 import argparse
 import pandas as pd
