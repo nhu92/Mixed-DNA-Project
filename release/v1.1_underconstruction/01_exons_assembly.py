@@ -113,12 +113,8 @@ def process_exon_data(input_dir, gene_name, output_dir, overlap_threshold):
     fasta_sequences = list(SeqIO.parse(contigs_fasta, "fasta"))
     # Remove any old entries in exon FASTA files for this gene, then extract new sequences
     for _, row in df.iterrows():
-        if str(row.iloc[9]) == "-1":  # if strand is -1, reverse the exon name order
-            row['exon_names'] = row['exon_names'][::-1]
         clean_fasta(row, fasta_sequences, output_dir)
     for _, row in df.iterrows():
-        if str(row.iloc[9]) == "-1":
-            row['exon_names'] = row['exon_names'][::-1]
         extract_contigs(row, fasta_sequences, output_dir)
 
 def sequence_assembly(num_threads, read1, read2, target_fasta, project, log_file, output_hyb_dir):
