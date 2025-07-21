@@ -11,6 +11,22 @@ It requires the following tools:
 - FastTree for phylogenetic tree construction
 It can be run with command-line arguments or a configuration file.
 
+Arguments:
+- -c, --config: Path to configuration file (YAML/JSON/TOML)
+- -t, --threads: Number of CPU threads to use for parallel processing
+- -e, --input_exon: Directory of extracted exon FASTA files
+- -r, --ref_alignment: Directory of reference alignments
+- -g, --gene_list: Path to gene list file
+- -p, --proj_name: Project name identifier
+- -o, --output_dir: Directory for output trees
+- -m, --min_exon_size: Minimum exon length to include in analysis
+- --tree_method: Phylogenetic tree construction method (fasttree or iqtree)
+- --iqtree_mode: IQ-TREE mode (fixed, fixed+gamma, or mfp)
+
+Usage:
+python 02_exon_trees.py -c config.yaml -t 8 -e 02_exon_extracted -r ref -g gene_list.txt -p my_project -o 03_phylo_results -m 80 --tree_method fasttree --iqtree_mode fixed
+or
+python 02_exon_trees.py --threads 8 --input_exon 02_exon_extracted --ref_alignment ref --gene_list gene_list.txt --proj_name my_project --output_dir 03_phylo_results --min_exon_size 80 --tree_method fasttree --iqtree_mode fixed
 """
 import os
 import glob
