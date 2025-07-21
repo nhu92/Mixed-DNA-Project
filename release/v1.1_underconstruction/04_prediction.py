@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """
 04_prediction.py – Summarize total scores by taxonomic level and filter by significance.
-Now supports configuration file input for convenience.
+This script processes cumulative scores from a CSV file, summarizes them by taxonomic level,
+and filters taxa based on a z-score threshold.
+It supports command-line arguments or a configuration file for flexibility.
 """
 import argparse
 import pandas as pd
