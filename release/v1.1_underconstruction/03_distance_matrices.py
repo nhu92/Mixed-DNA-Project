@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """
 03_distance_matrices.py – Compute genetic distance matrices from gene trees and aggregate results.
-Optimized for parallel execution and clarity.
+This script processes phylogenetic trees for each gene, calculating pairwise genetic distances
+and generating a summary distance matrix for all taxa.
+
+It can be run with command-line arguments or a configuration file.
 """
 import os
 import glob
