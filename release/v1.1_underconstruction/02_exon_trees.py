@@ -1,7 +1,16 @@
 #!/usr/bin/env python3
 """
 02_exon_trees.py – Align exon sequences and build gene trees.
-Optimized with parallel processing and streamlined file handling.
+This script processes exon sequences for each gene, aligning them to a reference
+alignment, trimming the alignment, and constructing a phylogenetic tree.
+
+It supports parallel processing of multiple genes and logs the status of each step.
+It requires the following tools:
+- MAFFT for sequence alignment
+- trimAl for trimming alignments
+- FastTree for phylogenetic tree construction
+It can be run with command-line arguments or a configuration file.
+
 """
 import os
 import glob
