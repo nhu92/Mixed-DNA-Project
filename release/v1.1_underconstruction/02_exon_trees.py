@@ -26,13 +26,13 @@ def all_sequences_meet_minimum_length(fasta_path, min_length=80):
             return False
     return True
 
-def process_gene_exon_alignment(gene_name, threads, input_dir, ref_dir, output_dir, log_file, min_size):
+def process_gene_exon_alignment(
+    gene_name, threads, input_dir, ref_dir, output_dir, log_file, min_size,
+    tree_method="fasttree", iqtree_mode="fixed"
+):
     """
     Align and build tree for all exon contigs of a given gene.
-    - Aligns contigs to the reference alignment using MAFFT.
-    - Trims the alignment with trimAl.
-    - Constructs a phylogenetic tree with FastTree.
-    Logs progress for each exon and skips those not meeting length criteria.
+    Supports FastTree and IQ-TREE (fixed or MFP mode).
     """
     # Find all exon FASTA files for this gene
     try:
@@ -64,10 +64,29 @@ def process_gene_exon_alignment(gene_name, threads, input_dir, ref_dir, output_d
         trimmed_out = os.path.join(output_dir, f"{gene_name}_exon_{i}_trimmed.fasta")
         trimal_cmd = f"trimal -in {aligned_out} -out {trimmed_out} -gt 0.5"
         run_command(trimal_cmd, f"Trim alignment for {gene_name} exon {i}", log_file)
-        # Build tree with FastTree
+        # Build tree with selected method
         tree_out = os.path.join(output_dir, f"{gene_name}_exon_{i}.tre")
-        fasttree_cmd = f"fasttree -gtr -gamma -nt {trimmed_out} > {tree_out}"
-        run_command(fasttree_cmd, f"Tree construction for {gene_name} exon {i}", log_file)
+        if tree_method == "fasttree":
+            fasttree_cmd = f"fasttree -gtr -gamma -nt {trimmed_out} > {tree_out}"
+            run_command(fasttree_cmd, f"Tree construction for {gene_name} exon {i} (FastTree)", log_file)
+        elif tree_method == "iqtree":
+            if iqtree_mode == "mfp":
+                iqtree_cmd = (
+                    f"iqtree2 -s {trimmed_out} -nt {threads} -m MFP -pre {tree_out.replace('.tre','')} "
+                    f"--quiet"
+                )
+            else:  # fixed model (GTR+G or GTR)
+                iqtree_cmd = (
+                    f"iqtree2 -s {trimmed_out} -nt {threads} -m GTR{'+' if 'gamma' in iqtree_mode else ''}G "
+                    f"-pre {tree_out.replace('.tre','')} --quiet"
+                )
+            run_command(iqtree_cmd, f"Tree construction for {gene_name} exon {i} (IQ-TREE)", log_file)
+            # IQ-TREE outputs .treefile, so rename/move to .tre for consistency
+            iqtree_treefile = tree_out.replace('.tre', '.treefile')
+            if os.path.exists(iqtree_treefile):
+                os.replace(iqtree_treefile, tree_out)
+        else:
+            log_status(log_file, f"Unknown tree method: {tree_method}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Align exons and build exon trees for each gene.")
@@ -79,6 +98,10 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--proj_name", help="Project name identifier")
     parser.add_argument("-o", "--output_dir", help="Directory for output trees", default="03_phylo_results")
     parser.add_argument("-m", "--min_exon_size", type=int, help="Minimum exon length to include", default=80)
+    parser.add_argument("--tree_method", choices=["fasttree", "iqtree"], default="fasttree",
+                        help="Phylogeny method: fasttree or iqtree (default: fasttree)")
+    parser.add_argument("--iqtree_mode", choices=["fixed", "fixed+gamma", "mfp"], default="fixed",
+                        help="IQ-TREE mode: fixed (GTR), fixed+gamma (GTR+G), or mfp (ModelFinder Plus)")
     args = parser.parse_args()
 
     # Load config if provided
@@ -93,6 +116,8 @@ if __name__ == "__main__":
     gene_list_path = args.gene_list if args.gene_list != parser.get_default('gene_list') else config.get('gene_list', "gene_list.txt")
     output_dir = args.output_dir if args.output_dir != parser.get_default('output_dir') else config.get('output_dir', "03_phylo_results")
     min_size = args.min_exon_size if args.min_exon_size != parser.get_default('min_exon_size') else config.get('min_exon_size', 80)
+    tree_method = args.tree_method if args.tree_method else config.get('tree_method', 'fasttree')
+    iqtree_mode = args.iqtree_mode if args.iqtree_mode else config.get('iqtree_mode', 'fixed')
     if threads is None or not proj_name:
         parser.error("Required parameters missing: threads and proj_name must be specified.")
     if not is_valid_project_name(proj_name):
@@ -111,6 +136,9 @@ if __name__ == "__main__":
     log_status(log_file, f"  Project Name: {proj_name}")
     log_status(log_file, f"  Output Directory: {output_dir}")
     log_status(log_file, f"  Minimum Exon Size: {min_size}")
+    log_status(log_file, f"  Tree Method: {tree_method}")
+    if tree_method == "iqtree":
+        log_status(log_file, f"  IQ-TREE Mode: {iqtree_mode}")
     os.makedirs(output_dir, exist_ok=True)
     log_status(log_file, f"Created directory {output_dir}")
     # Read gene list and execute alignments/trees in parallel
@@ -118,10 +146,13 @@ if __name__ == "__main__":
         genes = [line.strip() for line in f if line.strip()]
     with ThreadPoolExecutor(max_workers=threads) as executor:
         futures = [
-            executor.submit(process_gene_exon_alignment, gene, threads, input_exon_dir, ref_dir, output_dir, log_file, min_size)
+            executor.submit(
+                process_gene_exon_alignment,
+                gene, threads, input_exon_dir, ref_dir, output_dir, log_file, min_size,
+                tree_method, iqtree_mode
+            )
             for gene in genes
         ]
-        # Ensure all threads complete (and raise exceptions if any)
         for future in futures:
             future.result()
     log_status(log_file, "Pipeline completed successfully.")
